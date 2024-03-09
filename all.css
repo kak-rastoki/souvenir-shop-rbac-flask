@@ -7,6 +7,19 @@ width: 100%;
   font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
+@keyframes glow {
+  0% {
+    margin-right:0px;
+    box-shadow: 0 0 10px 0 #fff; /* Начальное значение тени */
+  }
+  100% {
+    margin-right:-2000px;
+    box-shadow: 0px 0px 10px 10px rgba(255, 157, 37, 0.196);
+  }
+
+
+}
+
 h1,h2,h3,h4,h5,h6{
   margin: 0;
 }
@@ -207,15 +220,83 @@ color:  rgb(0, 141, 212);
       margin: 20px;
       left:8%;
     }
-
+/* зачистить */
  .c-new{
-  background-color: #66666627;
-  display: inline-block;
-  margin:40px 0px;
+  1background-color: #66666627; зачистить
+  position: relative;
+  margin:0px 0px;
   width: 45%;
   height: 100%;
+
+
  }
 
+    .c-new-top{
+      1background-color: #7c7c7c25;
+      display:flex;
+      width: 100%;
+      height: 15%;
+      color:rgba(255, 162, 0, 1);
+
+    }
+      .cnt-title{
+
+        margin: 0;
+        font-size: 25pt;
+        padding: 25pt 40pt 0pt 40pt;
+      }
+
+      .cnt-button{
+
+        width: 100%;
+        height: 15%;
+        padding:60px 2% 3% 1%;
+      }
+
+    .c-new-down{
+      color: aliceblue;
+      display:flex;
+      flex-wrap: wrap;
+      background-color: rgb(255, 166, 0);
+      width: 100%;
+      height: 85%;
+      border: 5px solid rgb(255, 166, 0);
+      border-radius: 45px;
+      /* animation: glow 1s infinite alternate; */
+
+    }
+
+    .cnd-items{
+      box-sizing: border-box;
+      margin: 1%;
+      padding: 2% 2%;
+      background-color: rgb(0, 141, 212);
+      width: calc(100% / 3.25); /* Ширина элемента (1/3 ширины контейнера) */
+      height: calc(100% / 2.1); /* Высота элемента (1/2 высоты контейнера) */
+      border: 1px solid rgba(170, 170, 170, 0.326) ;
+      border-radius:30px;
+    }
+
+      .cnd-it-disc{
+        font-size: 8pt;
+      }
+
+      .cnd-it-cat{
+        font-size: 8pt;
+      }
+      .cnd-it-img{
+        position: relative;
+        border: 2px solid rgb(186, 186, 186);
+        border-radius: 20px;
+
+        top:2%;
+        margin:0;
+
+      }
+
+      .cnd-it-wr2{
+        margin-top: 10 px;
+      }
 
  /* СТРАНИЦА РЕГИСТРАЦИИ */
  /* контейнер регистрации */
