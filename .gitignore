@@ -1,2 +1,4 @@
 /TestIgnore.txt
 test
+__pycache__
+product1.html

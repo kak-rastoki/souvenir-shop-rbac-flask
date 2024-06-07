@@ -1,0 +1,78 @@
+{%extends 'base.html'%}
+{%block titile%}
+ХАвторизация. Магазин студентический ТКХиС
+{%endblock%}
+
+{%block content%}
+    <div class="reg-wrap">
+
+                        <!-- ВКЛАДКИ -->
+            <div class = "rg-tabs">
+                <div class="rg-bt-tabLogSig active" id="rg-bt-tabLogin"><p id="tabLoginP" class="rg-tabP"> <i class="fa fa-user-circle" aria-hidden="true"></i> Войти</p></div>
+                <div class="rg-bt-tabLogSig" id="rg-bt-tabSign"><p id="tabSignupP" class="rg-tabP"> <i class="fa fa-user-plus" aria-hidden="true"></i>Регистрация</p></div>
+            </div>
+            <div class="rg-tabBody">
+                <div class="reg-container reg-loginTab active"> <!-- ВОЙТИ ВКЛАДКА -->
+                    <h2 class="rg-EnterLb">Вход в личный кабинет</h2>
+
+                        <form action="submit_registration.php"  method="POST" class = "flex-on"><!-- !1!не забудь поменять методы!!!! -->
+                        <input type="text" class="inputStyle" id="nameInp" name="username" required placeholder="Логин">
+                        <input type="password" class="inputStyle" id="pwInp" name="password1" required placeholder="Пароль">
+                        <div class="remember-me-checkbox rg-lb-remember">
+
+                            <label for="remember-me">Запомнить меня в системе</label>
+                            <input type="checkbox" id="remember-me" name="remember_me">
+                        </div>
+                        <button type="submit" id = "button-LogIn">Войти в личный кабинет</button>
+
+                    </form>
+
+                </div>
+                <div id="reg-signForm" class="reg-container reg-signupTab "><!-- РЕГИСТРАЦИЯ ВКЛАДКА -->
+
+                    <h2 class="rg-EnterLb">Зарегистрироваться </h2>
+
+
+                <form action="submit_registration.php" method="POST">
+                    <label for="full_name" id = "rg-lb-notice">Введите данные в поля для регистрации</label>
+                    <input  class="inputStyle1" type="text"  name="full_nameSign" required placeholder="Полное имя клиента">
+                    <input class="inputStyle1" type="text"  name="loginSign" required placeholder="Логин">
+                    <input class="inputStyle1" type="password"  name="passwordSign" required placeholder="Придумайте пароль" >
+                    <input class="inputStyle1" type="password"  name="passwordSign" required placeholder="Повторите пароль" >
+                    <input class="inputStyle1" type="email"  name="emailSign" required placeholder="Электронная почта">
+                    <div class="form-group">
+                        <label id="rg-lb-Birth" for="yearOfBirth">Год рождения:</label>
+                        <select name="yearOfBirthSign" id="yearOfBirth">
+                        <option value="">Выберите год</option>
+                        <!-- Предположим, даты рождения от 1980 до 2005 года -->
+                        <option value="1980">1991</option>
+                        <option value="1981">1992</option>
+                        <option value="1982">1993</option>
+                        <!-- добавляем опции для каждого года -->
+                        <option value="2004">2004</option>
+                        <option value="2005">2005</option>
+                        </select>
+
+
+                        <label for="gender">Пол:</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">Выберите пол</option>
+                            <option value="male">Мужской</option>
+                            <option value="female">Женский</option>
+                        </select>
+                        <div class="rg-consent-checkbox">
+                            <input type="checkbox" id="data-processing-consent" name="consent" required>
+                            <label for="data-processing-consent" class="consent-label">Я согласен на обработку персональных данных в соответствии с <a href="https://business.yandex/praktika/polzovatelskoe-soglashenie/" target="_blank">политикой конфиденциальности</a></label>
+                        </div>
+                        <button type="submit" id = "button-Reg">Зарегистрироваться</button>
+                    </div>
+
+                </form>
+
+
+            </div>
+        </div>
+
+    </div>
+
+{%endblock%}

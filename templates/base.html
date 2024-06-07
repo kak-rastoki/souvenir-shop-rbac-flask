@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{%block titile%} {% endblock%} </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/all.css') }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+  <header id="mnhd">
+
+    <div id="d12">
+        <div id="nadhd">
+            <div id="logo"><img src = "{{url_for('static',filename='image/IconWhite.png')}}" width="50px"></div>
+            <P  id="nadnd-titile"  style="display: inline-block; margin:0;">ТКХиС. Магазин «Cтуденческий»</P>
+        </div>
+
+        <div id="nadhd1">     <P class = "nadhd1-p" id="nadhd1-addres"> <i class="fa fa-map-marker" aria-hidden="true"></i>Советская 175, Абакан</P>
+            <P class="nadhd1-p"> <i class="fa fa-phone-square" aria-hidden="true"></i>+7 (983) 195-27-99 </P>
+        </div>
+
+    </div>
+
+    <div id="d11"></div>
+        <div class="mnhd-inline" id="mnhd-searchline">
+            <button id = "mnhd-bsearch">
+                <i class="fa fa-search"></i>
+            </button>
+            <input  id="mnhd-search-inp" type="text">
+        </div>
+        <div class="mnhd-inline"><a href="{{ url_for('index') }}" class="icon-link"><i class = "fa fa-home fa-2x"> </i>
+            <p class="mnhd-bt-link" id="hd-home">Главная</p></a></div>
+        <div class="mnhd-inline"> <a href="#" class="icon-link"><i class="fa fa-th-list fa-2x"></i>
+            <p class="mnhd-bt-link" id="hd-cat">Категории</p></a> </div>
+
+    </div>
+
+    <div class="mnhd-inline"><a href="#" class="icon-link"><i class="fa fa-question-circle fa-2x" ></i>
+        <p class="mnhd-bt-link" id="hd-faq">Вопросы</p></a></div>
+
+    <div id="mnhd-cart" class = "mnhd-inline"><a class="icon-link" href = "https://vk.com/rastoky">
+        <i class="fa fa-shopping-cart fa-2x" a></i>
+        <p class="mnhd-bt-link" id="hd-cart">Корзина</p></a></div>
+
+
+    <div id="mnhd-login" class = "mnhd-inline " ><a class="icon-link mnhd-login-link" href = "{{url_for('signup')}}">
+        <i class="fa fa-user fa-2x mnhd-login-link"  ></i> <p class="mnhd-bt-link">Войти</p>
+    </a></div>
+
+
+</header>
+
+{%block content%} {%endblock%}
+
+
+
+<footer>
+    <div class="footer-container">
+      <p>© 2024 kak-rastoki. Созданно в рамках учебного проекта.</p>
+      <ul>
+        <li><a href="https://vk.com/rastoky">VK</a></li>
+        <li><a href="">GitHub</a></li>
+        <li><a href="#instagram">Instagram</a></li>
+      </ul>
+    </div>
+  </footer>
+  <script src="{{ url_for('static', filename = "js/script.js") }}"></script>
+</body>
+</html>
