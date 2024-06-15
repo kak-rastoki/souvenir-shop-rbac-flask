@@ -639,11 +639,11 @@ footer a:hover {
 
   .card-main {
     position: relative;
-    background-color: #6666661b;
+    /* background-color: #6666663d; */
     position: relative;
     top: 50px;
-    left: px;
-    width: 1436px;
+    left:3px;
+    width: 1242px;
     height: 796px;
     border-radius: 60px;
     display: flex;
@@ -655,24 +655,30 @@ footer a:hover {
 
 .card-top{
   position: relative;
-  background-color: #00000014;
+  background-color: #8c8a8a5a;
   top:-20px;
-  width:92%;
+  width:96%;
   height: 60%;
   border-radius: 60px;
   margin: 0px 0px 0px 0px;
   display: flex;
+  box-shadow:
+     10px 9px 0px 2px  rgba(0, 0, 0, 0.274);
+
+
+
 
 }
 
 .card-lower{
   position: relative;
-  background-color: #00000014;
+  background-color: rgb(26, 20, 73);
   top:20px;
-  width:92%;
+  width:96%;
   height: 25%;
   border-radius: 60px;
   margin:0px 0px 0px 0px;
+  border: 10px solid rgba(119, 119, 119, 0.352);
 }
 
 
@@ -684,16 +690,18 @@ footer a:hover {
 }
 
 .card-topleft {
-  background-color: #00000008;
+  background-color: rgba(26, 20, 73, 0.98);
   width: 40%;
+  border-radius: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow:5px 0px 8px 2px #0000003d;
 
 }
 
 .card-topright {
-  background-color: #00108c14;
+  /* background-color: #00108c14; */
   width: 65%;
   display: flex;
   align-items: center;
@@ -701,16 +709,105 @@ footer a:hover {
 
 }
 .card-mainphoto{
-  width: 260px;
-  height: 260px;
+  width: 380px;
+  height: 400px;
   background-color: rgb(26, 20, 73);
   border-radius:51px;
   position: relative;
-  top:-50px;
+  top:0px;
+  left:-10px;
+
+}
+
+.rounded-img{
+  border-radius: 51px;
+}
+.card-infotitile {
+  position: relative;
+  top: -15px;
+  left:20px;
+
+}
+.card-discdiv{
+  /* height: 10px; */
+  width: 86%;
+  font-size: 16pt;
+}
+
+.card-title{
+  font-size:39px;
+  color:rgb(26, 20, 73);
+  margin:0px 0px 15px 0px;
+  width: 78%;
+
+}
+
+.card-costdiv{
+  width: 100%;
+  height: 100px;
+  background-color: rgb(26, 20, 73);
+  display: flex;
+  align-items: center;
+  position:relative;
+  top:0px;
+  box-shadow:2px 8px 4px 0px #0000003d;
+}
+
+.card-addCartButton{
+  width: 220px;
+  height: 54px;
+  border-radius: 51px;
+  border:none;
+  color: white;
+  background-color: rgb(222, 123, 24);
+  transition: .4s;
+  position: relative;
   left:30px;
 
 }
 
+.card-addCartButton p{
+  font-size:16px;
+
+}
+
+.card-addCartButton:hover{
+  transition: .4s;
+  width: 260px;
+  height: 60px;
+
+  background-color: rgb(249, 145, 42);
+}
+.card-cost{
+  width: 20%;
+  position:relative;
+  left:16%;
+
+
+}
+
+.card-cost p{
+  font-size: 35px;
+  color:white;
+}
+
+
+
+.card-attrdiv{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  /* background-color: #00000014; */
+  position: relative;
+  top:10px;
+}
+
+.card-attrdiv p {
+  font-size: 18px;
+  margin: 0px 54px -3px 28px;
+  color: #767571;
+}
 
 
 
