@@ -43,7 +43,7 @@
 
                 <div class="c-new-down">
                     {%for product in productNew %}
-                    <div class="cnd-items">
+                    <div class="cnd-items" onclick="window.location.href='{{ url_for('productCard', product_id=product.ID_product) }}'">
                         <img class ="cnd-it-img"
                         src = "{{url_for('product_image', product_id=product.ID_product) }}"
                         width="88%" height = "73%">

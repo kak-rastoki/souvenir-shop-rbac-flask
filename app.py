@@ -47,10 +47,13 @@ def product_image(product_id):
 def signup():
     return render_template ('reg.html')
 
+#странциа продукта
+@app.route('/product/<int:product_id>')
+def productCard(product_id,):
+    product = Product.query.get_or_404(product_id)
 
-@app.route('/product')
-def productCard():
-    return render_template ('product.html')
+
+    return render_template ('product.html',product=product)
 
 
 @app.route ('/')
@@ -67,5 +70,5 @@ def showBase():
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8080,debug=True)
-# почему-то порт не переназначается
+    app.run(host="127.0.0.1", port=8000,debug=True)
+# почему-то порт не переназначается5
