@@ -132,12 +132,109 @@ left:-30%;
 
 }
 
+/* блок корзины абсолют */
+.cart-block {
+  position: absolute;
+  background-color: #e2dcdc;
+  width: 350px;
+  height: 430px;
+  left: -110px;
+  top:110px;
+  z-index: 1000;
+  color: rgba(18, 22, 152, 0.85);
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  border-radius: 20px;
+  box-shadow:10px 10px 10px 0px rgba(0, 0, 0, 0.100);
+  border:3px solid rgba(49, 10, 157, 0.104);
+
+}
+
+.cart-butDiv{
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
+position: relative;
+ top:65%;/* съезжает все переделать*/
+left:3px;
+}
+
+.dabutton{
+  border: none;
+  border-radius:10px;
+  margin: 8px;
+  width: 130px;
+  height: 30px;
+  transition: .4s;
+}
+
+
+.cart-none{
+  position: relative;
+  top:33%;
+  color: #6262626a;
+
+}
+.cart-but-del{
+  color:white;
+  background-color: #ff2121;
+  margin: 0px 20px 0px 0px;
+
+
+}
+
+
+  .cart-but-del:hover{
+    background-color: #fd6c6c;
+    transition: .3s;
+    width: 135px;
+  }
+
+  .cart-but-del:active{
+    background-color: #626262;
+    transition: .3s;
+    width: 128px;
+    height: 29px;
+  }
+
+
+.cart-but-info{
+  color:white;
+  background-color: rgb(26, 20, 73);
+}
+
+.cart-but-info:hover{
+  color:white;
+  background-color: rgb(59, 45, 162);
+  transition: .3s;
+  width: 135px;
+}
+
+
+.cart-block h4{
+position: relative;
+margin: 10px;
+left:5px;
+}
+
+
+
+
+
 #hd-cat{   /* НАДПИСЬ КАТЕГОРИИ */
 
   position: relative;
 
   left:-77%;
 }
+
+
+
+
 
 
 .mnhd-bt-link{
@@ -362,8 +459,8 @@ footer a:hover {
 
     .cnd-items:hover{
       transition: .3s;
-      background-color: rgb(241, 163, 46);
-      box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.24);
+      background-color: rgb(251, 189, 96);
+      box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.134);
     }
 
       .cnd-it-disc{
@@ -777,6 +874,14 @@ footer a:hover {
   height: 60px;
 
   background-color: rgb(249, 145, 42);
+}
+
+.card-addCartButton:active{
+  transition: .4s;
+  width: 255px;
+  height: 55px;
+
+  background-color: rgb(111, 109, 109);
 }
 .card-cost{
   width: 20%;
