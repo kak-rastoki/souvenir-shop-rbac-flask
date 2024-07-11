@@ -15,3 +15,18 @@ for(let i=0; i<tabHeaderElements.length; i++){
   });
 
 }
+
+
+
+// Корзина
+document.addEventListener('DOMContentLoaded', function() {
+  const cartButton = document.querySelector('#mnhd-cart a');
+  const cartDropdown = document.getElementById('cart-dropdown');
+
+  // Обработчик клика для кнопки корзины
+  cartButton.addEventListener('click', function(event) {
+      event.preventDefault();
+      // Переключаем класс 'visible' для блока корзины
+      cartDropdown.classList.toggle('visible');
+  });
+});
