@@ -43,14 +43,23 @@
 
                 <div class="c-new-down">
                     {%for product in productNew %}
-                    <div class="cnd-items" onclick="window.location.href='{{ url_for('productCard', product_id=product.ID_product) }}'">
-                        <img class ="cnd-it-img"
+                    <div class="cnd-items" >
+                        <img class ="cnd-it-img" onclick="window.location.href='{{ url_for('productCard', product_id=product.ID_product) }}'"
                         src = "{{url_for('product_image', product_id=product.ID_product) }}"
                         width="88%" height = "73%">
-                        <div class="cnd-it-wr2">
-                            <h1 class="cnd-titile">{{product.Name_product}}</h1>
-                            <p class = "cnd-it-cat">категория "{{product.Id_category}}"</p>
-                            <p>{{product.Cost_product}} ₽</p>
+                        <div class="cnd-it-content">
+                            <div class="cnd-it-wr1">
+                                <h1 class="cnd-titile">{{product.Name_product}}</h1>
+                                <p class = "cnd-it-cat">категория "{{product.Id_category}}"</p>
+                                <div class="items-cost-ButDiv">
+                                    <p>{{product.Cost_product}} ₽</p>
+
+                                </div>
+                            </div>
+                            <div class= "cnd-it-wr2">
+                                <button class="add-to-cart dabutton" data-id="{{ product.ID_product }}" data-name="{{ product.Name_product }}" data-price="{{ product.Cost_product }}">
+                                    <i class="fa fa-cart-plus" aria-hidden="true"></i></button>
+                            </div>
                         </div>
                     </div>
                     {%endfor%}
