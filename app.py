@@ -15,7 +15,7 @@ class Order(db.Model):
     id_master = db.Column(db.Integer, nullable=False)
     data_order = db.Column(db.String(50), nullable=False)
     status_order = db.Column(db.Boolean, nullable=False) # active / unactive
-
+5
 class Categories(db.Model):
     ID_categories = db.Column(db.Integer, primary_key=True)
     Name_categories = db.Column(db.String(50), nullable=False)
