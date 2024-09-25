@@ -1011,6 +1011,48 @@ footer a:hover {
   color: #767571;
 }
 
+/* Personal Pages */
+
+.mainwrap{
+  /* background-color: #0a40e25a; */
+  width:100%;
+  height: 874px;
+  display: flex;
+  /* align-items: center; */
+  /* align-content: center; */
+  justify-content: center;
+
+}
+
+.mainblock{
+  margin: 3% 2%;
+  display: flex;
+  background-color: #d8d8d8;
+  width:75%;
+  height: 85%;
+  border-radius: 60px;
+}
+  /* Left \ Right */
+  .mb-leftside-sizing{
+    width: 50%;
+    height: 100%;
+    background-color: #62626224;
+  }
+
+  .mb-rightside-sizing{
+    height: 100%;
+    width: 90%;
+    background-color: #62626286;
+  }
+
+
+
+
+
+
+
+
+
 
 
 /* .card-infodiv{
