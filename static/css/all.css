@@ -1027,17 +1027,30 @@ footer a:hover {
 .mainblock{
   margin: 3% 2%;
   display: flex;
-  background-color: #d8d8d8;
+  background-color: #c5c5c5;
   width:75%;
   height: 85%;
   border-radius: 60px;
 }
   /* Left \ Right */
   .mb-leftside-sizing{
-    width: 50%;
-    height: 100%;
+    position: relative;
+    top:-1%;
+    width: 35%;
+    height: 102%;
     background-color: #62626224;
   }
+
+  .b-shadow{
+    box-shadow:5px 0px 8px 2px #0000003d;
+  }
+
+  .mb-pesonalMenu{
+    background-color: rgb(26, 20, 73);
+    border-radius: 30px;
+  }
+
+
 
   .mb-rightside-sizing{
     height: 100%;
@@ -1045,7 +1058,10 @@ footer a:hover {
     background-color: #62626286;
   }
 
-
+  .mb-pesonalMenuContent{
+    background-color: #c5c5c5;
+    border-radius: 0px 30px 30px 0px  ;
+  }
 
 
 
