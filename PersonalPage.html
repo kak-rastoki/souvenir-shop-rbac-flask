@@ -3,17 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Личный кабинет</title>
     <link rel="stylesheet" href="static/css/all.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- REACT -->
+    <!-- Бабель -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Подключение React и ReactDOM через CDN -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <!-- Подключение  скрипта React -->
+    <!-- <script src="{{ url_for('static', filename='js/pp-react/personalPage.js') }}" defer></script> -->
+    <script src="static/js/react/personalPage.js" type="text/babel"></script>
+
 </head>
 <body>
   <header id="mnhd">
 
     <div id="d12">
         <div id="nadhd">
-            <div id="logo"><img src = "image/IconWhite.png" width="50px"></div>
+            <div id="logo"><img src = "static/image/IconWhite.png" width="50px"></div>
             <P  id="nadnd-titile"  style="display: inline-block; margin:0;">ТКХиС. Магазин «Cтуденческий»</P>
         </div>
 
@@ -71,10 +83,10 @@
 <div class="mainwrap">
     <div class = "mainblock">
 
-        <div class="mb-leftside-sizing mb-pesonalMenu b-shadow">
+        <div id="pp-menu" class="mb-leftside-sizing mb-pesonalMenu b-shadow">
             блок левый
         </div>
-        <div class="mb-rightside-sizing mb-pesonalMenuContent">
+        <div id="pp-menu-content" class="mb-rightside-sizing mb-pesonalMenuContent">
             блок правый
         </div>
     </div>
