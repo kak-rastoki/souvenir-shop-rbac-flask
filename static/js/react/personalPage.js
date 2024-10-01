@@ -1,11 +1,17 @@
-function pp_MenuPositing () {
-  const [activeMenu, setActiveMenu] = React.useState('settings');
-
-  const MenuClick = (menuItem) => {
-    setActiveMenu(menuItem);
-  };
+function PP_LeftMenu ({onMenuClick}) {
 
 
+
+  return (
+    <>
+      <button class = "pp-menu-bt" onClick = {()=> onMenuClick('settings')}>Настройки</button>
+      <button class = "pp-menu-bt" onClick={() => onMenuClick('favorites')}>Избранное</button>
+      <button class = "pp-menu-bt" onClick={() => onMenuClick('orders')}>История заказов</button>
+    </>
+  );
+}
+
+function PP_Content ({activeMenu}) {
   const renderContent = () => {
     switch (activeMenu){
       case 'settings':
@@ -21,23 +27,45 @@ function pp_MenuPositing () {
   };
 
   return (
-    <div>
-      {/* блок меню */}
-
-      <div>
-        <button onClick = {()=> MenuClick('settings')}>Настройки</button>
-        <button onClick={() => MenuClick('favorites')}>Избранное</button>
-        <button onClick={() => MenuClick('orders')}>История заказов</button>
-      </div>
-
-      <div>
+      <>
         {renderContent ()}
-      </div>
-    </div>
+      </>
+
 
   );
 
 }
+function PersonalPage () {
+  // получение состояния
+  const [activeMenu, setActiveMenu] = React.useState('settings');
 
-ReactDOM.render(<pp_MenuPositing />, document.getElementById('pp-menu'));
-ReactDOM.render(<PersonalPage />, document.getElementById('pp-menu-content'));
+  // обработчик  клика \ он меняет состояние при клике на кнопку меню
+  const MenuClick = (menuItem) => {
+    setActiveMenu(menuItem);
+  };
+
+  return (
+    <>
+      {/* Рендерим левое меню */}
+      <div id="pp-menu" class="mb-leftside-sizing mb-pesonalMenu b-shadow">
+        <PP_LeftMenu onMenuClick={MenuClick} />
+      </div>
+
+      {/* Рендерим контент в правом блоке */}
+      <div id="pp-menu-content" class="mb-rightside-sizing mb-pesonalMenuContent">
+        <PP_Content activeMenu={activeMenu} />
+      </div>
+    </>
+  );
+
+}
+
+
+
+
+
+ReactDOM.render(<PersonalPage />, document.getElementById('mainblock'))
+// ReactDOM.render(<PersonalPage />, document.getElementById('pp-menu'));
+// ReactDOM.render(<PersonalPage />, document.getElementById('pp-menu-content'));
+
+// PersonalPage ();
