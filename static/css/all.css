@@ -1039,7 +1039,7 @@ footer a:hover {
     flex-direction: column;
     position: relative;
     top:-1%;
-    width: 35%;
+    width: 25%;
     height: 102%;
     background-color: #62626224;
   }
@@ -1071,8 +1071,37 @@ footer a:hover {
     /* display: flex; */
     color:whitesmoke;
     background-color: #1573ff;
+    position: relative;
+    left:4%;
+    top:2%;
+    width: 88%;
+    height: 6%;
+    margin: 3% 2%;
+    border-radius: 12px;
+    border: 0px;
+    transition: ease-in-out .3s;
+    font-size: 12pt;
+  }
+
+  .pp-menu-bt:hover{
+    /* display: flex; */
+    color:whitesmoke;
+    background-color: #0d4ba7;
+    position: relative;
+    left:1%;
+    top:2%;
+    width: 90%;
+    transition: ease-in-out .3s;
 
   }
+
+.h-pp-content{
+  color: #2e2e41ba;
+  font-size: 20pt;
+  position: relative;
+  top:10px;
+  left:76%;
+}
 
 
 

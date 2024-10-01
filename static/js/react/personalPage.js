@@ -15,11 +15,11 @@ function PP_Content ({activeMenu}) {
   const renderContent = () => {
     switch (activeMenu){
       case 'settings':
-        return <div>Настройки</div>;
+        return <div class="h-pp-content">Настройки профиля</div>;
       case 'favorites':
-        return <div>Избранное</div>;
+        return <div class="h-pp-content">Избранное</div>;
       case 'orders':
-         return <div>История заказов</div>;
+         return <div class="h-pp-content">История заказов</div>;
       default:
         return <div>Выберите пункт в меню</div>;
     }
