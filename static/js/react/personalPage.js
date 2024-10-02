@@ -7,6 +7,8 @@ function PP_LeftMenu ({onMenuClick}) {
       <button class = "pp-menu-bt" onClick = {()=> onMenuClick('settings')}>Настройки</button>
       <button class = "pp-menu-bt" onClick={() => onMenuClick('favorites')}>Избранное</button>
       <button class = "pp-menu-bt" onClick={() => onMenuClick('orders')}>История заказов</button>
+      <button class = "pp-menu-bt" onClick={() => onMenuClick('following')}>Подписки</button>
+      <button class = "pp-menu-bt exit-bt" onClick={() => onMenuClick('exit')}>Выйти из аккаунта</button>
     </>
   );
 }
@@ -20,8 +22,10 @@ function PP_Content ({activeMenu}) {
         return <div class="h-pp-content">Избранное</div>;
       case 'orders':
          return <div class="h-pp-content">История заказов</div>;
+      case 'following':
+        return <div class="h-pp-content">Ваши подписки</div>;
       default:
-        return <div>Выберите пункт в меню</div>;
+        return <div class ="h-pp-content">Выберите пункт в меню</div>;
     }
 
   };

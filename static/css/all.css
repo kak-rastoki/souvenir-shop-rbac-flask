@@ -1070,7 +1070,7 @@ footer a:hover {
   .pp-menu-bt{
     /* display: flex; */
     color:whitesmoke;
-    background-color: #1573ff;
+    background-color: #0e50b3;
     position: relative;
     left:4%;
     top:2%;
@@ -1083,23 +1083,36 @@ footer a:hover {
     font-size: 12pt;
   }
 
+  .exit-bt{
+  background-color: rgba(255, 0, 0, 0.768);
+  position: relative;
+  top:56%;
+  }
+
+
+
   .pp-menu-bt:hover{
     /* display: flex; */
     color:whitesmoke;
-    background-color: #0d4ba7;
+    background-color: #0d459a;
     position: relative;
-    left:1%;
-    top:2%;
+    /* left:1%;
+    top:2%; */
     width: 90%;
     transition: ease-in-out .3s;
 
   }
 
+  .exit-bt:hover{
+    background-color: rgba(192, 2, 2, 0.768);
+
+    }
+
 .h-pp-content{
   color: #2e2e41ba;
   font-size: 20pt;
   position: relative;
-  top:10px;
+  top:10hpx;
   left:76%;
 }
 
