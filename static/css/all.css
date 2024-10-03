@@ -1123,6 +1123,49 @@ footer a:hover {
 
 }
 
+.pp-content-main{
+  display:flex;
+  position: relative;
+  background-color: #40404021;
+  height: 95%;
+  width: 58%;
+  margin: 1.5%;
+}
+
+.pp-content-form{
+  /* background-color: #4040401b; */
+  width: 60%;
+  font-size: 25px;
+  /* color: #404040b1; */
+  display:flex;
+  flex-direction: column;
+  position: relative;
+  left:18%;
+  padding: 6% 0%;
+  margin: 1.5%;
+}
+
+.pp-form-input{
+ text-decoration: none;
+ height: 35px;
+ border: 3px solid;
+ border-radius: 10px;
+ border-color: #4040409f;
+ font-size: 18px;
+ padding-left: 10px;
+ outline: none;
+ background-color: #e1dfdf;
+ color: #000000;
+}
+
+.pp-form-input:focus {
+  background: #fafafa;
+  }
+
+.pp-form-lb{
+ margin:1.4% 2% ;
+}
+
 
 
 

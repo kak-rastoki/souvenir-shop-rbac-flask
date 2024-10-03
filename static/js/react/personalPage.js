@@ -18,7 +18,28 @@ function PP_Content ({activeMenu}) {
   const renderContent = () => {
     switch (activeMenu){
       case 'settings':
-        return <div class="h-pp-content"><i class="fa fa-address-card" aria-hidden="true"></i> Настройки профиля</div>;
+        return (
+          <>
+          <div class="h-pp-content"><i class="fa fa-address-card" aria-hidden="true"></i> Настройки профиля</div>
+          <div class="pp-content-main">
+            <form class = "pp-content-form">
+              <label class="pp-form-lb">Ваш логин</label>
+              <input type = "text" name = "user_name" id = "set_user_name" class="pp-form-input" placeholder ="Здесь имя пользователя будет"/>
+              <label class="pp-form-lb">Имя</label>
+              <input type = "text" name = "name" id = "set_name" class="pp-form-input" placeholder ="Здесь имя человека"/>
+              <label class="pp-form-lb">Фамилия</label>
+              <input type = "text" name = "second_name" id = "set_second_name" class="pp-form-input" placeholder ="Здесь фамилия человека"/>
+              <label class="pp-form-lb">Номер телефона</label>
+              <input type = "text" name = "phone_number" id = "set_phone_number" class="pp-form-input" placeholder ="Здесь номерок"/>
+              <label class="pp-form-lb">E-mail</label>
+              <input type = "text" name = "phone_number" id = "set_phone_number" class="pp-form-input" placeholder ="Здесь почта"/>
+              <label class="pp-form-lb">Дата рождения</label>
+              <input type = "date" name = "phone_number" id = "set_phone_number" class="pp-form-input" placeholder ="Здесь почта"/>
+            </form>
+          </div>
+          </>
+          );
+
       case 'favorites':
         return <div class="h-pp-content"><i class="fa fa-heart" aria-hidden="true"></i> Избранное</div>;
       case 'orders':
