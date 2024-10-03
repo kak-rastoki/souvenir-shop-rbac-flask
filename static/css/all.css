@@ -1039,7 +1039,7 @@ footer a:hover {
     flex-direction: column;
     position: relative;
     top:-1%;
-    width: 25%;
+    width: 18%;
     height: 102%;
     background-color: #62626224;
   }
@@ -1081,12 +1081,15 @@ footer a:hover {
     border: 0px;
     transition: ease-in-out .3s;
     font-size: 12pt;
+    text-align:left;
+    padding-left: 10%;
   }
 
   .exit-bt{
   background-color: rgba(255, 0, 0, 0.768);
   position: relative;
   top:56%;
+
   }
 
 
@@ -1103,17 +1106,21 @@ footer a:hover {
 
   }
 
+
   .exit-bt:hover{
     background-color: rgba(192, 2, 2, 0.768);
 
     }
-
 .h-pp-content{
-  color: #2e2e41ba;
-  font-size: 20pt;
   position: relative;
-  top:10hpx;
-  left:76%;
+  float:right;
+  color: #2e2e41ba;
+  font-size: 25pt;
+  position: relative;
+  /* width: 300px; */
+  top:10px;
+  left:-4%;
+
 }
 
 
