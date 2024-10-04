@@ -22,7 +22,7 @@ function PP_Content ({activeMenu}) {
           <>
           <div class="h-pp-content"><i class="fa fa-address-card" aria-hidden="true"></i> Настройки профиля</div>
           <div class="pp-content-main">
-            <form class = "pp-content-form">
+            <form class = "pp-content-form" action="" method="">
               <label class="pp-form-lb">Ваш логин</label>
               <input type = "text" name = "user_name" id = "set_user_name" class="pp-form-input" placeholder ="Здесь имя пользователя будет"/>
               <label class="pp-form-lb">Имя</label>
@@ -35,7 +35,9 @@ function PP_Content ({activeMenu}) {
               <input type = "text" name = "phone_number" id = "set_phone_number" class="pp-form-input" placeholder ="Здесь почта"/>
               <label class="pp-form-lb">Дата рождения</label>
               <input type = "date" name = "phone_number" id = "set_phone_number" class="pp-form-input" placeholder ="Здесь почта"/>
+              <button class = 'pp-form-button dabutton'>Сохранить изменения</button>
             </form>
+            <div class="pp-setting-image"></div>
           </div>
           </>
           );
