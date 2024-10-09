@@ -14,6 +14,7 @@ function PP_LeftMenu ({onMenuClick}) {
   );
 }
 
+
 function PP_Content ({activeMenu}) {
   const renderContent = () => {
     switch (activeMenu){
@@ -37,7 +38,9 @@ function PP_Content ({activeMenu}) {
               <input type = "date" name = "phone_number" id = "set_phone_number" class="pp-form-input" placeholder ="Здесь почта"/>
               <button class = 'pp-form-button dabutton'>Сохранить изменения</button>
             </form>
-            <div class="pp-setting-image"></div>
+            <div class="pp-setting-image">
+              <PP_ProfilePhoto  />
+            </div>
           </div>
           </>
           );
@@ -64,9 +67,20 @@ function PP_Content ({activeMenu}) {
 
 }
 
-function Settings () {
-
-
+function PP_ProfilePhoto() {
+  return (
+    <div className="profile-photo-container">
+      <img
+        src="static/images/default-avatar.png"
+        alt="Profile"
+        className="profile-photo"
+      />
+      {/* <label htmlFor="file-upload" className="custom-file-upload">
+        Изменить фото
+      </label> */}
+      {/* <input id="file-upload" type="file" style={{ display: 'none' }} /> */}
+    </div>
+  );
 }
 
 

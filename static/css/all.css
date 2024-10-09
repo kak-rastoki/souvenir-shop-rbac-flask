@@ -1127,22 +1127,22 @@ footer a:hover {
   display:flex;
   position: relative;
   flex-direction: row;
-  background-color: #40404021;
+  /* background-color: #40404021; */
   height: 95%;
-  width: 50%;
+  width: 100%;
   margin: 1.5%;
 }
 
 .pp-content-form{
   /* background-color: #4040401b; */
-  width: 150%;
+  width: 35%;
   font-size: 25px;
   /* color: #404040b1; */
   display:flex;
   flex-direction: column;
   position: relative;
-  left: 16%;
-  padding: 9% 0%;
+  left: 9%;
+  padding: 3% 0%;
   margin: 1.5%;
 }
 
@@ -1175,7 +1175,7 @@ footer a:hover {
   border: 2px solid rgba(97, 97, 97, 0.508);
   position: relative;
   left:-9px;
-  top:15px;
+  top:25px;
   font-size: 18px;
 }
 
@@ -1187,16 +1187,16 @@ footer a:hover {
   border: 4px solid rgba(108, 108, 108, 0.508);
   position: relative;
   left:-9px;
-  top:12px;
+  top:20px;
   font-size: 18px;
 }
 
 
 .pp-setting-image{
-  background-color: #7c7c7c77;
-  width: 150%;
+  /* background-color: #7c7c7c77; */
+  width: 50%;
   position: relative;
-  left:30%;
+  left:10%;
 }
 
 
