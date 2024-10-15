@@ -71,7 +71,8 @@ function PP_ProfilePhoto() {
   return (
     <div className="profile-photo-container">
       <img
-        src="static/images/default-avatar.png"
+        src="static\image\PersonalPage\photo_default.jpg"
+        width = "60%"
         alt="Profile"
         className="profile-photo"
       />
