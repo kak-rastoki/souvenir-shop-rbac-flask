@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_file, request, jsonify, session
+from flask import Flask, render_template,url_for, send_file,redirect, request, jsonify, session,flash
 from flask_sqlalchemy import SQLAlchemy
 import io
 
@@ -52,6 +52,23 @@ def index():
 @app.route('/base')
 def showBase():
     return render_template('base.html')
+
+@app.route('/registration', methods=["POST"])
+def registration():
+    full_name = request.form.get('full_nameSign')
+    phone = request.form.get('phone')
+    password = request.form.get('passwordSign')
+    confirm_password = request.form.get('confirm_passwordSign')
+    email = request.form.get('emailSign')
+
+    if not full_name or not phone or not password or not email:
+        flash('Все поля должны быть заполнены !',"message")
+        # return redirect(url_for("showBase"))
+
+
+
+    return render_template('reg.html')
+
 
 @app.route('/add_to_cart', methods=['POST'])
 def add_to_cart():
