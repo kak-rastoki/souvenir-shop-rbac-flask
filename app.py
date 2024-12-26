@@ -30,6 +30,11 @@ class Product(db.Model):
     isNew_product = db.Column(db.Integer, nullable=False)
     image_product = db.Column(db.LargeBinary, nullable=True)
 
+class User(db.Model):
+    ID_user = db.Column(db.Integer, primary_key=True)
+    Name_user = db.Column(db.String, nullable=False, unique=True)
+
+
 @app.route('/product_image/<int:product_id>')
 def product_image(product_id):
     product = Product.query.get_or_404(product_id)
@@ -61,9 +66,20 @@ def registration():
     confirm_password = request.form.get('confirm_passwordSign')
     email = request.form.get('emailSign')
 
+    #проверки
+    error_messages = {}
     if not full_name or not phone or not password or not email:
-        flash('Все поля должны быть заполнены !',"message")
-        # return redirect(url_for("showBase"))
+        error_messages["general"] = "Все поля необходимо заполнить"
+
+    if len(password) < 8:
+        error_messages["password_len"] = "Пароль должен содержать более 8 символов"
+
+    if Users.query.filter_by(email=email).first():
+            errors["email"] = "Пользователь с таким email уже существует."
+
+    if password != confirm_password:
+        error_messages["password_confirmed"] = "Введенные пароли не совпадают"
+
 
 
 
