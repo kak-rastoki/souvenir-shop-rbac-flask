@@ -74,11 +74,13 @@ def registration():
     if len(password) < 8:
         error_messages["password_len"] = "Пароль должен содержать более 8 символов"
 
-    if Users.query.filter_by(email=email).first():
-            errors["email"] = "Пользователь с таким email уже существует."
+    if User.query.filter_by(email=email).first():
+        error_messages["email"] = "Пользователь с таким email уже существует."
 
     if password != confirm_password:
         error_messages["password_confirmed"] = "Введенные пароли не совпадают"
+
+
 
 
 
