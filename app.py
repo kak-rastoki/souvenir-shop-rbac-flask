@@ -112,7 +112,7 @@ def product_image(product_id):
 
 @app.route('/signup')
 def signup():
-    return render_template('reg.html')
+    return render_template('reg.html', errors={})
 
 @app.route('/product/<int:product_id>')
 def productCard(product_id):
@@ -130,7 +130,7 @@ def showBase():
 
 @app.route('/registration', methods=["POST"])
 def registration():
-    full_name = request.form.get('full_nameSign')
+    nick_name = request.form.get('full_nameSign')
     phone = request.form.get('phone')
     password = request.form.get('passwordSign')
     confirm_password = request.form.get('confirm_passwordSign')
@@ -138,20 +138,21 @@ def registration():
 
     #проверки
     error_messages = {}
-    if not full_name or not phone or not password or not email:
-        error_messages["general"] = "Все поля необходимо заполнить"
-
+    if not nick_name or not phone or not password or not email:
+        error_messages["general"] = "В форме есть ошибки заполнения. \n Пожалуйста проверьте поля.Все поля необходимо заполнить по условиям"
     if len(password) < 8:
         error_messages["password_len"] = "Пароль должен содержать более 8 символов"
-
-    if User.query.filter_by(email=email).first():
+    if Users.query.filter_by(mail_user=email).first():
         error_messages["email"] = "Пользователь с таким email уже существует."
-
+    if Users.query.filter_by(phone_number=phone):
+        error_messages["phone"] = "Пользователь с таким номером телефона уже существует"
+    if Users.query.filter_by(Name_user= nick_name):
+        error_messages["nick_name"] = "Пользователь с таким именем уже существует"
     if password != confirm_password:
         error_messages["password_confirmed"] = "Введенные пароли не совпадают"
 
-
-
+    if error_messages:
+        return render_template("reg.html", errors=error_messages, form=request.form)
 
 
 
