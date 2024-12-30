@@ -1,6 +1,7 @@
 from flask import Flask, render_template,url_for, send_file,redirect, request, jsonify, session,flash
 from flask_sqlalchemy import SQLAlchemy
 import io
+from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///woodyDB.db'
@@ -110,9 +111,7 @@ def product_image(product_id):
     product = Product.query.get_or_404(product_id)
     return send_file(io.BytesIO(product.image_product), mimetype='image/jpeg')
 
-@app.route('/signup')
-def signup():
-    return render_template('reg.html', errors={})
+
 
 @app.route('/product/<int:product_id>')
 def productCard(product_id):
@@ -128,6 +127,13 @@ def index():
 def showBase():
     return render_template('base.html')
 
+
+# АВТОРИЗАЦИЯ \ РЕГИСТРАЦИЯ
+@app.route('/signup') # Вывод страницы авторизации \ регистрации
+def signup():
+    return render_template('reg.html', errors={})
+
+# Кнопка зарегистрироваться
 @app.route('/registration', methods=["POST"])
 def registration():
     nick_name = request.form.get('full_nameSign')
@@ -144,9 +150,9 @@ def registration():
         error_messages["password_len"] = "Пароль должен содержать более 8 символов"
     if Users.query.filter_by(mail_user=email).first():
         error_messages["email"] = "Пользователь с таким email уже существует."
-    if Users.query.filter_by(phone_number=phone):
+    if Users.query.filter_by(phone_number=phone).first():
         error_messages["phone"] = "Пользователь с таким номером телефона уже существует"
-    if Users.query.filter_by(Name_user= nick_name):
+    if Users.query.filter_by(Name_user= nick_name).first():
         error_messages["nick_name"] = "Пользователь с таким именем уже существует"
     if password != confirm_password:
         error_messages["password_confirmed"] = "Введенные пароли не совпадают"
@@ -155,8 +161,19 @@ def registration():
         return render_template("reg.html", errors=error_messages, form=request.form)
 
 
+    new_user = Users(
+        Name_user=nick_name,
+        phone_number=phone,
+        hash_user=generate_password_hash(password),
+        mail_user=email,
+    )
+    db.session.add(new_user)
+    db.session.commit()
 
-    return render_template('reg.html')
+    flash("Регистрация прошла успешно! Теперь вы можете войти.", "success")
+    return redirect('/signup')
+
+    # return render_template('reg.html')
 
 
 @app.route('/add_to_cart', methods=['POST'])
