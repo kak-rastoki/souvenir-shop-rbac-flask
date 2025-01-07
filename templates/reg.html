@@ -1,6 +1,6 @@
 {%extends 'base.html'%}
 {%block titile%}
-ХАвторизация. Магазин студентический ТКХиС
+Авторизация
 {%endblock%}
 
 {%block content%}
@@ -33,37 +33,48 @@
                     <h2 class="rg-EnterLb">Зарегистрироваться </h2>
 
 
-                <form action="submit_registration.php" method="POST">
+                <form action="registration" method="POST">
                     <label for="full_name" id = "rg-lb-notice">Введите данные в поля для регистрации</label>
-                    <input  class="inputStyle1" type="text"  name="full_nameSign" required placeholder="Полное имя клиента">
-                    <input class="inputStyle1" type="text"  name="loginSign" required placeholder="Логин">
-                    <input class="inputStyle1" type="password"  name="passwordSign" required placeholder="Придумайте пароль" >
-                    <input class="inputStyle1" type="password"  name="passwordSign" required placeholder="Повторите пароль" >
-                    <input class="inputStyle1" type="email"  name="emailSign" required placeholder="Электронная почта">
+
+                     <!--ИМЯ ПОЛЬЗОВАТЕЛЯ-->
+                    <input  class="inputStyle1" type="text"  name="full_nameSign"  placeholder="Имя пользователя *">
+                    {% if errors.get('nick_name') %}
+                    <span class="reg-error">{{ errors.get('nick_name') }}</span>
+                    {% endif %}
+
+                    <!--НОМЕР ТЕЛЕФОНА-->
+                    <input class="inputStyle1" type="text"  name="phone" required placeholder="Номер телефона *">
+                    {% if errors.get('phone') %}
+                    <span class="reg-error">{{ errors.get('phone') }}</span>
+                    {% endif %}
+
+                    <!--ПАРОЛЬ-->
+                    <input class="inputStyle1" type="password" name="passwordSign" placeholder="Придумайте пароль *">
+                    {% if errors.get('password_len') %}
+                        <span class="reg-error">{{ errors.get('password_len') }}</span>
+                    {% endif %}
+
+                    <!--ПОДТВЕРЖДЕНИЕ ПАРОЛЯ-->
+                    <input class="inputStyle1" type="password" name="confirm_passwordSign" required placeholder="Повторите пароль *">
+                    {% if errors.get('password_confirmed') %}
+                        <span class="reg-error"> {{ errors.get('password_confirmed') }}</span>
+                    {% endif %}
+
+                    <!--ПОЧТА-->
+                    <input class="inputStyle1" type="email"  name="emailSign"  placeholder="Электронная почта">
+                    {% if errors.get('email') %}
+                        <span class="reg-error"> {{ errors.get('email') }}</span>
+                    {% endif %}
+
                     <div class="form-group">
-                        <label id="rg-lb-Birth" for="yearOfBirth">Год рождения:</label>
-                        <select name="yearOfBirthSign" id="yearOfBirth">
-                        <option value="">Выберите год</option>
-                        <!-- Предположим, даты рождения от 1980 до 2005 года -->
-                        <option value="1980">1991</option>
-                        <option value="1981">1992</option>
-                        <option value="1982">1993</option>
-                        <!-- добавляем опции для каждого года -->
-                        <option value="2004">2004</option>
-                        <option value="2005">2005</option>
-                        </select>
 
-
-                        <label for="gender">Пол:</label>
-                        <select id="gender" name="gender" required>
-                            <option value="">Выберите пол</option>
-                            <option value="male">Мужской</option>
-                            <option value="female">Женский</option>
-                        </select>
                         <div class="rg-consent-checkbox">
-                            <input type="checkbox" id="data-processing-consent" name="consent" required>
+                            <input type="checkbox" id="data-processing-consent" class="rigths-checkbox"name="consent" required>
                             <label for="data-processing-consent" class="consent-label">Я согласен на обработку персональных данных в соответствии с <a href="https://business.yandex/praktika/polzovatelskoe-soglashenie/" target="_blank">политикой конфиденциальности</a></label>
                         </div>
+                        {% if errors.get('general') %}
+                        <span class="reg-error">{{ errors.get('general')}}</span>
+                        {% endif %}
                         <button type="submit" id = "button-Reg">Зарегистрироваться</button>
                     </div>
 
