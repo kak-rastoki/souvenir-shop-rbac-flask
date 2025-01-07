@@ -126,10 +126,55 @@ def index():
 def showBase():
     return render_template('base.html')
 
-
+# Админ-панель
 @app.route('/admin')
 def Admin_products():
-    return render_template('admin/A_products.html')
+    masters = Masters.query.all()
+    categories = Categories.query.all()
+
+    return render_template('admin/A_products.html', masters=masters, categories=categories)
+
+@app.route('/admin/add-product', methods=['GET', 'POST'])
+def AP_add_product():
+    masters = Masters.query.all()
+    categories = Categories.query.all()
+
+    if request.method == 'POST':
+        name = request.form.get('name')
+        price = request.form.get('price')
+        new_product = request.form.get('newProduct') == 'on'
+        master = request.form.get('master')
+        category = request.form.get('category')
+
+        if not name or not price:
+            flash("Все поля, кроме 'Новинка', обязательны для заполнения!", "error")
+            return redirect(url_for('AP_add_product'))
+
+        if category == "Выберите категорию" or master == "Выберите мастера":
+            flash("Пожалуйста, выберите категорию и мастера!", "error")
+            return redirect(url_for('AP_add_product'))
+
+        try:
+            price = float(price)  # Проверяем, что цена - число
+        except ValueError:
+            flash("Цена должна быть числом!", "error")
+            return redirect(url_for('AP_add_product'))
+
+        # Сохранение в базу данных
+        new_product_entry = Product(
+            Name_product=name,
+            Cost_product=price,
+            IsNew_product=new_product,
+            id_master=master,
+            id_category=category,
+        )
+        db.session.add(new_product_entry)
+        db.session.commit()
+
+        flash("Товар успешно добавлен!", "success")
+        # return redirect(url_for('AP_add_product'))
+
+    return render_template('admin/A_products.html', masters=masters, categories=categories)
 
 
 # АВТОРИЗАЦИЯ \ РЕГИСТРАЦИЯ

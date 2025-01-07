@@ -10,7 +10,18 @@
         <div class="form-section">
             <h2 class="section-title">Добавление товара</h2>
             <p>Для добавления нового товара заполните данные и нажмите кнопку добавить товар. Товар должен отобразиться в таблице</p>
-            <form>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+
+            <form method="POST" action="{{url_for('AP_add_product')}}">
                 <div class="form-group">
                     <label for="name">Наименование</label>
                     <input type="text" id="name" name="name" required>
@@ -28,15 +39,19 @@
                 <div class="form-group">
                     <label for="master">Мастер</label>
                     <select name="master" id="master">
-                        <option value="master1">Мастер 1</option>
-                        <option value="master2">Мастер 2</option>
+                        <option value="Выберите мастера из списка">Выберите мастера из списка</option>
+                        {% for master in masters %}
+                        <option value="{{ master.ID_master }}">{{ master.Name_master }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="category">Категория</label>
                     <select name="category" id="category">
-                        <option value="cat1">Категория 1</option>
-                        <option value="cat2">Категория 2</option>
+                        <option value="Выберите категорию">Выберите категорию</option>
+                        {% for category in categories %}
+                        <option value="{{ category.ID_categories }}">{{ category.Name_category }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
