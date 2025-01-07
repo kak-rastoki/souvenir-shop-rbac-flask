@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///woodyDB.db'
 app.secret_key = '1111'
 db = SQLAlchemy(app)
-tus
+
 # DB Models
 
 
@@ -105,12 +105,11 @@ class OrderProduct(db.Model):
     currency = db.relationship('Currency', backref='order_products')
 
 
-
+#маршруты
 @app.route('/product_image/<int:product_id>')
 def product_image(product_id):
     product = Product.query.get_or_404(product_id)
     return send_file(io.BytesIO(product.image_product), mimetype='image/jpeg')
-
 
 
 @app.route('/product/<int:product_id>')
@@ -126,6 +125,11 @@ def index():
 @app.route('/base')
 def showBase():
     return render_template('base.html')
+
+
+@app.route('/admin')
+def Admin_products():
+    return render_template('admin/A_products.html')
 
 
 # АВТОРИЗАЦИЯ \ РЕГИСТРАЦИЯ

@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+
+body {
+  font-family: "Roboto", serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  background-color: #2a398a;
+  color: #fff;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 2em;
+}
+
+.nav {
+  background-color: #2a398a;
+  padding: 10px;
+  text-align: center;
+}
+
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 1.2em;
+}
+
+.nav a:hover {
+  text-decoration: underline;
+}
+
+.main-content {
+  display: flex;
+  margin: 20px 0;
+}
+
+.form-section {
+  width: 40%;
+  padding-right: 20px;
+  border-right: 1px solid #ddd;
+}
+.form-section:last-child{
+border-right: none;
+}
+.table-section {
+  width: 60%;
+padding-left: 20px;
+
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+  width: calc(100% - 12px);
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box; /* Ensure padding is included in the width calculation */
+}
+
+.form-group .checkbox-container {
+  display: inline-flex;
+margin-top: 5px;
+  align-items: center;
+}
+
+.form-group .checkbox-container input {
+width: auto;
+margin-right: 5px;
+}
+
+
+.form-group button {
+  background-color: #2a398a;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-group button:hover {
+  background-color: #1d2a68;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f2f2f2;
+}
+.section-title {
+font-size: 1.3em;
+font-weight: bold;
+margin-bottom: 10px;
+}

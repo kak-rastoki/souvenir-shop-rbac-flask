@@ -1,269 +1,127 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Панель администратора - Товары</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
-        }
+{% extends 'AdminBase.html' %}
+{% block title %}
 
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .header {
-            background-color: #2a398a;
-            color: #fff;
-            padding: 20px 0;
-            text-align: center;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 2em;
-        }
-
-        .nav {
-            background-color: #2a398a;
-            padding: 10px;
-            text-align: center;
-        }
-
-        .nav a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 15px;
-            font-size: 1.2em;
-        }
-
-        .nav a:hover {
-            text-decoration: underline;
-        }
-
-        .main-content {
-            display: flex;
-            margin: 20px 0;
-        }
-
-        .form-section {
-            width: 40%;
-            padding-right: 20px;
-            border-right: 1px solid #ddd;
-        }
-		.form-section:last-child{
-			border-right: none;
-		}
-        .table-section {
-            width: 60%;
-			padding-left: 20px;
-
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: calc(100% - 12px);
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box; /* Ensure padding is included in the width calculation */
-        }
-
-        .form-group .checkbox-container {
-            display: inline-flex;
-			margin-top: 5px;
-            align-items: center;
-        }
-
-		.form-group .checkbox-container input {
-			width: auto;
-			margin-right: 5px;
-		}
+{% endblock %}
 
 
-        .form-group button {
-            background-color: #2a398a;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .form-group button:hover {
-            background-color: #1d2a68;
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .table th,
-        .table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        .table th {
-            background-color: #f2f2f2;
-        }
-		.section-title {
-			font-size: 1.3em;
-			font-weight: bold;
-			margin-bottom: 10px;
-		}
-
-    </style>
-</head>
-<body>
-    <header class="header">
-        <h1>Панель администратора</h1>
-    </header>
-    <nav class="nav">
-        <a href="#">Товары</a>
-        <a href="#">Пользователи</a>
-        <a href="#">Мастера</a>
-        <a href="#">Заказы</a>
-        <a href="#">Категории</a>
-        <a href="#">Отзывы</a>
-    </nav>
-    <div class="container">
-        <div class="main-content">
-            <div class="form-section">
-				<h2 class="section-title">Добавление товара</h2>
-                <p>Для добавления нового товара заполните данные и нажмите кнопку добавить товар. Товар должен отобразиться в таблице</p>
-                <form>
-                    <div class="form-group">
-                        <label for="name">Наименование</label>
-                        <input type="text" id="name" name="name" required>
+{%block content%}
+<div class="container">
+    <div class="main-content">
+        <div class="form-section">
+            <h2 class="section-title">Добавление товара</h2>
+            <p>Для добавления нового товара заполните данные и нажмите кнопку добавить товар. Товар должен отобразиться в таблице</p>
+            <form>
+                <div class="form-group">
+                    <label for="name">Наименование</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="price">Цена</label>
+                    <input type="number" id="price" name="price" required>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="newProduct" name="newProduct">
+                        <label for="newProduct">Новинка</label>
                     </div>
-                    <div class="form-group">
-                        <label for="price">Цена</label>
-                        <input type="number" id="price" name="price" required>
-                    </div>
-                    <div class="form-group">
-						<div class="checkbox-container">
-							<input type="checkbox" id="newProduct" name="newProduct">
-							<label for="newProduct">Новинка</label>
-						</div>
-                    </div>
-					<div class="form-group">
-						<label for="master">Мастер</label>
-						<select name="master" id="master">
-							<option value="master1">Мастер 1</option>
-							<option value="master2">Мастер 2</option>
-						</select>
-					</div>
-                    <div class="form-group">
-                        <label for="category">Категория</label>
-						<select name="category" id="category">
-							<option value="cat1">Категория 1</option>
-							<option value="cat2">Категория 2</option>
-						</select>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit">Добавить товар</button>
-                    </div>
-                </form>
+                </div>
+                <div class="form-group">
+                    <label for="master">Мастер</label>
+                    <select name="master" id="master">
+                        <option value="master1">Мастер 1</option>
+                        <option value="master2">Мастер 2</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="category">Категория</label>
+                    <select name="category" id="category">
+                        <option value="cat1">Категория 1</option>
+                        <option value="cat2">Категория 2</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Добавить товар</button>
+                </div>
+            </form>
 
-				<h2 class="section-title">Изменение товара</h2>
-				<p>Для изменения данных товара выберите товар из таблицы, нажав на иконку карандаша</p>
-				<form>
-					<div class="form-group">
-						<label for="editCode">Код изменяемого товара:</label>
-						<input type="text" name="editCode" id="editCode" required>
-					</div>
-                    <div class="form-group">
-                        <label for="editName">Наименование</label>
-                        <input type="text" id="editName" name="editName">
+            <h2 class="section-title">Изменение товара</h2>
+            <p>Для изменения данных товара выберите товар из таблицы, нажав на иконку карандаша</p>
+            <form>
+                <div class="form-group">
+                    <label for="editCode">Код изменяемого товара:</label>
+                    <input type="text" name="editCode" id="editCode" required>
+                </div>
+                <div class="form-group">
+                    <label for="editName">Наименование</label>
+                    <input type="text" id="editName" name="editName">
+                </div>
+                <div class="form-group">
+                    <label for="editPrice">Цена</label>
+                    <input type="number" id="editPrice" name="editPrice">
+                </div>
+                <div class="form-group">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="editNewProduct" name="editNewProduct">
+                        <label for="editNewProduct">Новинка</label>
                     </div>
-                    <div class="form-group">
-                        <label for="editPrice">Цена</label>
-                        <input type="number" id="editPrice" name="editPrice">
-                    </div>
-                    <div class="form-group">
-						<div class="checkbox-container">
-							<input type="checkbox" id="editNewProduct" name="editNewProduct">
-							<label for="editNewProduct">Новинка</label>
-						</div>
-                    </div>
-					<div class="form-group">
-						<label for="editMaster">Мастер</label>
-						<select name="editMaster" id="editMaster">
-							<option value="master1">Мастер 1</option>
-							<option value="master2">Мастер 2</option>
-						</select>
-					</div>
-                    <div class="form-group">
-                        <label for="editCategory">Категория</label>
-						<select name="editCategory" id="editCategory">
-							<option value="cat1">Категория 1</option>
-							<option value="cat2">Категория 2</option>
-						</select>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit">Изменить данные товара</button>
-                    </div>
-                </form>
-            </div>
-            <div class="table-section">
-				<h2 class="section-title">Товары</h2>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Код</th>
-                            <th>Наименование</th>
-                            <th>Цена</th>
-                            <th>Описание товара</th>
-                            <th>Категория</th>
-                            <th>Мастер</th>
-							<th>Новинка</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Данные таблицы будут добавлены позже -->
-                        <tr>
-                            <td>1</td>
-                            <td>Товар 1</td>
-                            <td>100</td>
-                            <td>Описание товара 1</td>
-                            <td>Категория 1</td>
-                            <td>Мастер 1</td>
-							<td>Нет</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Товар 2</td>
-                            <td>200</td>
-                            <td>Описание товара 2</td>
-                            <td>Категория 2</td>
-                            <td>Мастер 2</td>
-							<td>Да</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                </div>
+                <div class="form-group">
+                    <label for="editMaster">Мастер</label>
+                    <select name="editMaster" id="editMaster">
+                        <option value="master1">Мастер 1</option>
+                        <option value="master2">Мастер 2</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editCategory">Категория</label>
+                    <select name="editCategory" id="editCategory">
+                        <option value="cat1">Категория 1</option>
+                        <option value="cat2">Категория 2</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Изменить данные товара</button>
+                </div>
+            </form>
+        </div>
+        <div class="table-section">
+            <h2 class="section-title">Товары</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Код</th>
+                        <th>Наименование</th>
+                        <th>Цена</th>
+                        <th>Описание товара</th>
+                        <th>Категория</th>
+                        <th>Мастер</th>
+                        <th>Новинка</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Данные таблицы будут добавлены позже -->
+                    <tr>
+                        <td>1</td>
+                        <td>Товар 1</td>
+                        <td>100</td>
+                        <td>Описание товара 1</td>
+                        <td>Категория 1</td>
+                        <td>Мастер 1</td>
+                        <td>Нет</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Товар 2</td>
+                        <td>200</td>
+                        <td>Описание товара 2</td>
+                        <td>Категория 2</td>
+                        <td>Мастер 2</td>
+                        <td>Да</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-</body>
-</html>
+</div>
+
+{%endblock%}
