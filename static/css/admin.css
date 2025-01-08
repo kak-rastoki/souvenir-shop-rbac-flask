@@ -161,3 +161,19 @@ margin-bottom: 10px;
   box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.173);
   transition: 1s;
 }
+
+
+.delete-button{
+ background-color: #e9e9e9;
+ border-radius: 10px;
+ color:white;
+ border: #ffffff00;
+ font-size: 10px;
+}
+
+.delete-button:hover{
+  background-color: #f8656c8d;
+  border-radius: 10px;
+
+
+ }
