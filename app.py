@@ -184,6 +184,19 @@ def display_products():
     return render_template('admin/A_products.html',products=products)
 
 
+@app.route('/delete/<int:id>', methods=['POST'])
+def delete_product(id):
+    product= Product.query.get(id)
+    if product:
+        db.session.delete(product)
+        db.session.commit()
+        print (f'Продукт {product.ID_product} - {product.Name_product} успешно удален')
+    else:
+        print (f'Внутренняя ошибка сервера. Продукт {product.ID_product} {product.Name_product} - не найден')
+
+    return redirect(url_for('Admin_products'))
+
+
 # АВТОРИЗАЦИЯ \ РЕГИСТРАЦИЯ
 @app.route('/signup') # Вывод страницы авторизации \ регистрации
 def signup():

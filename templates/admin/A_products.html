@@ -128,6 +128,11 @@
                         <td>{{product.id_category}}</td>
                         <td>{{product.id_master}}</td>
                         <td>{{'Да' if product.IsNew_product else 'Нет'  }}</td>
+                        <td>
+                            <form action="{{ url_for('delete_product', id=product.ID_product) }}" method="POST" style="display:inline;">
+                                <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот продукт?')">Удалить</button>
+                            </form>
+                        </td>
                     </tr>
                     {% endfor%}
 
