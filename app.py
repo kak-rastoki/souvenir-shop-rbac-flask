@@ -197,6 +197,65 @@ def delete_product(id):
     return redirect(url_for('Admin_products'))
 
 
+
+@app.route('/api/product/<int:product_id>', methods=['GET'])
+def get_product_api(product_id):
+    product = Product.query.get_or_404(product_id)
+
+    product_data = {
+        'ID_product': product.ID_product,
+        'Name_product': product.Name_product,
+        'Cost_product': product.Cost_product,
+        'IsNew_product': product.IsNew_product,
+        'id_master': product.id_master,
+        'id_category': product.id_category,
+
+    }
+
+    return jsonify(product_data)
+
+@app.route('/admin/edit_product', methods=['POST'])
+def edit_product():
+    if request.method == 'POST':
+        edit_code = request.form.get('editCode')
+        edit_name = request.form.get('editName')
+        edit_price = request.form.get('editPrice')
+        edit_new_product = request.form.get('editNewProduct') == 'on'
+        edit_master = request.form.get('editMaster')
+        edit_category = request.form.get('editCategory')
+
+         # Валидация
+        if not edit_name or not edit_price:
+            flash("Все поля, кроме 'Новинка', обязательны для заполнения!", "error")
+            return redirect(url_for('Admin_products'))
+
+        if edit_category == "Выберите категорию" or edit_master == "Выберите мастера":
+            flash("Пожалуйста, выберите категорию и мастера!", "error")
+            return redirect(url_for('Admin_products'))
+
+        try:
+            edit_price = float(edit_price)  # Проверяем, что цена - число
+        except ValueError:
+            flash("Цена должна быть числом!", "error")
+            return redirect(url_for('Admin_products'))
+
+        product = Product.query.get(edit_code)
+        if product:
+            product.Name_product = edit_name
+            product.Cost_product = edit_price
+            product.IsNew_product = edit_new_product
+            product.id_master = edit_master
+            product.id_category = edit_category
+            db.session.commit()
+            flash("Данные о товаре успешно обновлены!", "success")
+            print(f'Продукт {product.ID_product} - {product.Name_product} успешно изменен')
+        else:
+            print (f'Внутренняя ошибка сервера. Продукт {product.ID_product} {product.Name_product} - не найден')
+            flash(f'Продукт не найден','error')
+        return redirect(url_for('Admin_products'))
+
+    return redirect(url_for('Admin_products'))
+
 # АВТОРИЗАЦИЯ \ РЕГИСТРАЦИЯ
 @app.route('/signup') # Вывод страницы авторизации \ регистрации
 def signup():

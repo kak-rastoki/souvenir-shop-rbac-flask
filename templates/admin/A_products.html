@@ -62,10 +62,10 @@
             <section class="form-cart">
             <h2 class="section-title">Изменение товара</h2>
             <p>Для изменения данных товара выберите товар из таблицы, нажав на иконку карандаша</p>
-            <form>
+            <form method="POST" action="{{url_for('edit_product')}}">
                 <div class="form-group">
                     <label for="editCode">Код изменяемого товара:</label>
-                    <input type="text" name="editCode" id="editCode" required>
+                    <input type="text" name="editCode" id="editCode" readonly>
                 </div>
                 <div class="form-group">
                     <label for="editName">Наименование</label>
@@ -84,15 +84,19 @@
                 <div class="form-group">
                     <label for="editMaster">Мастер</label>
                     <select name="editMaster" id="editMaster">
-                        <option value="master1">Мастер 1</option>
-                        <option value="master2">Мастер 2</option>
+                         <option value="Выберите мастера из списка">Выберите мастера из списка</option>
+                        {% for master in masters %}
+                        <option value="{{ master.ID_master }}">{{ master.Name_master }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="editCategory">Категория</label>
                     <select name="editCategory" id="editCategory">
-                        <option value="cat1">Категория 1</option>
-                        <option value="cat2">Категория 2</option>
+                        <option value="Выберите категорию">Выберите категорию</option>
+                        {% for category in categories %}
+                        <option value="{{ category.ID_categories }}">{{ category.Name_category }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
@@ -126,6 +130,8 @@
                             <form action="{{ url_for('delete_product', id=product.ID_product) }}" method="POST" style="display:inline;">
                                 <button class="delete-button" type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот продукт?')">❌</button>
                             </form>
+                            <button class="edit-button" onclick="LoadProductEditForm({{ product.ID_product }})">✏️</button>
+
                         </td>
                         <td>{{product.ID_product}}</td>
                         <td>{{product.Name_product}}</td>
@@ -144,5 +150,53 @@
         </div>
     </div>
 </div>
+
+
+
+<script>
+    function LoadProductEditForm(productId) {
+        fetch(`/api/product/${productId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка загрузки данных товара');
+                }
+                return response.json();
+            })
+            .then(data => {
+
+                document.getElementById('editCode').value = data.ID_product;
+                document.getElementById('editName').value = data.Name_product;
+                document.getElementById('editPrice').value = data.Cost_product;
+                document.getElementById('editNewProduct').checked = data.IsNew_product;
+                 document.getElementById('editMaster').value = data.id_master; // Заменил на корректный ID мастера
+                document.getElementById('editCategory').value = data.id_category;  // Заменил на корректный ID категории
+
+             // Прокрутка к форме
+             const editForm = document.querySelector('.form-cart:nth-of-type(2)'); // Находим вторую форму с классом form-cart
+             if (editForm) {
+                // Добавляем подсветку
+                editForm.classList.add('highlight');
+
+                // Удаляем подсветку через 2 секунды
+                setTimeout(() => {
+                     editForm.classList.remove('highlight');
+                    }, 2000);
+
+
+                editForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            })
+
+
+            .catch(error => {
+                console.error('Ошибка при загрузке данных товара:', error);
+                alert('Не удалось загрузить данные товара.');
+            });
+    }
+</script>
+
+
+
+
 
 {%endblock%}

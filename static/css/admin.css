@@ -169,6 +169,7 @@ margin-bottom: 10px;
  color:white;
  border: #ffffff00;
  font-size: 10px;
+ margin: 10px;
 }
 
 .delete-button:hover{
@@ -177,3 +178,9 @@ margin-bottom: 10px;
 
 
  }
+
+
+ .form-cart.highlight {
+  box-shadow: 0 0 10px 2px rgba(0, 123, 255, 0.799); /* Синий отсвет */
+  transition: box-shadow 0.5s ease; /* Плавный переход */
+}
