@@ -8,20 +8,10 @@
 <div class="container">
     <div class="main-content">
         <div class="form-section">
+            <section class = "form-cart">
             <h2 class="section-title">Добавление товара</h2>
             <p>Для добавления нового товара заполните данные и нажмите кнопку добавить товар. Товар должен отобразиться в таблице</p>
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    <div class="flash-messages">
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ category }}">{{ message }}</div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-
-
-            <form method="POST" action="{{url_for('AP_add_product')}}">
+            <form  method="POST" action="{{url_for('AP_add_product')}}">
                 <div class="form-group">
                     <label for="name">Наименование</label>
                     <input type="text" id="name" name="name" required>
@@ -56,9 +46,20 @@
                 </div>
                 <div class="form-group">
                     <button type="submit">Добавить товар</button>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <div class="flash-messages">
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
                 </div>
             </form>
+            </section>
 
+            <section class="form-cart">
             <h2 class="section-title">Изменение товара</h2>
             <p>Для изменения данных товара выберите товар из таблицы, нажав на иконку карандаша</p>
             <form>
@@ -98,6 +99,8 @@
                     <button type="submit">Изменить данные товара</button>
                 </div>
             </form>
+            </section>
+
         </div>
         <div class="table-section">
             <h2 class="section-title">Товары</h2>
@@ -115,6 +118,8 @@
                 </thead>
                 <tbody>
                     <!-- Данные таблицы будут добавлены позже -->
+
+
                     <tr>
                         <td>1</td>
                         <td>Товар 1</td>
