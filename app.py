@@ -131,13 +131,15 @@ def showBase():
 def Admin_products():
     masters = Masters.query.all()
     categories = Categories.query.all()
+    products = Product.query.all()
 
-    return render_template('admin/A_products.html', masters=masters, categories=categories)
+    return render_template('admin/A_products.html', masters=masters, categories=categories,products=products)
 
 @app.route('/admin/add-product', methods=['GET', 'POST'])
 def AP_add_product():
     masters = Masters.query.all()
     categories = Categories.query.all()
+    products=Product.query.all()
 
     if request.method == 'POST':
         name = request.form.get('name')
@@ -172,9 +174,14 @@ def AP_add_product():
         db.session.commit()
 
         flash("Товар успешно добавлен!", "success")
-        # return redirect(url_for('AP_add_product'))
+        return redirect(url_for('Admin_products'))
 
-    return render_template('admin/A_products.html', masters=masters, categories=categories)
+    return render_template('admin/A_products.html', masters=masters, categories=categories,products=products)
+
+@app.route('/admin/products_table',methods=['GET'])
+def display_products():
+    products = Product.query.all()
+    return render_template('admin/A_products.html',products=products)
 
 
 # АВТОРИЗАЦИЯ \ РЕГИСТРАЦИЯ

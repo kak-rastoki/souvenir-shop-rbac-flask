@@ -104,6 +104,7 @@
         </div>
         <div class="table-section">
             <h2 class="section-title">Товары</h2>
+
             <table class="table">
                 <thead>
                     <tr>
@@ -118,26 +119,19 @@
                 </thead>
                 <tbody>
                     <!-- Данные таблицы будут добавлены позже -->
+                    {% for product in products %}
+                    <tr>
+                        <td>{{product.ID_product}}</td>
+                        <td>{{product.Name_product}}</td>
+                        <td>{{product.Cost_product}}</td>
+                        <td>{{product.Description_product}}</td>
+                        <td>{{product.id_category}}</td>
+                        <td>{{product.id_master}}</td>
+                        <td>{{'Да' if product.IsNew_product else 'Нет'  }}</td>
+                    </tr>
+                    {% endfor%}
 
 
-                    <tr>
-                        <td>1</td>
-                        <td>Товар 1</td>
-                        <td>100</td>
-                        <td>Описание товара 1</td>
-                        <td>Категория 1</td>
-                        <td>Мастер 1</td>
-                        <td>Нет</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Товар 2</td>
-                        <td>200</td>
-                        <td>Описание товара 2</td>
-                        <td>Категория 2</td>
-                        <td>Мастер 2</td>
-                        <td>Да</td>
-                    </tr>
                 </tbody>
             </table>
         </div>
