@@ -8,7 +8,9 @@
         <div class="main-content">
             <div class="form-section">
                 <section class = "form-cart">
-                    <h2 class="section-title">Добавление категории</h2>
+                    <div class="title-line">
+                      <h2 class="section-title">Добавление категории</h2>
+                    </div>
                     <p>Для добавления новой категории, заполните форму и нажмите кнопку "Добавить категорию".</p>
                     <form method="POST" action="{{ url_for('add_category') }}">
                         <div class="form-group">
@@ -36,8 +38,10 @@
                     </form>
                 </section>
                 <section class="form-cart">
+                  <div class="title-line">
                     <h2 class="section-title">Изменение категории</h2>
-                    <p>Для изменения категории, выберите её из таблицы, нажав на иконку карандаша.</p>
+                  </div>
+                    <p>Для изменения категории, выберите её из таблицы, нажав на иконку карандаша ✏️.</p>
                      <form method="POST" action="{{ url_for('edit_category') }}">
                         <div class="form-group">
                             <label for="editCode">Код изменяемой категории:</label>
