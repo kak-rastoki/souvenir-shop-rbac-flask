@@ -1,4 +1,4 @@
-from flask import Flask, render_template,url_for, send_file,redirect, request, jsonify, session,flash
+from flask import Flask, render_template,url_for, send_file,redirect, request, jsonify, session,flash,get_flashed_messages
 from flask_sqlalchemy import SQLAlchemy
 import io
 from werkzeug.security import generate_password_hash
@@ -132,11 +132,24 @@ def Admin_products():
     masters = Masters.query.all()
     categories = Categories.query.all()
     products = Product.query.all()
+    # errors2 = request.args.get('errors2',{})
+    errors1 = get_flashed_messages(category_filter=['error1'])
+    if not errors1:
+        errors1 = {}
+    errors2=get_flashed_messages(category_filter=['error2'])
+    if not errors2:
+        errors2 = {}
 
-    return render_template('admin/A_products.html', masters=masters, categories=categories,products=products)
+
+    return render_template('admin/A_products.html', masters=masters, categories=categories, products=products, errors2=errors2,errors1=errors1)
 
 @app.route('/admin/add-product', methods=['GET', 'POST'])
 def AP_add_product():
+
+    errors2=get_flashed_messages(category_filter=['error'])
+    if not errors2:
+        errors2 = {}
+
     masters = Masters.query.all()
     categories = Categories.query.all()
     products=Product.query.all()
@@ -176,7 +189,7 @@ def AP_add_product():
         flash("Товар успешно добавлен!", "success")
         return redirect(url_for('Admin_products'))
 
-    return render_template('admin/A_products.html', masters=masters, categories=categories,products=products)
+    return render_template('admin/A_products.html', masters=masters, categories=categories,products=products,errors2=errors2)
 
 @app.route('/admin/products_table',methods=['GET'])
 def display_products():
@@ -214,8 +227,12 @@ def get_product_api(product_id):
 
     return jsonify(product_data)
 
-@app.route('/admin/edit_product', methods=['POST'])
+
+# Изменение продукта
+@app.route('/admin/edit_product', methods=['GET', 'POST'])
 def edit_product():
+    error_messages = ()
+
     if request.method == 'POST':
         edit_code = request.form.get('editCode')
         edit_name = request.form.get('editName')
@@ -223,38 +240,43 @@ def edit_product():
         edit_new_product = request.form.get('editNewProduct') == 'on'
         edit_master = request.form.get('editMaster')
         edit_category = request.form.get('editCategory')
-
-         # Валидация
-        if not edit_name or not edit_price:
-            flash("Все поля, кроме 'Новинка', обязательны для заполнения!", "error")
-            return redirect(url_for('Admin_products'))
-
-        if edit_category == "Выберите категорию" or edit_master == "Выберите мастера":
-            flash("Пожалуйста, выберите категорию и мастера!", "error")
-            return redirect(url_for('Admin_products'))
-
-        try:
-            edit_price = float(edit_price)  # Проверяем, что цена - число
-        except ValueError:
-            flash("Цена должна быть числом!", "error")
-            return redirect(url_for('Admin_products'))
-
         product = Product.query.get(edit_code)
+
+        print (str(edit_name))
+        # Валидация
+        if not edit_name or not edit_price:
+            error_messages="Заполните все поля!"
+
+        if edit_category == "Выберите категорию" or edit_master == "Выберите мастера из списка":
+            error_messages= "Пожалуйста, выберите категорию и мастера!"
+
+        # try:
+        #     edit_price = float(edit_price)  # Проверяем, что цена - число
+        # except ValueError:
+        #     error_messages["priceisint"] = "Цена должна быть числом!"
+        #     return redirect(url_for('AP_add_product')) # Передаем ошибки
+
+
         if product:
+            #Сохраняем данные
             product.Name_product = edit_name
             product.Cost_product = edit_price
             product.IsNew_product = edit_new_product
             product.id_master = edit_master
             product.id_category = edit_category
-            db.session.commit()
-            flash("Данные о товаре успешно обновлены!", "success")
-            print(f'Продукт {product.ID_product} - {product.Name_product} успешно изменен')
         else:
             print (f'Внутренняя ошибка сервера. Продукт {product.ID_product} {product.Name_product} - не найден')
-            flash(f'Продукт не найден','error')
-        return redirect(url_for('Admin_products'))
+            error_messages = "Продукт не найден"
 
-    return redirect(url_for('Admin_products'))
+
+        if  error_messages:
+           flash(error_messages, 'error2')
+           return redirect(url_for('Admin_products'))
+        else:
+            db.session.commit()
+            flash("Изменения выполнены успешно!", "error2")
+            print(f'Продукт {product.ID_product} - {product.Name_product} успешно изменен')
+            return redirect(url_for('Admin_products')) # успешный редирект
 
 # АВТОРИЗАЦИЯ \ РЕГИСТРАЦИЯ
 @app.route('/signup') # Вывод страницы авторизации \ регистрации

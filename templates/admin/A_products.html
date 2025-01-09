@@ -46,15 +46,17 @@
                 </div>
                 <div class="form-group">
                     <button type="submit">Добавить товар</button>
-                    {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        <div class="flash-messages">
-                            {% for category, message in messages %}
-                                <div class="alert alert-{{ category }}">{{ message }}</div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                {% endwith %}
+                    <div class="flash-messages">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    {% if category == 'error' %}
+                                        <span class="reg-error flash">{{ message }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                    </div>
                 </div>
             </form>
             </section>
@@ -101,6 +103,18 @@
                 </div>
                 <div class="form-group">
                     <button type="submit">Изменить данные товара</button>
+                    <div class="flash-messages">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                               {% for category, message in messages %}
+                                   {% if category == 'error2' %}
+                                       <span class="reg-error flash">{{ message }}</span>
+                                   {% endif %}
+                               {% endfor %}
+                           {% endif %}
+                       {% endwith %}
+                   </div>
+
                 </div>
             </form>
             </section>
@@ -128,9 +142,9 @@
                     <tr>
                         <td>
                             <form action="{{ url_for('delete_product', id=product.ID_product) }}" method="POST" style="display:inline;">
-                                <button class="delete-button" type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот продукт?')">❌</button>
+                                <button class="func-button" type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот продукт?')">❌</button>
                             </form>
-                            <button class="edit-button" onclick="LoadProductEditForm({{ product.ID_product }})">✏️</button>
+                            <button class="func-button" onclick="LoadProductEditForm({{ product.ID_product }})">✏️</button>
 
                         </td>
                         <td>{{product.ID_product}}</td>
