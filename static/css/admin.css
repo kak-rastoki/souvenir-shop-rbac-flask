@@ -9,7 +9,8 @@ body {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1400px;
+  min-width: 700px;
   margin: 20px auto;
   padding: 20px;
   background-color: #fff;
@@ -49,10 +50,11 @@ body {
 .main-content {
   display: flex;
   margin: 20px 0;
+
 }
 
 .form-section {
-  width: 40%;
+  width: 35%;
   padding-right: 20px;
   border-right: 1px solid #ddd;
 }
@@ -60,7 +62,7 @@ body {
 border-right: none;
 }
 .table-section {
-  width: 60%;
+  width: 70%;
 padding-left: 20px;
 
 }
@@ -78,7 +80,7 @@ padding-left: 20px;
 .form-group select {
   width: calc(100% - 12px);
   padding: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid #dddddd;
   border-radius: 4px;
   box-sizing: border-box; /* Ensure padding is included in the width calculation */
 }
@@ -116,9 +118,10 @@ margin-right: 5px;
 
 .table th,
 .table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  border: 1px solid #dddddd;
+  padding: 4px;
   text-align: left;
+  background-color: #eaeaea2f;
 }
 
 .table th {
