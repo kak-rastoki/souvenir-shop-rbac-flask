@@ -280,6 +280,7 @@ def get_product_api(product_id):
         'IsNew_product': product.IsNew_product,
         'id_master': product.id_master,
         'id_category': product.id_category,
+        'Description_product': product.Description_product
 
     }
 
@@ -299,6 +300,8 @@ def edit_product():
         edit_new_product = request.form.get('editNewProduct') == 'on'
         edit_master = request.form.get('editMaster')
         edit_category = request.form.get('editCategory')
+        edit_description = request.form.get('editDescription')
+
         product = Product.query.get(edit_code)
 
         print (str(edit_name))
@@ -323,6 +326,7 @@ def edit_product():
             product.IsNew_product = edit_new_product
             product.id_master = edit_master
             product.id_category = edit_category
+            product.Description_product = edit_description
         else:
             print (f'Внутренняя ошибка сервера. Продукт {product.ID_product} {product.Name_product} - не найден')
             error_messages = "Продукт не найден"
