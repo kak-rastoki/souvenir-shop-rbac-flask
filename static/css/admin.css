@@ -7,14 +7,25 @@ body {
     /* background-color: #f0f0f0; */
     background-image:linear-gradient(to left, #1e1e1e,#050541) ;
 
-    /* background-image: url("{{ url_for('static', filename='image/Icons/Иконка бледная.png') }}");
-    background-size: 100%;  /* для изменения размера */
-    /* background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: left;   */
+
+
+    /* background: linear-gradient(90deg, #0f1541, #091862, #19262b, #070b29);
+    background-size: 400% 400%;
+    animation: gradient 20s ease infinite;
+    transform: translate3d(0, 0, 0); */
   }
 
-
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
   /* .absolute-background {
     position: absolute;
     top: 0;
