@@ -1,6 +1,7 @@
 from flask import Flask, render_template,url_for, send_file,redirect, request, jsonify, session,flash,get_flashed_messages
 from flask_sqlalchemy import SQLAlchemy
 import io
+from datetime import datetime
 from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
@@ -126,7 +127,7 @@ def index():
 def showBase():
     return render_template('base.html')
 
-# Админ-панель
+# ------------- АДМИН-ПАНЕЛЬ -------------------- #
 @app.route('/admin')
 def Admin_products():
     masters = Masters.query.all()
@@ -277,6 +278,84 @@ def edit_product():
             flash("Изменения выполнены успешно!", "error2")
             print(f'Продукт {product.ID_product} - {product.Name_product} успешно изменен')
             return redirect(url_for('Admin_products')) # успешный редирект
+
+
+# AP - Users
+@app.route('/admin/users')
+def Admin_users():
+    users = Users.query.all()
+    errors2=get_flashed_messages(category_filter=['error2'])
+    if not errors2:
+        errors2 = {}
+    return render_template('admin/A_users.html', users=users, errors2=errors2)
+
+@app.route('/admin/edit_user', methods=['POST'])
+def edit_user():
+    error_messages = ""
+    if request.method == 'POST':
+        edit_code = request.form.get('editCode')
+        edit_name = request.form.get('editName')
+        edit_phone = request.form.get('editPhone')
+        edit_email = request.form.get('editEmail')
+        edit_bday = request.form.get('editBday')
+
+        user = Users.query.get(edit_code)
+
+        if not edit_name or not edit_phone or not edit_email:
+            error_messages = "Заполните все поля!"
+
+        if user:
+           user.Name_user = edit_name
+           user.phone_number = edit_phone
+           user.mail_user = edit_email
+
+           if edit_bday:
+               user.BirthDay_user = datetime.strptime(edit_bday,'%Y-%m-%d').date()
+           else:
+               user.BirthDay_user = None
+        else:
+            print(f'Внутренняя ошибка сервера. Пользователь {user.ID_user} - не найден')
+            error_messages = "Пользователь не найден"
+
+        if error_messages:
+            flash(error_messages, 'error2')
+            return redirect(url_for('Admin_users'))
+        else:
+            db.session.commit()
+            flash("Изменения выполнены успешно", 'error2')
+            print(f'Пользователь {user.ID_user} - {user.Name_user} успешно изменен')
+            return redirect(url_for('Admin_users'))
+
+
+@app.route('/api/user/<int:user_id>', methods=['GET'])
+def get_user_api(user_id):
+    user = Users.query.get_or_404(user_id)
+
+    user_data = {
+        'ID_user': user.ID_user,
+        'Name_user': user.Name_user,
+        'phone_number': user.phone_number,
+        'mail_user': user.mail_user,
+        'BirthDay_user': user.BirthDay_user.isoformat() if user.BirthDay_user else None,
+        'created_at': user.created_at.isoformat()
+
+    }
+
+    return jsonify(user_data)
+
+@app.route('/delete_user/<int:id>', methods=['POST'])
+def delete_user(id):
+    user= Users.query.get(id)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        print (f'Пользователь {user.ID_user} - {user.Name_user} успешно удален')
+    else:
+        print (f'Внутренняя ошибка сервера. Пользователь {user.ID_user} - не найден')
+
+    return redirect(url_for('Admin_users'))
+
+
 
 # АВТОРИЗАЦИЯ \ РЕГИСТРАЦИЯ
 @app.route('/signup') # Вывод страницы авторизации \ регистрации
