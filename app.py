@@ -134,6 +134,26 @@ def Admin_products():
     categories = Categories.query.all()
     products = Product.query.all()
     # errors2 = request.args.get('errors2',{})
+
+    products_data = []
+    for product in products:
+
+        category = Categories.query.get(product.id_category)
+        master = Masters.query.get(product.id_master)
+
+
+        products_data.append({
+            'ID_product': product.ID_product,
+            'Name_product': product.Name_product,
+            'Cost_product': product.Cost_product,
+            'Description_product': product.Description_product,
+            'Category_name': category.Name_category if category else 'Неизвестно', # Заменяем ID на имя
+            'Master_name': master.Name_master if master else 'Неизвестно',
+            'IsNew_product': product.IsNew_product
+        })
+
+        print (products_data)
+
     errors1 = get_flashed_messages(category_filter=['error1'])
     if not errors1:
         errors1 = {}
@@ -142,7 +162,7 @@ def Admin_products():
         errors2 = {}
 
 
-    return render_template('admin/A_products.html', masters=masters, categories=categories, products=products, errors2=errors2,errors1=errors1)
+    return render_template('admin/A_products.html', masters=masters, categories=categories, products=products_data, errors2=errors2,errors1=errors1)
 
 @app.route('/admin/add-product', methods=['GET', 'POST'])
 def AP_add_product():
@@ -153,7 +173,24 @@ def AP_add_product():
 
     masters = Masters.query.all()
     categories = Categories.query.all()
-    products=Product.query.all()
+    #  Получаем все товары
+    products = Product.query.all()
+    products_data = []
+    for product in products:
+        #  связанные категорию и мастера для каждого товара
+        category = Categories.query.get(product.id_category)
+        master = Masters.query.get(product.id_master)
+
+
+        products_data.append({
+            'ID_product': product.ID_product,
+            'Name_product': product.Name_product,
+            'Cost_product': product.Cost_product,
+            'Description_product': product.Description_product,
+            'Category_name': category.Name_category if category else 'Неизвестно',  # Заменяем ID на имя
+            'Master_name': master.Name_master if master else 'Неизвестно',
+            'IsNew_product': product.IsNew_product
+        })
 
     if request.method == 'POST':
         name = request.form.get('name')
@@ -190,12 +227,32 @@ def AP_add_product():
         flash("Товар успешно добавлен!", "success")
         return redirect(url_for('Admin_products'))
 
-    return render_template('admin/A_products.html', masters=masters, categories=categories,products=products,errors2=errors2)
+    return render_template('admin/A_products.html', masters=masters, categories=categories,products=products_data,errors2=errors2)
 
 @app.route('/admin/products_table',methods=['GET'])
 def display_products():
+     # Получаем все товары
     products = Product.query.all()
-    return render_template('admin/A_products.html',products=products)
+
+    # Подготавливаем данные о товарах для передачи в шаблон
+    products_data = []
+    for product in products:
+        # Получаем связанные категорию и мастера для каждого товара
+        category = Categories.query.get(product.id_category)
+        master = Masters.query.get(product.id_master)
+
+        # Создаем словарь с данными
+        products_data.append({
+            'ID_product': product.ID_product,
+            'Name_product': product.Name_product,
+            'Cost_product': product.Cost_product,
+            'Description_product': product.Description_product,
+            'Category_name': category.Name_category if category else 'Неизвестно', # Заменяем ID на имя
+            'Master_name': master.Name_master if master else 'Неизвестно', # Заменяем ID на имя
+            'IsNew_product': product.IsNew_product
+        })
+
+    return render_template('admin/A_products.html',products=products_data)
 
 
 @app.route('/delete/<int:id>', methods=['POST'])
@@ -279,7 +336,7 @@ def edit_product():
             flash("Изменения выполнены успешно!", "error2")
             print(f'Продукт {product.ID_product} - {product.Name_product} успешно изменен')
             return redirect(url_for('Admin_products')) # успешный редирект
-
+    return redirect(url_for('Admin_products'))
 
 
 #---------AP - Users ---------
