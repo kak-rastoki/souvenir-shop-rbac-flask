@@ -229,7 +229,8 @@ def get_product_api(product_id):
     return jsonify(product_data)
 
 
-# Изменение продукта
+
+# Route to change Product
 @app.route('/admin/edit_product', methods=['GET', 'POST'])
 def edit_product():
     error_messages = ()
@@ -280,7 +281,8 @@ def edit_product():
             return redirect(url_for('Admin_products')) # успешный редирект
 
 
-# AP - Users
+
+#---------AP - Users ---------
 @app.route('/admin/users')
 def Admin_users():
     users = Users.query.all()
@@ -355,7 +357,101 @@ def delete_user(id):
 
     return redirect(url_for('Admin_users'))
 
+#---------AP - Category ---------
+# Route to add category
+@app.route('/admin/add_category', methods=['POST'])
+def add_category():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        description = request.form.get('description')
 
+        if not name:
+            flash("Наименование категории обязательно для заполнения!", 'error1')
+            return redirect(url_for('Admin_categories'))
+
+        new_category = Categories(
+            Name_category=name,
+            Discription_category=description
+        )
+        db.session.add(new_category)
+        db.session.commit()
+
+        flash("Категория успешно добавлена!", 'success')
+        return redirect(url_for('Admin_categories'))
+    return render_template('admin/categories_admin.html')
+
+
+
+# Route to delete category
+@app.route('/delete_category/<int:id>', methods=['POST'])
+def delete_category(id):
+    category = Categories.query.get(id)
+    if category:
+        db.session.delete(category)
+        db.session.commit()
+        print(f'Категория {category.ID_categories} - {category.Name_category} успешно удалена')
+    else:
+        print(f'Внутренняя ошибка сервера. Категория не найдена')
+
+    return redirect(url_for('Admin_categories'))
+
+
+# Route to api get category
+@app.route('/api/category/<int:category_id>', methods=['GET'])
+def get_category_api(category_id):
+    category = Categories.query.get_or_404(category_id)
+
+    category_data = {
+        'ID_categories': category.ID_categories,
+        'Name_category': category.Name_category,
+        'Discription_category': category.Discription_category
+    }
+
+    return jsonify(category_data)
+
+# Route to edit category
+@app.route('/admin/edit_category', methods=['GET','POST'])
+def edit_category():
+    error_messages = ()
+
+    if request.method == 'POST':
+         edit_code = request.form.get('editCode')
+         edit_name = request.form.get('editName')
+         edit_description = request.form.get('editDescription')
+         category = Categories.query.get(edit_code)
+
+         if not edit_name:
+             error_messages = "Заполните все обязательные поля"
+
+
+         if category:
+            category.Name_category = edit_name
+            category.Discription_category = edit_description
+         else:
+            print(f'Внутренняя ошибка сервера. Категория {category.ID_categories} - не найдена')
+            error_messages = "Категория не найдена"
+
+
+         if error_messages:
+            flash(error_messages, 'error2')
+            return redirect(url_for('Admin_categories'))
+         else:
+            db.session.commit()
+            flash("Изменения выполнены успешно!", 'error2')
+            print(f'Категория {category.ID_categories} - {category.Name_category} успешно изменена')
+            return redirect(url_for('Admin_categories'))
+
+# new route for categories page
+@app.route('/admin/categories')
+def Admin_categories():
+    categories = Categories.query.all()
+    errors1=get_flashed_messages(category_filter=['error1'])
+    if not errors1:
+        errors1 = {}
+    errors2=get_flashed_messages(category_filter=['error2'])
+    if not errors2:
+        errors2 = {}
+    return render_template('admin/categories_admin.html', categories=categories, errors1=errors1, errors2=errors2)
 
 # АВТОРИЗАЦИЯ \ РЕГИСТРАЦИЯ
 @app.route('/signup') # Вывод страницы авторизации \ регистрации
