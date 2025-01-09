@@ -55,6 +55,13 @@ body {
     color:#ebebeb;
     padding: 10px 0;
     text-align: center;
+
+  }
+
+  .AP-titile{
+    position: relative;
+    left:-26.5%;
+    top:20px;
   }
 
   .header h1 {
@@ -66,8 +73,11 @@ body {
     /* background-image:linear-gradient(to right, #1a2252,#367cfe,#1a2252) ; */
     padding: 10px;
     text-align: center;
-    border: 1px solid#c3c3c322;
+    /* border: 1px solid#c3c3c322; */
     box-shadow: 2px 2px 30px rgba(43, 64, 70, 0.256);
+    position: relative;
+    left:-18%;
+    top:10px;
 
   }
 
