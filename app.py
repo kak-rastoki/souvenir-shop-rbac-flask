@@ -514,6 +514,124 @@ def Admin_categories():
         errors2 = {}
     return render_template('admin/categories_admin.html', categories=categories, errors1=errors1, errors2=errors2)
 
+# Route to display masters
+@app.route('/admin/masters')
+def Admin_masters():
+    masters = Masters.query.all()
+    genders=Genders.query.all()
+    # данные о мастерах для передачи в шаблон
+    masters_data = []
+    for master in masters:
+        #  связанный пол для каждого мастера
+        gender = Genders.query.get(master.id_gender)
+
+        #  словарь с данными
+        masters_data.append({
+            'ID_master': master.ID_master,
+            'Name_master': master.Name_master,
+            'gender_name': gender.gender_name if gender else "Неизвестно" ,
+              'id_gender': master.id_gender,
+
+        })
+
+
+    errors1=get_flashed_messages(category_filter=['error1'])
+    if not errors1:
+        errors1 = {}
+    errors2=get_flashed_messages(category_filter=['error2'])
+    if not errors2:
+        errors2 = {}
+    return render_template('admin/masters_admin.html', masters=masters_data, genders=genders, errors1=errors1, errors2=errors2)
+
+# Route to add master
+@app.route('/admin/add_master', methods=['GET','POST'])
+def add_master():
+     if request.method == 'POST':
+        name = request.form.get('name')
+        gender = request.form.get('gender')
+
+        if not name:
+            flash("Наименование мастера обязательно для заполнения!", 'error1')
+            return redirect(url_for('Admin_masters'))
+
+        if gender == "Выберите пол":
+             flash("Выберите пол", 'error1')
+             return redirect(url_for('Admin_masters'))
+
+        new_master = Masters(
+            Name_master=name,
+            id_gender=gender,
+        )
+        db.session.add(new_master)
+        db.session.commit()
+
+        flash("Мастер успешно добавлен!", 'success')
+        return redirect(url_for('Admin_masters'))
+     return redirect(url_for('Admin_masters'))
+
+# Route to delete master
+@app.route('/delete_master/<int:id>', methods=['POST'])
+def delete_master(id):
+    master = Masters.query.get(id)
+    if master:
+        db.session.delete(master)
+        db.session.commit()
+        print(f'Мастер {master.ID_master} - {master.Name_master} успешно удален')
+    else:
+        print(f'Внутренняя ошибка сервера. Мастер не найден')
+
+    return redirect(url_for('Admin_masters'))
+
+
+# Route to api get master
+@app.route('/api/master/<int:master_id>', methods=['GET'])
+def get_master_api(master_id):
+    master = Masters.query.get_or_404(master_id)
+
+    master_data = {
+        'ID_master': master.ID_master,
+        'Name_master': master.Name_master,
+        'id_gender': master.id_gender,
+
+
+    }
+
+    return jsonify(master_data)
+
+# Route to edit master
+@app.route('/admin/edit_master', methods=['POST'])
+def edit_master():
+    error_messages = ()
+
+    if request.method == 'POST':
+         edit_code = request.form.get('editCode')
+         edit_name = request.form.get('editName')
+         edit_gender = request.form.get('editGender')
+
+         master = Masters.query.get(edit_code)
+
+         if not edit_name:
+             error_messages = "Заполните все обязательные поля"
+         if edit_gender == "Выберите пол":
+            error_messages = "Выберите пол"
+         if master:
+            master.Name_master = edit_name
+            master.id_gender = edit_gender
+         else:
+            print(f'Внутренняя ошибка сервера. Мастер {master.ID_master} - не найден')
+            error_messages = "Мастер не найден"
+
+
+         if error_messages:
+            flash(error_messages, 'error2')
+            return redirect(url_for('Admin_masters'))
+         else:
+            db.session.commit()
+            flash("Изменения выполнены успешно!", 'error2')
+            print(f'Мастер {master.ID_master} - {master.Name_master} успешно изменен')
+            return redirect(url_for('Admin_masters'))
+    return redirect(url_for('Admin_masters'))
+
 # АВТОРИЗАЦИЯ \ РЕГИСТРАЦИЯ
 @app.route('/signup') # Вывод страницы авторизации \ регистрации
 def signup():
