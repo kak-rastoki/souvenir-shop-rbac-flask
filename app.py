@@ -198,6 +198,7 @@ def AP_add_product():
         new_product = request.form.get('newProduct') == 'on'
         master = request.form.get('master')
         category = request.form.get('category')
+        file = request.files['file']
 
         if not name or not price:
             flash("Все поля, кроме 'Новинка', обязательны для заполнения!", "error")
@@ -220,6 +221,7 @@ def AP_add_product():
             IsNew_product=new_product,
             id_master=master,
             id_category=category,
+            image_product = file.read()
         )
         db.session.add(new_product_entry)
         db.session.commit()
@@ -638,7 +640,7 @@ def signup():
     return render_template('reg.html', errors={})
 
 # Кнопка зарегистрироваться
-@app.route('/registration', methods=["POST"])
+@app.route('/registration', methods=['POST'])
 def registration():
     nick_name = request.form.get('full_nameSign')
     phone = request.form.get('phone')
@@ -648,7 +650,7 @@ def registration():
 
     #проверки
     error_messages = {}
-    if not nick_name or not phone or not password or not email:
+    if not nick_name or not phone or not password or not confirm_password or not email:
         error_messages["general"] = "В форме есть ошибки заполнения. \n Пожалуйста проверьте поля.Все поля необходимо заполнить по условиям"
     if len(password) < 8:
         error_messages["password_len"] = "Пароль должен содержать более 8 символов"
@@ -677,7 +679,7 @@ def registration():
     flash("Регистрация прошла успешно! Теперь вы можете войти.", "success")
     return redirect('/signup')
 
-    # return render_template('reg.html')
+
 
 
 @app.route('/add_to_cart', methods=['POST'])
