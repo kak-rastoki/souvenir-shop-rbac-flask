@@ -1,0 +1,142 @@
+{% extends 'AdminBase.html' %}
+{% block title %}
+    Управление категориями
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="main-content">
+            <div class="form-section">
+                <section class = "form-cart">
+                    <div class="title-line">
+                      <h2 class="section-title">Добавление категории</h2>
+                    </div>
+                    <p>Для добавления новой категории, заполните форму и нажмите кнопку "Добавить категорию".</p>
+                    <form method="POST" action="{{ url_for('add_category') }}">
+                        <div class="form-group">
+                            <label for="name">Наименование категории</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Описание категории</label>
+                            <textarea id="description" name="description" maxlength="100" style="resize: both; max-height: 100px; max-width: 400px;"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit">Добавить категорию</button>
+                            <div class="flash-messages">
+                                   {% with messages = get_flashed_messages(with_categories=true) %}
+                                   {% if messages %}
+                                       {% for category, message in messages %}
+                                           {% if category == 'error1' %}
+                                               <span class="reg-error flash">{{ message }}</span>
+                                           {% endif %}
+                                       {% endfor %}
+                                   {% endif %}
+                                   {% endwith %}
+                            </div>
+                        </div>
+                    </form>
+                </section>
+                <section class="form-cart">
+                  <div class="title-line">
+                    <h2 class="section-title">Изменение категории</h2>
+                  </div>
+                    <p>Для изменения категории, выберите её из таблицы, нажав на иконку карандаша ✏️.</p>
+                     <form method="POST" action="{{ url_for('edit_category') }}">
+                        <div class="form-group">
+                            <label for="editCode">Код изменяемой категории:</label>
+                            <input type="text" name="editCode" id="editCode" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="editName">Наименование категории</label>
+                            <input type="text" id="editName" name="editName" required>
+                        </div>
+                        <div class="form-group">
+                             <label for="editDescription">Описание категории</label>
+                             <textarea id="editDescription" name="editDescription" maxlength="100" style="resize: both; max-height: 100px; max-width: 400px;"></textarea>
+                        </div>
+                         <div class="form-group">
+                            <button type="submit">Изменить категорию</button>
+                             <div class="flash-messages">
+                                   {% with messages = get_flashed_messages(with_categories=true) %}
+                                   {% if messages %}
+                                       {% for category, message in messages %}
+                                           {% if category == 'error2' %}
+                                               <span class="reg-error flash">{{ message }}</span>
+                                           {% endif %}
+                                       {% endfor %}
+                                   {% endif %}
+                                   {% endwith %}
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+            <div class="table-section">
+              <div class="title-table-icon">
+                <img src="{{url_for('static',filename='image/Icons/rectangle-list.svg')}}" width=40px>
+                <h2 class="section-title">Категории</h2>
+              </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Код</th>
+                            <th>Наименование</th>
+                            <th>Описание</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                            <tr>
+                                <td>
+                                   <form action="{{ url_for('delete_category', id=category.ID_categories) }}" method="POST" style="display:inline;">
+                                       <button class="func-button" type="submit" onclick="return confirm('Вы уверены, что хотите удалить эту категорию?')">❌</button>
+                                    </form>
+                                    <button class="func-button" onclick="LoadCategoryEditForm({{ category.ID_categories }})">✏️</button>
+                                </td>
+                                <td>{{ category.ID_categories }}</td>
+                                <td>{{ category.Name_category }}</td>
+                                <td>{{ category.Discription_category }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+         function LoadCategoryEditForm(categoryId) {
+                fetch(`/api/category/${categoryId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Ошибка загрузки данных категории');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+
+                        document.getElementById('editCode').value = data.ID_categories;
+                        document.getElementById('editName').value = data.Name_category;
+                        document.getElementById('editDescription').value = data.Discription_category;
+
+                            const editForm = document.querySelector('.form-cart:nth-of-type(2)'); // Находим вторую форму с классом form-cart
+                            if (editForm) {
+                                // Добавляем подсветку
+                                editForm.classList.add('highlight');
+
+                                // Удаляем подсветку через 2 секунды
+                                setTimeout(() => {
+                                    editForm.classList.remove('highlight');
+                                }, 2000);
+
+                                editForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                    })
+                    .catch(error => {
+                        console.error('Ошибка при загрузке данных категории:', error);
+                        alert('Не удалось загрузить данные категории.');
+                    });
+            }
+    </script>
+{% endblock %}
