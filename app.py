@@ -128,6 +128,10 @@ def showBase():
     return render_template('base.html')
 
 # ------------- АДМИН-ПАНЕЛЬ -------------------- #
+@app.route('/aPbAs3')
+def APbaseShow():
+    return render_template('adminBase.html')
+
 @app.route('/admin')
 def Admin_products():
     masters = Masters.query.all()
