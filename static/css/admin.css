@@ -21,8 +21,6 @@ body {
     /* Стили для экранов шириной 1080px и более (планшеты и десктопы) - по умолчанию */
 .container {
     max-width: 1400px;
-
-    width: 100%;
     margin: 0px auto;
     padding: 20px;
     background-color: #fff;
@@ -63,7 +61,7 @@ body {
 .nav {
     padding: 10px;
     text-align: center;
-    box-shadow: 2px 2px 30px rgba(43, 64, 70, 0.256);
+
     display: flex;
     justify-content: center;
      align-items: center;
@@ -261,33 +259,30 @@ body {
 /*  менее 1080px (мобильные устройства) */
 @media (max-width: 1080px) {
 
-  .header {
-    color: #ebebeb;
-    padding: 10px 0;
-    text-align: center;
-    height: 30px;
-}
+    .header {
+        color: #ebebeb;
+        padding: 10px 0;
+        text-align: center;
+        height: 30px;
+    }
 
 
-.burger-img-a{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 10px;
-}
+    .burger-img-a{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    }
 
-.burger-img-a img {
-  display: block;
-    margin: 0px 5px;
-
- }
+    .burger-img-a img {
+        display: block;
+        margin: 0px 5px;
+    }
 
   body {
     background-image: none;
     background-color: #050541;
-
     width:100%;
-
   }
 
 
@@ -466,7 +461,7 @@ body {
  }
 
 
- @media (min-width: 1920px) {
+ @media (min-width: 2200px) {
   .container {
     max-width: 80%; /* Увеличение max-width */
 
