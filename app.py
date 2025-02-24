@@ -2,7 +2,7 @@ from flask import Flask, render_template,url_for, send_file,redirect, request, j
 from flask_sqlalchemy import SQLAlchemy
 import io
 from datetime import datetime
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///woodyDB.db'
@@ -683,6 +683,23 @@ def registration():
     flash("Регистрация прошла успешно! Теперь вы можете войти.", "success")
     return redirect('/signup')
 
+@app.route('/login', methods = ['POST'])
+def login():
+    email = request.form.get('email')
+    password = request.form.get('password1')
+    user = Users.query.filter_by(mail_user=email).first()
+
+    if not email or not password or check_password_hash(user.hash_user, password):
+        flash("Неверный логин или пароль", "errorLogin")
+        return redirect(url_for('signup'))
+
+    session["ID_user"] = user.ID_user
+    return redirect(url_for('index'))
+
+@app.route('/logout')
+def logout():
+    session.pop("ID_user", None)
+    return redirect(url_for('index'))
 
 
 

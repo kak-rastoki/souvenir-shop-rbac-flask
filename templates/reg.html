@@ -16,7 +16,7 @@
                     <h2 class="rg-EnterLb">Вход в личный кабинет</h2>
 
                         <form action="submit_registration.php"  method="POST" class = "flex-on"><!-- !1!не забудь поменять методы!!!! -->
-                        <input type="text" class="inputStyle" id="nameInp" name="username" required placeholder="Логин">
+                        <input type="text" class="inputStyle" id="nameInp" name="email" required placeholder="Email">
                         <input type="password" class="inputStyle" id="pwInp" name="password1" required placeholder="Пароль">
                         <div class="remember-me-checkbox rg-lb-remember">
 
@@ -24,6 +24,17 @@
                             <input type="checkbox" id="remember-me" name="remember_me">
                         </div>
                         <button type="submit" id = "button-LogIn">Войти в личный кабинет</button>
+                        <div class="flash-messages">
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    {% if category == 'errorLogin' %}
+                                        <span class="reg-error flash">{{ message }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                            {% endwith %}
+                          </div>
 
                     </form>
 

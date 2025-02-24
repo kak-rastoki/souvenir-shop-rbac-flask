@@ -269,6 +269,7 @@ left:-30%;
 
 
 
+
 .cart-but-del{
   color:white;
   background-color: #ff2121;
@@ -634,6 +635,12 @@ footer a:hover {
  .reg-container > h1 {
   color:black;
  }
+
+ .reg-error.flash {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
 
  .reg-container > div.active{
 
