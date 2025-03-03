@@ -688,7 +688,9 @@ def login():
     email = request.form.get('email')
     password = request.form.get('password1')
     user = Users.query.filter_by(mail_user=email).first()
-
+    print("ДАННЫЕ С ФОРМЫ ПОЛУЧЕНЫ")
+    if user.hash_user:
+        print(user.hash_user)
     if not email or not password or check_password_hash(user.hash_user, password):
         flash("Неверный логин или пароль", "errorLogin")
         return redirect(url_for('signup'))
