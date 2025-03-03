@@ -696,10 +696,12 @@ def login():
         return redirect(url_for('signup'))
 
     session["ID_user"] = user.ID_user
+    print(f'Пользователь с id - {session["ID_user"]}')
     return redirect(url_for('index'))
 
 @app.route('/logout')
 def logout():
+    print (f'Отчищаем состояние пользователя {session['ID_user']}')
     session.pop("ID_user", None)
     return redirect(url_for('index'))
 
