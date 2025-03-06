@@ -49,7 +49,7 @@
             <div>
                 <div id = "cart-none" class="cart-none">Ваша корзина пуста</div>
                 <ul id="cart-items">
-                    <!-- Здесь будут отображаться добавленные товары -->
+                    <!-- Содержимое корзины  -->
                 </ul>
             </div>
             <div class = "cart-butDiv">
@@ -64,6 +64,9 @@
     <div id="mnhd-login" class = "mnhd-inline " ><a class="icon-link mnhd-login-link" href = "{{url_for('signup')}}">
         <i class="fa fa-user fa-2x mnhd-login-link"  ></i> <p class="mnhd-bt-link">Войти</p>
     </a></div>
+    <div class= "mndh-inline">
+        <p id="authorized_username" class=>{{username}}</p>
+    </div>
 
 
 </header>

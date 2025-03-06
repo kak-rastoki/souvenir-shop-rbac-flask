@@ -9,6 +9,19 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///woodyDB.db'
 app.secret_key = '1111'
 db = SQLAlchemy(app)
 
+
+# Функция для установки заголовков кэширования
+def set_cache_headers(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
+# заголовки кэширования после каждого запроса
+@app.after_request
+def add_header(response):
+    return set_cache_headers(response)
+
 # DB Models
 
 
@@ -118,14 +131,14 @@ def productCard(product_id):
     product = Product.query.get_or_404(product_id)
     return render_template('product.html', product=product)
 
-@app.route('/')
+@app.route('/', methods = ['GET'])
 def index():
     productNew = Product.query.filter_by(IsNew_product=1).all()
-    return render_template('main.html', productNew=productNew)
+    return render_template('main.html', productNew=productNew, username=session.get('user_name'))
 
 @app.route('/base')
 def showBase():
-    return render_template('base.html')
+    return render_template('base.html', username=session.get('user_name'))
 
 # ------------- АДМИН-ПАНЕЛЬ -------------------- #
 @app.route('/aPbAs3')
@@ -639,7 +652,7 @@ def edit_master():
     return redirect(url_for('Admin_masters'))
 
 # АВТОРИЗАЦИЯ \ РЕГИСТРАЦИЯ
-@app.route('/signup') # Вывод страницы авторизации \ регистрации
+@app.route('/signup', methods=['GET']) # Вывод страницы авторизации \ регистрации
 def signup():
     return render_template('reg.html', errors={})
 
@@ -685,24 +698,34 @@ def registration():
 
 @app.route('/login', methods = ['POST'])
 def login():
+
     email = request.form.get('email')
     password = request.form.get('password1')
     user = Users.query.filter_by(mail_user=email).first()
-    print("ДАННЫЕ С ФОРМЫ ПОЛУЧЕНЫ")
-    if user.hash_user:
-        print(user.hash_user)
-    if not email or not password or check_password_hash(user.hash_user, password):
-        flash("Неверный логин или пароль", "errorLogin")
-        return redirect(url_for('signup'))
+    print(f"ДАННЫЕ С ФОРМЫ ПОЛУЧЕНЫ,пароль был такой -  {password}")
 
+
+    if not user or  check_password_hash(user.hash_user, password) != True:
+        flash("Неверный логин или пароль", "errorLogin")
+        print("проверка не прошла")
+        return redirect(url_for('signup'))
+    session.clear()
     session["ID_user"] = user.ID_user
-    print(f'Пользователь с id - {session["ID_user"]}')
+    session["user_name"] = user.Name_user
+    print(f'Пользователь: {session["ID_user"]} {user.mail_user} - авторизован')
     return redirect(url_for('index'))
 
 @app.route('/logout')
 def logout():
-    print (f'Отчищаем состояние пользователя {session['ID_user']}')
-    session.pop("ID_user", None)
+
+    if "ID_user" in session:
+        print (f'Отчищаем состояние пользователя {session['ID_user']}')
+        session.clear()
+        # session.pop("ID_user", None)
+        # session.pop("user_name", None)
+    else:
+        print('Операция отклонена:Пользователь не был авторизован')
+        session.clear()
     return redirect(url_for('index'))
 
 
