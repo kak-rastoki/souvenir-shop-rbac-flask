@@ -60,14 +60,18 @@
 
     </div>
 
-
-    <div id="mnhd-login" class = "mnhd-inline " ><a class="icon-link mnhd-login-link" href = "{{url_for('signup')}}">
-        <i class="fa fa-user fa-2x mnhd-login-link"  ></i> <p class="mnhd-bt-link">Войти</p>
-    </a></div>
-    <div class= "mndh-inline">
-        <p id="authorized_username" class=>{{username}}</p>
-    </div>
-
+    {%if current_user.is_authenticated %}
+        <div id="mnhd-login" class = "mnhd-inline " ><a class="icon-link mnhd-login-link" href = "{{ url_for('logout') }}">
+            <i class="fa fa-user fa-2x mnhd-login-link"  ></i> <p class="mnhd-bt-link">Выйти</p>
+        </a></div>
+        <div class= "mndh-inline">
+            <p id="authorized_username" class=>{{current_user.Name_user}}</p>
+        </div>
+    {%else%}
+        <div id="mnhd-login" class = "mnhd-inline " ><a class="icon-link mnhd-login-link" href = "{{url_for('signup')}}">
+            <i class="fa fa-user fa-2x mnhd-login-link"  ></i> <p class="mnhd-bt-link">Войти</p>
+        </a></div>
+    {%endif%}
 
 </header>
 

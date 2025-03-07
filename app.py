@@ -3,12 +3,16 @@ from flask_sqlalchemy import SQLAlchemy
 import io
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///woodyDB.db'
 app.secret_key = '1111'
 db = SQLAlchemy(app)
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'signup'
 
 # Функция для установки заголовков кэширования
 def set_cache_headers(response):
@@ -22,16 +26,16 @@ def set_cache_headers(response):
 def add_header(response):
     return set_cache_headers(response)
 
+
+
 # DB Models
-
-
 class Genders(db.Model):
     __tablename__ = 'Genders'
     ID_gender = db.Column(db.Integer, primary_key=True)
     gender_name = db.Column(db.String, nullable=False)
     short_name = db.Column(db.String)
 
-class Users(db.Model):
+class Users(UserMixin, db.Model):
     __tablename__ = 'Users'
     ID_user = db.Column(db.Integer, primary_key=True)
     Name_user = db.Column(db.String, nullable=False)
@@ -43,6 +47,9 @@ class Users(db.Model):
     id_gender = db.Column(db.Integer, db.ForeignKey('Genders.ID_gender'))
 
     gender = db.relationship('Genders', backref='users')
+
+    def get_id(self): # fix UserMixin
+        return (str(self.ID_user))
 
 class Categories(db.Model):
     __tablename__ = 'Categories'
@@ -119,12 +126,15 @@ class OrderProduct(db.Model):
     currency = db.relationship('Currency', backref='order_products')
 
 
-#маршруты
+#Routes
 @app.route('/product_image/<int:product_id>')
 def product_image(product_id):
     product = Product.query.get_or_404(product_id)
     return send_file(io.BytesIO(product.image_product), mimetype='image/jpeg')
 
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(user_id) # возможно нужно обвернуть в int
 
 @app.route('/product/<int:product_id>')
 def productCard(product_id):
@@ -702,30 +712,24 @@ def login():
     email = request.form.get('email')
     password = request.form.get('password1')
     user = Users.query.filter_by(mail_user=email).first()
-    print(f"ДАННЫЕ С ФОРМЫ ПОЛУЧЕНЫ,пароль был такой -  {password}")
+    print(f"ДАННЫЕ С ФОРМЫ ПОЛУЧЕНЫ")
 
 
     if not user or  check_password_hash(user.hash_user, password) != True:
         flash("Неверный логин или пароль", "errorLogin")
         print("проверка не прошла")
         return redirect(url_for('signup'))
+
     session.clear()
-    session["ID_user"] = user.ID_user
-    session["user_name"] = user.Name_user
-    print(f'Пользователь: {session["ID_user"]} {user.mail_user} - авторизован')
+    login_user(user)
+    print(f'Пользователь: {user.Name_user} - авторизован')
     return redirect(url_for('index'))
 
 @app.route('/logout')
+@login_required
 def logout():
-
-    if "ID_user" in session:
-        print (f'Отчищаем состояние пользователя {session['ID_user']}')
-        session.clear()
-        # session.pop("ID_user", None)
-        # session.pop("user_name", None)
-    else:
-        print('Операция отклонена:Пользователь не был авторизован')
-        session.clear()
+    session.clear()
+    logout_user()
     return redirect(url_for('index'))
 
 
