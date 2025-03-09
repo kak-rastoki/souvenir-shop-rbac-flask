@@ -43,13 +43,18 @@ class Users(UserMixin, db.Model):
     hash_user = db.Column(db.String, nullable=False)
     mail_user = db.Column(db.String, nullable=False, unique=True)
     BirthDay_user = db.Column(db.Date)
-    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     id_gender = db.Column(db.Integer, db.ForeignKey('Genders.ID_gender'))
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    role = db.Column(db.String, default='user')
+
 
     gender = db.relationship('Genders', backref='users')
 
     def get_id(self): # fix UserMixin
         return (str(self.ID_user))
+
+    def is_admin(self):
+        return self.role == 'admin'
 
 class Categories(db.Model):
     __tablename__ = 'Categories'
@@ -699,6 +704,7 @@ def registration():
         phone_number=phone,
         hash_user=generate_password_hash(password),
         mail_user=email,
+        role='user'
     )
     db.session.add(new_user)
     db.session.commit()
