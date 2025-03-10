@@ -1,9 +1,10 @@
-from flask import Flask, render_template,url_for, send_file,redirect, request, jsonify, session,flash,get_flashed_messages
+from flask import Flask, render_template,url_for, send_file,redirect, request, jsonify, session,flash,get_flashed_messages, abort
 from flask_sqlalchemy import SQLAlchemy
 import io
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///woodyDB.db'
@@ -13,6 +14,18 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'signup'
+
+
+from decorators import admin_required
+
+#обработка ошибок
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('errors/404.html'), 404
+
+@app.errorhandler(403)
+def forbidden(e):
+    return render_template('errors/403.html'), 403
 
 # Функция для установки заголовков кэширования
 def set_cache_headers(response):
@@ -131,6 +144,9 @@ class OrderProduct(db.Model):
     currency = db.relationship('Currency', backref='order_products')
 
 
+
+
+
 #Routes
 @app.route('/product_image/<int:product_id>')
 def product_image(product_id):
@@ -156,11 +172,16 @@ def showBase():
     return render_template('base.html', username=session.get('user_name'))
 
 # ------------- АДМИН-ПАНЕЛЬ -------------------- #
+
 @app.route('/aPbAs3')
+@login_required
+@admin_required
 def APbaseShow():
     return render_template('adminBase.html')
 
 @app.route('/admin')
+@login_required
+@admin_required
 def Admin_products():
     masters = Masters.query.all()
     categories = Categories.query.all()
@@ -197,6 +218,8 @@ def Admin_products():
     return render_template('admin/A_products.html', masters=masters, categories=categories, products=products_data, errors2=errors2,errors1=errors1)
 
 @app.route('/admin/add-product', methods=['GET', 'POST'])
+@login_required
+@admin_required
 def AP_add_product():
 
     errors2=get_flashed_messages(category_filter=['error'])
@@ -264,6 +287,8 @@ def AP_add_product():
     return render_template('admin/A_products.html', masters=masters, categories=categories,products=products_data,errors2=errors2)
 
 @app.route('/admin/products_table',methods=['GET'])
+@login_required
+@admin_required
 def display_products():
      # Получаем все товары
     products = Product.query.all()
@@ -290,6 +315,8 @@ def display_products():
 
 
 @app.route('/delete/<int:id>', methods=['POST'])
+@login_required
+@admin_required
 def delete_product(id):
     product= Product.query.get(id)
     if product:
@@ -304,6 +331,8 @@ def delete_product(id):
 
 
 @app.route('/api/product/<int:product_id>', methods=['GET'])
+@login_required
+@admin_required
 def get_product_api(product_id):
     product = Product.query.get_or_404(product_id)
 
@@ -324,6 +353,8 @@ def get_product_api(product_id):
 
 # Route to change Product
 @app.route('/admin/edit_product', methods=['GET', 'POST'])
+@login_required
+@admin_required
 def edit_product():
     error_messages = ()
 

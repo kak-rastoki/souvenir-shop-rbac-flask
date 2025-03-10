@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="error-page">
+    <h1 style="font-size:200px;">404</h1>
+    <h2>Страница не найдена</h2>
+    <p>К сожалению, страница, которую вы ищете, не существует.</p>
+    <p>Вы можете вернуться на <a href="{{ url_for('index') }}">[главную страницу]</a>.</p>
+</div>
+{% endblock %}
