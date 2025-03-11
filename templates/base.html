@@ -62,11 +62,18 @@
     </div>
 
     {%if current_user.is_authenticated %}
-        <div id="mnhd-login" class = "mnhd-inline " ><a class="icon-link mnhd-login-link" href = "{{ url_for('logout') }}">
-            <i class="fa fa-user fa-2x mnhd-login-link"  ></i> <p class="mnhd-bt-link">Выйти</p>
-        </a></div>
-        <div class= "mndh-inline">
-            <p id="authorized_username" class=>{{current_user.Name_user}}</p>
+
+        <div class= "header-user-block">
+
+            <img src="{{url_for('static', filename = "image/default_avatar.png")}}" width="">
+            <div class="header-user-menu">
+                <p id="authorized_username" class=>{{current_user.Name_user}}</p>
+                {% if current_user.role == 'admin'%}
+                <a href="">Админ-панель</a>
+                {%endif%}
+                <div id="mnhd-login" class = "" ><a class="icon-link mnhd-login-link" href = "{{ url_for('logout') }}"></div>
+                <p class="">Выйти</p>
+                </a></div>
         </div>
     {%else%}
         <div id="mnhd-login" class = "mnhd-inline " ><a class="icon-link mnhd-login-link" href = "{{url_for('signup')}}">

@@ -126,6 +126,20 @@ margin:6px 20px
 
 }
 
+.header-user-block{
+  display: flex;
+  width: 10%;
+  padding:10px 10px 10px 30px;
+}
+
+.header-user-block img{
+ border-radius:10px;
+}
+
+.header-user-menu{
+  margin: 10px;
+}
+
 #hd-home{ /* НАДПИСЬ ГЛАВНАЯ */
 
 position: relative;
