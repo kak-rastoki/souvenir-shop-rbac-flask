@@ -130,6 +130,7 @@ margin:6px 20px
   display: flex;
   width: 10%;
   padding:10px 10px 10px 30px;
+  min-width: 20%;
 }
 
 .header-user-block img{
@@ -138,7 +139,24 @@ margin:6px 20px
 
 .header-user-menu{
   margin: 10px;
+
 }
+
+.header-user-menu a{
+  text-decoration-line:none ;
+  color:  rgb(0, 141, 212);
+
+}
+
+
+.logout-icon {
+  filter: invert(100%);
+  width: 13px;
+  height: 12px;
+  vertical-align: middle;
+  margin-left: 0px;
+}
+
 
 #hd-home{ /* НАДПИСЬ ГЛАВНАЯ */
 

@@ -59,6 +59,7 @@ class Users(UserMixin, db.Model):
     id_gender = db.Column(db.Integer, db.ForeignKey('Genders.ID_gender'))
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     role = db.Column(db.String, default='user')
+    avatar = db.Column(db.LargeBinary, nullable=True)
 
 
     gender = db.relationship('Genders', backref='users')
@@ -162,10 +163,31 @@ def productCard(product_id):
     product = Product.query.get_or_404(product_id)
     return render_template('product.html', product=product)
 
+
+
 @app.route('/', methods = ['GET'])
 def index():
+
+
     productNew = Product.query.filter_by(IsNew_product=1).all()
-    return render_template('main.html', productNew=productNew, username=session.get('user_name'))
+    return render_template('main.html', productNew=productNew, username=session.get('user_name')) #user_name рудимент?
+
+@app.route('/get_avatar/<int:user_id>') # предоставление Аватара
+def get_avatar(user_id):
+    user = Users.query.get_or_404(user_id)
+
+    if user.avatar:
+        return send_file(io.BytesIO(user.avatar), mimetype='image/png') #что по расшерениям другим?
+    else:
+        return redirect(url_for('static', filename='image/default_avatar.png'))
+
+@app.context_processor
+def inject_avatar():
+    avatar_url = url_for('static', filename='image/default_avatar.png')
+    if current_user.is_authenticated:
+        if current_user.avatar:
+            avatar_url = url_for('get_avatar', user_id=current_user.ID_user)
+    return dict(avatar_url=avatar_url)
 
 @app.route('/base')
 def showBase():
@@ -186,7 +208,7 @@ def Admin_products():
     masters = Masters.query.all()
     categories = Categories.query.all()
     products = Product.query.all()
-    # errors2 = request.args.get('errors2',{})
+
 
     products_data = []
     for product in products:
@@ -200,12 +222,12 @@ def Admin_products():
             'Name_product': product.Name_product,
             'Cost_product': product.Cost_product,
             'Description_product': product.Description_product,
-            'Category_name': category.Name_category if category else 'Неизвестно', # Заменяем ID на имя
+            'Category_name': category.Name_category if category else 'Неизвестно',
             'Master_name': master.Name_master if master else 'Неизвестно',
             'IsNew_product': product.IsNew_product
         })
 
-        print (products_data)
+
 
     errors1 = get_flashed_messages(category_filter=['error1'])
     if not errors1:
@@ -702,6 +724,8 @@ def edit_master():
 def signup():
     return render_template('reg.html', errors={})
 
+
+
 # Кнопка зарегистрироваться
 @app.route('/registration', methods=['POST'])
 def registration():
@@ -730,13 +754,20 @@ def registration():
         return render_template("reg.html", errors=error_messages, form=request.form)
 
 
+    # создание пользователя
     new_user = Users(
         Name_user=nick_name,
         phone_number=phone,
         hash_user=generate_password_hash(password),
         mail_user=email,
         role='user'
+
     )
+
+    # добавление дефолтного аватара
+    with open('static/img/default_avatar.png', 'rb') as f:
+       new_user.avatar = f.read()
+
     db.session.add(new_user)
     db.session.commit()
 
