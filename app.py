@@ -4,7 +4,7 @@ import io
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-
+import base64
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///woodyDB.db'
@@ -177,7 +177,7 @@ def get_avatar(user_id):
     user = Users.query.get_or_404(user_id)
 
     if user.avatar:
-        return send_file(io.BytesIO(user.avatar), mimetype='image/png') #что по расшерениям другим?
+        return send_file(io.BytesIO(user.avatar), mimetype='image/*') #что по расшерениям другим?
     else:
         return redirect(url_for('static', filename='image/default_avatar.png'))
 
@@ -358,6 +358,7 @@ def delete_product(id):
 def get_product_api(product_id):
     product = Product.query.get_or_404(product_id)
 
+
     product_data = {
         'ID_product': product.ID_product,
         'Name_product': product.Name_product,
@@ -441,7 +442,7 @@ def Admin_users():
         errors2 = {}
     return render_template('admin/A_users.html', users=users, errors2=errors2)
 
-@app.route('/admin/edit_user', methods=['POST'])
+@app.route('/admin/edit_user', methods=['POST,GET'])
 def edit_user():
     error_messages = ""
     if request.method == 'POST':
@@ -484,14 +485,17 @@ def edit_user():
 @app.route('/api/user/<int:user_id>', methods=['GET'])
 def get_user_api(user_id):
     user = Users.query.get_or_404(user_id)
-
+    avatar_base64 = None
+    if user.avatar:
+        avatar_base64 = base64.b64encode(user.avatar).decode('utf-8')
     user_data = {
         'ID_user': user.ID_user,
         'Name_user': user.Name_user,
         'phone_number': user.phone_number,
         'mail_user': user.mail_user,
         'BirthDay_user': user.BirthDay_user.isoformat() if user.BirthDay_user else None,
-        'created_at': user.created_at.isoformat()
+        'created_at': user.created_at.isoformat(),
+        'avatar': avatar_base64
 
     }
 

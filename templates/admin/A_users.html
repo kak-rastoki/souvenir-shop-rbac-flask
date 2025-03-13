@@ -12,6 +12,10 @@
                       <h2 class="section-title">Изменение данных пользователя</h2>
                     </div>
                     <p>Для изменения данных пользователя выберите его из таблицы, нажав на иконку карандаша✏️.</p>
+
+                    </br>
+                        <img src="" width="200px" height="200px">
+                    </br>  </br>
                     <form method="POST" action="{{url_for('edit_user')}}" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="editCode">Код пользователя</label>
@@ -113,6 +117,15 @@
                     document.getElementById('editPhone').value = data.phone_number;
                     document.getElementById('editEmail').value = data.mail_user;
                     document.getElementById('editBday').value = data.BirthDay_user? data.BirthDay_user.split('T')[0] : ""; // Изменено здесь
+                    // обновление аватара пользователя
+                    const avatarImg = document.querySelector('.form-cart img');
+                    if (data.avatar) {
+                        avatarImg.src = `data:image/jpeg;base64,${data.avatar}`;
+                        avatarImg.alt = `Аватар пользователя ${data.Name_user}`;
+                    } else {
+                        avatarImg.src = `/static/image/default_avatar.png`; // Путь к картинке по умолчанию
+                        avatarImg.alt = `Аватар пользователя по умолчанию`;
+                    }
 
                     const editForm = document.querySelector('.form-cart'); // Находим первую форму с классом form-cart
                     if (editForm) {
