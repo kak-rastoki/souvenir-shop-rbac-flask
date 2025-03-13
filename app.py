@@ -254,7 +254,7 @@ def AP_add_product():
     products = Product.query.all()
     products_data = []
     for product in products:
-        #  связанные категорию и мастера для каждого товара
+        #  связанные категории и мастера для каждого товара
         category = Categories.query.get(product.id_category)
         master = Masters.query.get(product.id_master)
 
@@ -388,6 +388,7 @@ def edit_product():
         edit_master = request.form.get('editMaster')
         edit_category = request.form.get('editCategory')
         edit_description = request.form.get('editDescription')
+        edit_file = request.files['editFile']
 
         product = Product.query.get(edit_code)
 
@@ -414,6 +415,7 @@ def edit_product():
             product.id_master = edit_master
             product.id_category = edit_category
             product.Description_product = edit_description
+            product.image_product = edit_file.read()
         else:
             print (f'Внутренняя ошибка сервера. Продукт {product.ID_product} {product.Name_product} - не найден')
             error_messages = "Продукт не найден"
@@ -448,6 +450,7 @@ def edit_user():
         edit_phone = request.form.get('editPhone')
         edit_email = request.form.get('editEmail')
         edit_bday = request.form.get('editBday')
+        edit_avatar = request.files['editAvatar']
 
         user = Users.query.get(edit_code)
 
@@ -458,6 +461,7 @@ def edit_user():
            user.Name_user = edit_name
            user.phone_number = edit_phone
            user.mail_user = edit_email
+           user.avatar = edit_avatar.read()
 
            if edit_bday:
                user.BirthDay_user = datetime.strptime(edit_bday,'%Y-%m-%d').date()
