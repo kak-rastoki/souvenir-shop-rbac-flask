@@ -442,7 +442,7 @@ def Admin_users():
         errors2 = {}
     return render_template('admin/A_users.html', users=users, errors2=errors2)
 
-@app.route('/admin/edit_user', methods=['POST,GET'])
+@app.route('/admin/edit_user', methods=['POST','GET'])
 def edit_user():
     error_messages = ""
     if request.method == 'POST':
@@ -501,7 +501,7 @@ def get_user_api(user_id):
 
     return jsonify(user_data)
 
-@app.route('/delete_user/<int:id>', methods=['POST'])
+@app.route('/delete_user/<int:id>', methods=['POST','GET']) #перепроверить запросы
 def delete_user(id):
     user= Users.query.get(id)
     if user:

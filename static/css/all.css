@@ -131,11 +131,23 @@ margin:6px 20px
   width: 10%;
   padding:10px 10px 10px 30px;
   min-width: 20%;
+  overflow: hidden;
 }
 
 .header-user-block img{
+
  border-radius:10px;
 }
+
+
+
+.header-user-block > img:first-child{
+  max-width: 70px;
+  max-height: 70px;
+  object-fit: cover;
+  object-position: center;
+
+ }
 
 .header-user-menu{
   margin: 5px 10px;
