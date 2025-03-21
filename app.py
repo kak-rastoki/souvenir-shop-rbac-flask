@@ -1,24 +1,54 @@
-from flask import Flask, render_template,url_for, send_file,redirect, request, jsonify, session,flash,get_flashed_messages
+from flask import Flask, render_template,url_for, send_file,redirect, request, jsonify, session,flash,get_flashed_messages, abort
 from flask_sqlalchemy import SQLAlchemy
 import io
 from datetime import datetime
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+import base64
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///woodyDB.db'
 app.secret_key = '1111'
 db = SQLAlchemy(app)
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'signup'
+
+
+from decorators import admin_required
+
+#обработка ошибок
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('errors/404.html'), 404
+
+@app.errorhandler(403)
+def forbidden(e):
+    return render_template('errors/403.html'), 403
+
+# Функция для установки заголовков кэширования
+def set_cache_headers(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
+# заголовки кэширования после каждого запроса
+@app.after_request
+def add_header(response):
+    return set_cache_headers(response)
+
+
+
 # DB Models
-
-
 class Genders(db.Model):
     __tablename__ = 'Genders'
     ID_gender = db.Column(db.Integer, primary_key=True)
     gender_name = db.Column(db.String, nullable=False)
     short_name = db.Column(db.String)
 
-class Users(db.Model):
+class Users(UserMixin, db.Model):
     __tablename__ = 'Users'
     ID_user = db.Column(db.Integer, primary_key=True)
     Name_user = db.Column(db.String, nullable=False)
@@ -26,10 +56,19 @@ class Users(db.Model):
     hash_user = db.Column(db.String, nullable=False)
     mail_user = db.Column(db.String, nullable=False, unique=True)
     BirthDay_user = db.Column(db.Date)
-    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     id_gender = db.Column(db.Integer, db.ForeignKey('Genders.ID_gender'))
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    role = db.Column(db.String, default='user')
+    avatar = db.Column(db.LargeBinary, nullable=True)
+
 
     gender = db.relationship('Genders', backref='users')
+
+    def get_id(self): # fix UserMixin
+        return (str(self.ID_user))
+
+    def is_admin(self):
+        return self.role == 'admin'
 
 class Categories(db.Model):
     __tablename__ = 'Categories'
@@ -106,38 +145,70 @@ class OrderProduct(db.Model):
     currency = db.relationship('Currency', backref='order_products')
 
 
-#маршруты
+
+
+
+#Routes
 @app.route('/product_image/<int:product_id>')
 def product_image(product_id):
     product = Product.query.get_or_404(product_id)
     return send_file(io.BytesIO(product.image_product), mimetype='image/jpeg')
 
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(user_id) # возможно нужно обвернуть в int
 
 @app.route('/product/<int:product_id>')
 def productCard(product_id):
     product = Product.query.get_or_404(product_id)
     return render_template('product.html', product=product)
 
-@app.route('/')
+
+
+@app.route('/', methods = ['GET'])
 def index():
+
+
     productNew = Product.query.filter_by(IsNew_product=1).all()
-    return render_template('main.html', productNew=productNew)
+    return render_template('main.html', productNew=productNew, username=session.get('user_name')) #user_name рудимент?
+
+@app.route('/get_avatar/<int:user_id>') # предоставление Аватара
+def get_avatar(user_id):
+    user = Users.query.get_or_404(user_id)
+
+    if user.avatar:
+        return send_file(io.BytesIO(user.avatar), mimetype='image/*') #что по расшерениям другим?
+    else:
+        return redirect(url_for('static', filename='image/default_avatar.png'))
+
+@app.context_processor
+def inject_avatar():
+    avatar_url = url_for('static', filename='image/default_avatar.png')
+    if current_user.is_authenticated:
+        if current_user.avatar:
+            avatar_url = url_for('get_avatar', user_id=current_user.ID_user)
+    return dict(avatar_url=avatar_url)
 
 @app.route('/base')
 def showBase():
-    return render_template('base.html')
+    return render_template('base.html', username=session.get('user_name'))
 
 # ------------- АДМИН-ПАНЕЛЬ -------------------- #
+
 @app.route('/aPbAs3')
+@login_required
+@admin_required
 def APbaseShow():
     return render_template('adminBase.html')
 
 @app.route('/admin')
+@login_required
+@admin_required
 def Admin_products():
     masters = Masters.query.all()
     categories = Categories.query.all()
     products = Product.query.all()
-    # errors2 = request.args.get('errors2',{})
+
 
     products_data = []
     for product in products:
@@ -151,12 +222,12 @@ def Admin_products():
             'Name_product': product.Name_product,
             'Cost_product': product.Cost_product,
             'Description_product': product.Description_product,
-            'Category_name': category.Name_category if category else 'Неизвестно', # Заменяем ID на имя
+            'Category_name': category.Name_category if category else 'Неизвестно',
             'Master_name': master.Name_master if master else 'Неизвестно',
             'IsNew_product': product.IsNew_product
         })
 
-        print (products_data)
+
 
     errors1 = get_flashed_messages(category_filter=['error1'])
     if not errors1:
@@ -169,6 +240,8 @@ def Admin_products():
     return render_template('admin/A_products.html', masters=masters, categories=categories, products=products_data, errors2=errors2,errors1=errors1)
 
 @app.route('/admin/add-product', methods=['GET', 'POST'])
+@login_required
+@admin_required
 def AP_add_product():
 
     errors2=get_flashed_messages(category_filter=['error'])
@@ -181,7 +254,7 @@ def AP_add_product():
     products = Product.query.all()
     products_data = []
     for product in products:
-        #  связанные категорию и мастера для каждого товара
+        #  связанные категории и мастера для каждого товара
         category = Categories.query.get(product.id_category)
         master = Masters.query.get(product.id_master)
 
@@ -236,6 +309,8 @@ def AP_add_product():
     return render_template('admin/A_products.html', masters=masters, categories=categories,products=products_data,errors2=errors2)
 
 @app.route('/admin/products_table',methods=['GET'])
+@login_required
+@admin_required
 def display_products():
      # Получаем все товары
     products = Product.query.all()
@@ -262,6 +337,8 @@ def display_products():
 
 
 @app.route('/delete/<int:id>', methods=['POST'])
+@login_required
+@admin_required
 def delete_product(id):
     product= Product.query.get(id)
     if product:
@@ -276,8 +353,11 @@ def delete_product(id):
 
 
 @app.route('/api/product/<int:product_id>', methods=['GET'])
+@login_required
+@admin_required
 def get_product_api(product_id):
     product = Product.query.get_or_404(product_id)
+
 
     product_data = {
         'ID_product': product.ID_product,
@@ -296,6 +376,8 @@ def get_product_api(product_id):
 
 # Route to change Product
 @app.route('/admin/edit_product', methods=['GET', 'POST'])
+@login_required
+@admin_required
 def edit_product():
     error_messages = ()
 
@@ -307,6 +389,7 @@ def edit_product():
         edit_master = request.form.get('editMaster')
         edit_category = request.form.get('editCategory')
         edit_description = request.form.get('editDescription')
+        edit_file = request.files['editFile']
 
         product = Product.query.get(edit_code)
 
@@ -333,6 +416,7 @@ def edit_product():
             product.id_master = edit_master
             product.id_category = edit_category
             product.Description_product = edit_description
+            product.image_product = edit_file.read()
         else:
             print (f'Внутренняя ошибка сервера. Продукт {product.ID_product} {product.Name_product} - не найден')
             error_messages = "Продукт не найден"
@@ -358,7 +442,7 @@ def Admin_users():
         errors2 = {}
     return render_template('admin/A_users.html', users=users, errors2=errors2)
 
-@app.route('/admin/edit_user', methods=['POST'])
+@app.route('/admin/edit_user', methods=['POST','GET'])
 def edit_user():
     error_messages = ""
     if request.method == 'POST':
@@ -367,6 +451,7 @@ def edit_user():
         edit_phone = request.form.get('editPhone')
         edit_email = request.form.get('editEmail')
         edit_bday = request.form.get('editBday')
+        edit_avatar = request.files['editAvatar']
 
         user = Users.query.get(edit_code)
 
@@ -377,6 +462,7 @@ def edit_user():
            user.Name_user = edit_name
            user.phone_number = edit_phone
            user.mail_user = edit_email
+           user.avatar = edit_avatar.read()
 
            if edit_bday:
                user.BirthDay_user = datetime.strptime(edit_bday,'%Y-%m-%d').date()
@@ -399,20 +485,23 @@ def edit_user():
 @app.route('/api/user/<int:user_id>', methods=['GET'])
 def get_user_api(user_id):
     user = Users.query.get_or_404(user_id)
-
+    avatar_base64 = None
+    if user.avatar:
+        avatar_base64 = base64.b64encode(user.avatar).decode('utf-8')
     user_data = {
         'ID_user': user.ID_user,
         'Name_user': user.Name_user,
         'phone_number': user.phone_number,
         'mail_user': user.mail_user,
         'BirthDay_user': user.BirthDay_user.isoformat() if user.BirthDay_user else None,
-        'created_at': user.created_at.isoformat()
+        'created_at': user.created_at.isoformat(),
+        'avatar': avatar_base64
 
     }
 
     return jsonify(user_data)
 
-@app.route('/delete_user/<int:id>', methods=['POST'])
+@app.route('/delete_user/<int:id>', methods=['POST','GET']) #перепроверить запросы
 def delete_user(id):
     user= Users.query.get(id)
     if user:
@@ -639,9 +728,11 @@ def edit_master():
     return redirect(url_for('Admin_masters'))
 
 # АВТОРИЗАЦИЯ \ РЕГИСТРАЦИЯ
-@app.route('/signup') # Вывод страницы авторизации \ регистрации
+@app.route('/signup', methods=['GET']) # Вывод страницы авторизации \ регистрации
 def signup():
     return render_template('reg.html', errors={})
+
+
 
 # Кнопка зарегистрироваться
 @app.route('/registration', methods=['POST'])
@@ -671,18 +762,51 @@ def registration():
         return render_template("reg.html", errors=error_messages, form=request.form)
 
 
+    # создание пользователя
     new_user = Users(
         Name_user=nick_name,
         phone_number=phone,
         hash_user=generate_password_hash(password),
         mail_user=email,
+        role='user'
+
     )
+
+    # добавление дефолтного аватара
+    with open('static/img/default_avatar.png', 'rb') as f:
+       new_user.avatar = f.read()
+
     db.session.add(new_user)
     db.session.commit()
 
     flash("Регистрация прошла успешно! Теперь вы можете войти.", "success")
     return redirect('/signup')
 
+@app.route('/login', methods = ['POST'])
+def login():
+
+    email = request.form.get('email')
+    password = request.form.get('password1')
+    user = Users.query.filter_by(mail_user=email).first()
+    print(f"ДАННЫЕ С ФОРМЫ ПОЛУЧЕНЫ")
+
+
+    if not user or  check_password_hash(user.hash_user, password) != True:
+        flash("Неверный логин или пароль", "errorLogin")
+        print("проверка не прошла")
+        return redirect(url_for('signup'))
+
+    session.clear()
+    login_user(user)
+    print(f'Пользователь: {user.Name_user} - авторизован')
+    return redirect(url_for('index'))
+
+@app.route('/logout')
+@login_required
+def logout():
+    session.clear()
+    logout_user()
+    return redirect(url_for('index'))
 
 
 

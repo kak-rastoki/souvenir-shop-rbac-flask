@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{%block titile%} {% endblock%} </title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/all.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/errors/errors.css') }}">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
@@ -49,7 +50,7 @@
             <div>
                 <div id = "cart-none" class="cart-none">Ваша корзина пуста</div>
                 <ul id="cart-items">
-                    <!-- Здесь будут отображаться добавленные товары -->
+                    <!-- Содержимое корзины  -->
                 </ul>
             </div>
             <div class = "cart-butDiv">
@@ -60,11 +61,33 @@
 
     </div>
 
+    {%if current_user.is_authenticated %}
 
-    <div id="mnhd-login" class = "mnhd-inline " ><a class="icon-link mnhd-login-link" href = "{{url_for('signup')}}">
-        <i class="fa fa-user fa-2x mnhd-login-link"  ></i> <p class="mnhd-bt-link">Войти</p>
-    </a></div>
+        <div class= "header-user-block">
 
+            <img src="{{avatar_url}}" alt="Аватар" width="">
+            <div class="header-user-menu">
+                <p id="authorized_username" class=>{{current_user.Name_user}}</p>
+                {% if current_user.role == 'admin'%}
+                <a href="{{url_for('Admin_products')}}">Админ-панель</a>
+                {%endif%}
+                {% if current_user.role == 'user'%}
+                <a href="#">Личный кабинет</a>
+                {%endif%}
+                <div id="mnhd-login" class = "" ><a class="icon-link mnhd-login-link" href = "{{ url_for('logout') }}"></div>
+                    <p class="">Выйти
+                        <img src="{{ url_for('static', filename='image/Icons/door.svg') }}"  class="logout-icon">
+                    </p>
+                </a></div>
+
+
+            </div>
+
+    {%else%}
+        <div id="mnhd-login" class = "mnhd-inline " ><a class="icon-link mnhd-login-link" href = "{{url_for('signup')}}">
+            <i class="fa fa-user fa-2x mnhd-login-link"  ></i> <p class="mnhd-bt-link">Войти</p>
+        </a></div>
+    {%endif%}
 
 </header>
 
@@ -79,7 +102,7 @@
       <ul>
         <li><a href="https://vk.com/tkhis19">VK</a></li>
         <li><a href="">GitHub</a></li>
-        <li><a href="#instagram">Instagram</a></li>
+        <li><a href="#Telegram">Telegram</a></li>
       </ul>
     </div>
   </footer>

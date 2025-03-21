@@ -1,0 +1,31 @@
+
+.error-page {
+  text-align: center;
+
+  padding: 150px 100px;
+}
+
+.error-page h1 {
+  font-size: 5em;
+  margin-bottom: 20px;
+  color: var(--primary-color); /* Используем переменную из base.css */
+}
+
+.error-page h2 {
+  font-size: 2em;
+  margin-bottom: 30px;
+}
+
+.error-page p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+.error-page a {
+  color: var(--secondary-color); /* Используем переменную из base.css */
+  text-decoration: none;
+}
+
+.error-page a:hover {
+  text-decoration: underline;
+}
