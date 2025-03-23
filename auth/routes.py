@@ -10,7 +10,7 @@ from flask_login import login_user, logout_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import render_template,url_for,request,session,redirect,flash
 from . import auth_bp
-from app import db, Users
+from models import db, Users
 
 
 @auth_bp.route('/signup', methods=['GET']) # Вывод страницы авторизации \ регистрации

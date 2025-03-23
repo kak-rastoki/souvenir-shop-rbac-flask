@@ -11,7 +11,7 @@ from datetime import datetime
 import base64
 from flask import render_template,url_for, redirect, request, jsonify, get_flashed_messages,flash
 from decorators import admin_required
-from app import db, Users, Masters, Categories, Product, Genders
+from models import db, Users, Masters, Categories, Product, Genders
 from . import admin_bp
 
 
