@@ -69,7 +69,7 @@
             <div class="header-user-menu">
                 <p id="authorized_username" class=>{{current_user.Name_user}}</p>
                 {% if current_user.role == 'admin'%}
-                <a href="{{url_for('Admin_products')}}">Админ-панель</a>
+                <a href="{{url_for('admin.Admin_products')}}">Админ-панель</a>
                 {%endif%}
                 {% if current_user.role == 'user'%}
                 <a href="#">Личный кабинет</a>

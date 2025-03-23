@@ -13,7 +13,7 @@
                 <h2 class="section-title section-title-form">Добавление товара</h2>
             </div>
             <p>Для добавления нового товара заполните данные и нажмите кнопку добавить товар. Товар должен отобразиться в таблице</p>
-            <form  method="POST" action="{{url_for('AP_add_product')}}" enctype="multipart/form-data">
+            <form  method="POST" action="{{url_for('admin.AP_add_product')}}" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="name">Наименование</label>
                     <input type="text" id="name" name="name" required>
@@ -79,7 +79,7 @@
                 <h2 class="section-title">Изменение товара</h2>
             </div>
             <p>Для изменения данных товара выберите товар из таблицы, нажав на иконку карандаша ✏️</p>
-            <form method="POST" action="{{url_for('edit_product')}}" enctype="multipart/form-data">
+            <form method="POST" action="{{url_for('admin.edit_product')}}" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="editCode">Код изменяемого товара:</label>
                     <input type="text" name="editCode" id="editCode" readonly>
@@ -168,7 +168,7 @@
                     {% for product in products %}
                     <tr>
                         <td class="funcbt-td-hidden">
-                            <form action="{{ url_for('delete_product', id=product.ID_product) }}" method="POST" style="display:inline;">
+                            <form action="{{ url_for('admin.delete_product', id=product.ID_product) }}" method="POST" style="display:inline;">
                                 <button class="func-button" type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот продукт?')">❌</button>
                             </form>
                             <button class="func-button" onclick="LoadProductEditForm({{ product.ID_product }})">✏️</button>
