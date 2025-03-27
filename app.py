@@ -15,15 +15,6 @@ login_manager.init_app(app)
 login_manager.login_view = 'auth.signup'
 
 
-#обработка ошибок
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template('errors/404.html'), 404
-
-@app.errorhandler(403)
-def forbidden(e):
-    return render_template('errors/403.html'), 403
-
 # Функция для установки заголовков кэширования
 def set_cache_headers(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
@@ -37,13 +28,12 @@ def add_header(response):
     return set_cache_headers(response)
 
 
-
-
-
 # Импорт и регистрация blueprints (модулей)
 from auth import auth_bp
 from admin import admin_bp
+from handler import handler_bp
 
+app.register_blueprint(handler_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(admin_bp)
 
