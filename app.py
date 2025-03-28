@@ -32,26 +32,20 @@ def add_header(response):
 from auth import auth_bp
 from admin import admin_bp
 from handler import handler_bp
+from api import api_bp
 
 app.register_blueprint(handler_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(admin_bp)
+app.register_blueprint(api_bp)
 
 
-#Routes
-@app.route('/product_image/<int:product_id>')
-def product_image(product_id):
-    product = Product.query.get_or_404(product_id)
-    return send_file(io.BytesIO(product.image_product), mimetype='image/jpeg')
 
 @login_manager.user_loader
 def load_user(user_id):
     return Users.query.get(user_id) # возможно нужно обвернуть в int
 
-@app.route('/product/<int:product_id>')
-def productCard(product_id):
-    product = Product.query.get_or_404(product_id)
-    return render_template('product.html', product=product)
+
 
 
 
@@ -62,21 +56,12 @@ def index():
     productNew = Product.query.filter_by(IsNew_product=1).all()
     return render_template('main.html', productNew=productNew, username=session.get('user_name')) #user_name рудимент?
 
-@app.route('/get_avatar/<int:user_id>') # предоставление Аватара
-def get_avatar(user_id):
-    user = Users.query.get_or_404(user_id)
-
-    if user.avatar:
-        return send_file(io.BytesIO(user.avatar), mimetype='image/*') #что по расшерениям другим?
-    else:
-        return redirect(url_for('static', filename='image/default_avatar.png'))
-
 @app.context_processor
 def inject_avatar():
     avatar_url = url_for('static', filename='image/default_avatar.png')
     if current_user.is_authenticated:
         if current_user.avatar:
-            avatar_url = url_for('get_avatar', user_id=current_user.ID_user)
+            avatar_url = url_for('api.get_avatar', user_id=current_user.ID_user)
     return dict(avatar_url=avatar_url)
 
 @app.route('/base')
