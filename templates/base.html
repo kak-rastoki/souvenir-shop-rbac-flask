@@ -69,12 +69,12 @@
             <div class="header-user-menu">
                 <p id="authorized_username" class=>{{current_user.Name_user}}</p>
                 {% if current_user.role == 'admin'%}
-                <a href="{{url_for('Admin_products')}}">Админ-панель</a>
+                <a href="{{url_for('admin.Admin_products')}}">Админ-панель</a>
                 {%endif%}
                 {% if current_user.role == 'user'%}
                 <a href="#">Личный кабинет</a>
                 {%endif%}
-                <div id="mnhd-login" class = "" ><a class="icon-link mnhd-login-link" href = "{{ url_for('logout') }}"></div>
+                <div id="mnhd-login" class = "" ><a class="icon-link mnhd-login-link" href = "{{ url_for('auth.logout') }}"></div>
                     <p class="">Выйти
                         <img src="{{ url_for('static', filename='image/Icons/door.svg') }}"  class="logout-icon">
                     </p>
@@ -84,7 +84,7 @@
             </div>
 
     {%else%}
-        <div id="mnhd-login" class = "mnhd-inline " ><a class="icon-link mnhd-login-link" href = "{{url_for('signup')}}">
+        <div id="mnhd-login" class = "mnhd-inline " ><a class="icon-link mnhd-login-link" href = "{{url_for('auth.signup')}}">
             <i class="fa fa-user fa-2x mnhd-login-link"  ></i> <p class="mnhd-bt-link">Войти</p>
         </a></div>
     {%endif%}

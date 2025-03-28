@@ -18,7 +18,7 @@
                         <img class="" src="/static/image/default_avatar.png" >
                     </div>
                     </br>  </br>
-                    <form method="POST" action="{{url_for('edit_user')}}" enctype="multipart/form-data">
+                    <form method="POST" action="{{url_for('admin.edit_user')}}" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="editCode">Код пользователя</label>
                              <input type="text" name="editCode" id="editCode" readonly>
@@ -85,7 +85,7 @@
                         {% for user in users %}
                             <tr>
                                 <td>
-                                    <form action="{{ url_for('delete_user', id=user.ID_user) }}" method="POST" style="display:inline;">
+                                    <form action="{{ url_for('admin.delete_user', id=user.ID_user) }}" method="POST" style="display:inline;">
                                         <button class="func-button" type="submit" onclick="return confirm('Вы уверены, что хотите удалить этого пользователя?')">❌</button>
                                     </form>
                                      <button class="func-button" onclick="LoadUserEditForm({{ user.ID_user }})">✏️</button>

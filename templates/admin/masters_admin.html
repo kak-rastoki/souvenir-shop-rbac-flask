@@ -12,7 +12,7 @@
                     <h2 class="section-title section-title-form">Добавление мастера</h2>
                    </div>
                     <p>Для добавления нового мастера, заполните форму и нажмите кнопку "Добавить мастера".</p>
-                    <form method="POST" action="{{ url_for('add_master') }}">
+                    <form method="POST" action="{{ url_for('admin.add_master') }}">
                         <div class="form-group">
                             <label for="name">Имя мастера</label>
                             <input type="text" id="name" name="name" required>
@@ -47,7 +47,7 @@
                     <h2 class="section-title section-title-form">Изменение мастера</h2>
                   </div>
                     <p>Для изменения данных мастера выберите его из таблицы, нажав на иконку карандаша.</p>
-                     <form method="POST" action="{{ url_for('edit_master') }}">
+                     <form method="POST" action="{{ url_for('admin.edit_master') }}">
                         <div class="form-group">
                             <label for="editCode">Код изменяемого мастера:</label>
                             <input type="text" name="editCode" id="editCode" readonly>
@@ -100,7 +100,7 @@
                         {% for master in masters %}
                             <tr>
                                 <td>
-                                   <form action="{{ url_for('delete_master', id=master.ID_master) }}" method="POST" style="display:inline;">
+                                   <form action="{{ url_for('admin.delete_master', id=master.ID_master) }}" method="POST" style="display:inline;">
                                        <button class="func-button" type="submit" onclick="return confirm('Вы уверены, что хотите удалить этого мастера?')">❌</button>
                                     </form>
                                     <button class="func-button" onclick="LoadMasterEditForm({{ master.ID_master }})">✏️</button>
