@@ -1,11 +1,3 @@
-"""
-Модуль Панели администратора
---------------------------------------------------
-Описание:
-
-"""
-
-
 from flask_login import login_required
 from datetime import datetime
 import base64
