@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 // import App from './App';
 import reportWebVitals from './reportWebVitals';
-import ProductCard from './components/ProductCard';
+import ProductCard from './components/ProductCard/ProductCard';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
