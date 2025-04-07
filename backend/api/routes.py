@@ -1,13 +1,30 @@
 import io
-from flask import send_file, render_template, redirect, url_for
+from flask import send_file, render_template, redirect, url_for,jsonify
 from api import api_bp
 from models import Product, Users
 
 
+
+@api_bp.route('/api/products')
+def get_products():
+    products = [
+        {
+         'id': 1,
+         'name': 'Статуетка медведя',
+         'price': 1800.00,
+         'image_url': '/static/images/Beer1.png',
+         'category': "сувениры"
+         },
+    ]
+    return jsonify(products)
+
 @api_bp.route('/product/<int:product_id>') # Получение товара
 def productCard(product_id):
     product = Product.query.get_or_404(product_id)
+
     return render_template('product.html', product=product)
+
+
 
 @api_bp.route('/product_image/<int:product_id>') # Получение изображения товара
 def product_image(product_id):

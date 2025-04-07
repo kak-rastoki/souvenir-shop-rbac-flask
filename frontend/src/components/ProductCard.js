@@ -9,13 +9,19 @@ function ProductCard({product}) {
   return (
     <div className="product-card">
 
-      <img src={BeerImage} alt="Карточка товара" width="200px" />
+      <img src={BeerImage} alt="Карточка товара" />
       <h3>Статуетка медведя</h3>
       <div className = 'card-group'>
-        <p className="category">сувениры</p>
-        <p className="price">2600 ₽</p>
+        <div className='group-category-more'>
+          <p className="category">Сувениры</p>
+          <a  href="#" className="more">Подробнее</a>
+        </div>
+        <div className='group-bt-price'>
+          <p className="price">2600 ₽</p>
+          <button>В корзину</button>
+        </div>
       </div>
-      <button>В корзину</button>
+
 
     </div>
   )

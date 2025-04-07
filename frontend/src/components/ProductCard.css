@@ -1,24 +1,136 @@
-/* ProductCard.css */
+@import url("../fonts.css");
 
-.product-card {
-  width: 220px; /* Ширина карточки */
-  border: 2px solid #7e72a5; /* Тонкая фиолетовая рамка */
-  border-radius: 10px; /* Скругление углов */
-  padding: 10px;
-  margin: 10px;
-  text-align: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Небольшая тень */
-  background-color: #f9f9f9; /* Светлый фон */
+.body{
+  font-family: "Evolventa Regular";
 }
+
+.product-card{
+  font-family: "Evolventa Regular";
+  width: 280px;
+  height: 345px;
+  border: 5px solid #090950b7;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* padding:10px 25px; */
+
+}
+
+
+.product-card img{
+  border-radius: 10px;
+  width:240px;
+  margin: 10px 0px 5px 0px;
+}
+
+
+
+.product-card h3{
+  font-family: "Evolventa Bold";
+  font-size: 18px;
+  width:230px;
+  margin: 2px;
+  line-height:1em;
+}
+
+.product-card  .category{
+  font-size: 12px;
+
+}
+
 
 .card-group{
   display: flex;
-  max-width:100% ;
+  max-width:100%;
+  margin: 0;
+  position: relative;
+  top:-16px;
+
 
 }
 
+.product-card .price{
+  text-align: right;
+  color:#07074E;
+  font-size:22px;
+  font-family: "Evolventa Bold";
+
+  width: 120px;
+  margin: 0;
+  margin-top: 15px;
+  height: 22px;
+}
+
+.product-card .more{
+  color:#07074E;
+  font-size:12px;
+  font-family: "Evolventa Oblique";
+  margin: 0;
+
+}
+
+.product-card p{
+  color:#07074E;
+  font-size:12px;
+  font-family: "Evolventa Oblique";
+  margin-top: 10px;
+
+}
+
+.group-category-more{
+ width: 110px;
+}
+
+
+.product-card button{
+  background-color:#F98723;
+  border: none;
+  border-radius: 10px;
+  width: 120px;
+  height: 29px;
+  margin-top: 5px;
+  /* padding: 5px; */
+  position: relative;
+  transition: 0.8s;
+  /* top:-27px; */
+  /* left: 55px; */
+
+}
+
+
+.product-card button:hover{
+  background-color:#5294ff;
+  border: none;
+  border-radius: 13px;
+
+
+}
+
+.group-bt-price{
+  position: relative;
+  top:0px;
+}
+
+
+/*
+s
+
+.product-card {
+  width: 220px;
+  border: 2px solid #7e72a5;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+
+
 .product-card img {
-  max-width: 100%; /* Картинка занимает всю ширину карточки */
+  max-width: 100%;
   height: auto;
   border-radius: 5px;
   margin-bottom: 10px;
@@ -28,7 +140,7 @@
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 5px;
-  color: #333; /* Темно-серый цвет текста */
+  color: #333;
 }
 
 .product-card p {
@@ -41,9 +153,9 @@
   font-size: 20px;
   font-weight: bold;
   color: #0056b3;
-}
+} */
 
-.product-card button {
+/* .product-card button {
   background-color: #f2b662;
   color: white;
   border: none;
@@ -55,17 +167,6 @@
 }
 
 .product-card button:hover {
-  background-color: #d49444; /* Более темный оттенок оранжевого при наведении */
+  background-color: #d49444; /* Более темный оттенок оранжевого при наведении
 }
-
-.product-card a {
-  display: block; /* Чтобы ссылка занимала всю ширину */
-  font-size: 12px;
-  color: #007bff;
-  text-decoration: none;
-  margin-top: 5px; /* Отступ от кнопки */
-}
-
-.product-card a:hover {
-  text-decoration: underline; /* Подчеркивание при наведении */
-}
+*/
