@@ -1,4 +1,17 @@
+@font-face {
+  font-family: "Evolventa Regular";
+  src: url("./fonts/Evolventa-Regular.otf") format("woff");
+}
 
+@font-face {
+  font-family: "Evolventa Bold";
+  src: local("Evolventa-Bold"), url("./fonts/Evolventa-Bold.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Evolventa Oblique";
+  src: local("Evolventa-Oblique"), url("./fonts/Evolventa-Oblique.woff") format("woff");
+}
 
 body {
   margin: 0;
