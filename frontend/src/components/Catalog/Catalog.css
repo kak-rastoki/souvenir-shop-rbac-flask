@@ -1,1 +1,11 @@
-@import url("../../fonts.css");
+.product-grid{
+  width: 2000px;
+  display: grid;
+  grid-template-columns: repeat(4, 320px);
+  position:relative;
+  left:22%;
+  row-gap:20px;
+
+
+
+}

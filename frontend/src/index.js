@@ -2,14 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import './App.css'
+import Catalog from './components/Catalog/Catalog'
 // import App from './App';
 import reportWebVitals from './reportWebVitals';
-import ProductCard from './components/ProductCard/ProductCard';
+// import ProductCard from './components/ProductCard/ProductCard';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ProductCard />
+    <Catalog />
   </React.StrictMode>
 );
 

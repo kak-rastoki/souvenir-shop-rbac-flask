@@ -3,8 +3,12 @@ from flask_sqlalchemy import SQLAlchemy
 import io
 from flask_login import LoginManager, current_user
 from models import Users, Product, db
+from flask_cors import CORS
+
+
 
 app = Flask(__name__)
+CORS(app, origins="http://localhost:3000", supports_credentials=True, methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///woodyDB.db'
 app.secret_key = '1111'
 # db = SQLAlchemy(app)
