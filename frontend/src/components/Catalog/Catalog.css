@@ -1,7 +1,7 @@
 .product-grid{
-  width: 2000px;
+  width: 80%;
   display: grid;
-  grid-template-columns: repeat(4, 320px);
+  grid-template-columns: repeat(auto-fit, 320px);
   position:relative;
   left:22%;
   row-gap:20px;
