@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import './Catalog.css';
 import ProductCard from '../ProductCard/ProductCard';
+import Navigator  from '../Navigator/Navigator';
 
 
 
@@ -47,7 +48,8 @@ function Catalog(){
 
   return (
     <div className="catalog-page">
-        <h1>Сувениры</h1>
+        <Navigator />
+
         <div className="product-grid">
 
             {products.map(product => (
