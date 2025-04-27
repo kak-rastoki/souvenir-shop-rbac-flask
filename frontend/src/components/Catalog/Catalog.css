@@ -3,7 +3,12 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, 320px);
   position:relative;
-  left:22%;
+  /* left:22%; */
   row-gap:20px;
-  margin: 20px;
+  margin: 20px 60px;
+}
+
+.container {
+  display: flex;
+
 }
