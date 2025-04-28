@@ -1,24 +1,32 @@
 .filters{
   font-family: "Evolventa Regular";
-  width: 268px;
-  border-radius: 20px;
-
-
-  background-color: #ccccccd0;
+  width: 298px;
+  /* background-color: #ccccccd0; */
   display: flex;
   flex-direction: column;
-  padding: 10px 10px;
-  margin: 0px 0px 0px 86px;
+  padding: 10px 0px;
+  margin: 0px 0px 0px 80px;
+}
+
+.block{
+  background-color: #ccccccd0;
+  border-radius: 20px;
+  padding: 20px;
+  min-width: 258px;
+  margin: 10px 0px;
+
 }
 
 .filters .group{
-  margin: 5px 0px;
+  margin: 2px 0px;
   display: flex;
 
 }
 
 .filters h3{
-  align-self: center;
+  text-align: center;
+
+
 }
 
 .filters input {
@@ -26,6 +34,9 @@
 
 }
 
+#search{
+  width: 97%;
+}
 input{
   border-radius: 5px;
   border: none;
@@ -61,6 +72,19 @@ input{
 
 }
 
-.label-price{
+.filters button {
+  height: 30px;
+  background-color: #07074E;
+  color: whitesmoke;
+  width: 100%;
+  border-radius: 5px;
+  border:1px solid rgba(128, 128, 128, 0.538);
+}
 
+.filters button:hover {
+  background-color: #1c1cd7;
+  width: 100%;
+  border-radius: 5px;
+  border:1px solid rgba(88, 88, 88, 0.848);
+  transition: 0.5s;
 }
