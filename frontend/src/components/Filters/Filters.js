@@ -14,23 +14,23 @@ return (
       <button>Сбросить фильтрацию</button>
       <div className='group'>
         <input name="checkbox1" type="checkbox" className='checkbox'/>
-        <label for="checkbox1">Есть в наличии</label>
+        <label htmlFor="checkbox1">Есть в наличии</label>
       </div>
     </div>
 
     <div className='block'>
-      <label className='label-price'>Цена</label>
+      <label className='label-price'>Ценовой диапозон в руб.</label>
       <div className='group flex-group'>
-        <input id="price-from" placeholder= "от" type="text"/>
-        <input  id="price-to" placeholder= "до" type="text"/>
+        <input id="price-from" placeholder= "от" type="number"/>
+        <input  id="price-to" placeholder= "до" type="number"/>
       </div>
       <div className='group'>
         <input type="radio" name="price-type" />
-        <label for="price-type">Сначала дороже</label>
+        <label htmlFor="price-type">Сначала дороже</label>
       </div>
       <div className='group'>
         <input type="radio" name="price-type" />
-        <label for="price-type">Сначала дешевле</label>
+        <label htmlFor="price-type">Сначала дешевле</label>
       </div>
     </div>
 
@@ -38,11 +38,11 @@ return (
       <label>Популярность</label>
       <div className='group'>
         <input type="radio" name="popularity-type" />
-        <label for="popularity-type">Сначала популярнее</label>
+        <label htmlFor="popularity-type">Сначала популярнее</label>
       </div>
       <div className='group'>
         <input type="radio" name="popularity-type" />
-        <label for="popularity-type">Сначала непопулярные</label>
+        <label htmlFor="popularity-type">Сначала непопулярные</label>
       </div>
     </div>
 

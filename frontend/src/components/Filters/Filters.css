@@ -6,6 +6,8 @@
   flex-direction: column;
   padding: 10px 0px;
   margin: 0px 0px 0px 80px;
+  position: relative;
+  top:-80px
 }
 
 .block{
@@ -79,7 +81,9 @@ input{
   width: 100%;
   border-radius: 5px;
   border:1px solid rgba(128, 128, 128, 0.538);
+  cursor: pointer;
 }
+
 
 .filters button:hover {
   background-color: #1c1cd7;
