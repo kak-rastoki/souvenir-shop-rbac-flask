@@ -9,7 +9,7 @@ function ProductCard({product}) {
   return (
     <div className="product-card">
 
-      <img src={product.image_url} alt={product.name} />
+      <img src={`data:image/jpeg;base64,${product.image}`} alt={product.name} />
       <h3>{product.name}</h3>
       <div className = 'card-group'>
         <div className='group-category-more'>

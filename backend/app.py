@@ -5,9 +5,11 @@ from flask_login import LoginManager, current_user
 from models import Users, Product, db
 from flask_cors import CORS
 
+import logging
 
 
 app = Flask(__name__)
+logging.basicConfig(level=logging.DEBUG)
 CORS(app, origins="http://localhost:3000", supports_credentials=True, methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///woodyDB.db'
 app.secret_key = '1111'
@@ -98,4 +100,4 @@ def add_to_cart():
         return jsonify({'success': False, 'error': str(e)}), 400
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8000, debug=True)
+    app.run(host="127.0.0.1", port=5000, debug=True)

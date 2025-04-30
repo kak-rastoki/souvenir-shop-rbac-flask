@@ -1,8 +1,8 @@
 import io
-from flask import send_file, render_template, redirect, url_for,jsonify
+from flask import send_file, render_template, redirect, url_for,jsonify, request
 from api import api_bp
 from models import Product, Users
-
+import base64
 
 
 @api_bp.route('/api/products') #для разработки фронта
@@ -17,6 +17,26 @@ def get_products():
         { 'id': 7, 'name': 'Статуетка медведя', 'price': 256, 'image_url': '/static/image/Beer1.png', 'category': "сувениры"},
     ]
     return jsonify(products)
+
+
+@api_bp.route('/api/products_by_category', methods = ['POST']) # Получение товаров по категории, которая прилетит с фронта
+def product_by_category():
+    data = request.get_json()
+    category = data.get('category')
+    products = Product.query.filter(Product.category.has(Name_category=category)).all()
+
+    if not category:
+        return jsonify({'error': 'Category name is required'}), 400
+
+    product_list = [{
+        'id': product.ID_product,
+        'name': product.Name_product,
+        'price': product.Cost_product,
+        'image': base64.b64encode(product.image_product).decode('utf-8') if product.image_product else None
+
+        } for product in products]
+
+    return jsonify ({'products' : product_list})
 
 @api_bp.route('/product/<int:product_id>') # Получение товара
 def productCard(product_id):
