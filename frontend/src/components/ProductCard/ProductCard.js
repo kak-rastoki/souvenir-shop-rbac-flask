@@ -8,9 +8,12 @@ function ProductCard({product}) {
 
   return (
     <div className="product-card">
-
-      <img src={`data:image/jpeg;base64,${product.image}`} alt={product.name} />
-      <h3>{product.name}</h3>
+      <div className='img-container'>
+        <img src={`data:image/jpeg;base64,${product.image}`} alt={product.name} />
+      </div>
+      <div className='product-title'>
+        <h3>{product.name}</h3>
+      </div>
       <div className = 'card-group'>
         <div className='group-category-more'>
           <p className="category">{product.category}</p>
