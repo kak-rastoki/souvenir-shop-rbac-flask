@@ -9,11 +9,14 @@ import Filters from '../Filters/Filters';
 function Catalog(){
 
   const [products,setProducts] = useState([]);
+  const [loading,setLoading] = useState (true);
+  const [error,setError] = useState (null);
 
 
 
-
-  const handleCategoryChange = (newProducts) => {
+  const handleCategoryChange = (newProducts,newLoading,newError) => {
+    setLoading (newLoading);
+    setError(newError);
     setProducts(newProducts);
     console.log(newProducts)
   };
@@ -26,6 +29,8 @@ function Catalog(){
         <div className ="container">
           <Filters />
           <div className="product-grid">
+            {loading ? <p>Подождите, идет загрузка товаров...</p> : null}
+            {error ? <p>{error}</p> : null}
             {products.map(product => (
                 <ProductCard key={product.id} product={product} />
             ))}

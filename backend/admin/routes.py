@@ -70,7 +70,7 @@ def AP_add_product():
         category = Categories.query.get(product.id_category)
         master = Masters.query.get(product.id_master)
 
-
+        #передача в поле для изменений
         products_data.append({
             'ID_product': product.ID_product,
             'Name_product': product.Name_product,
@@ -88,6 +88,7 @@ def AP_add_product():
         master = request.form.get('master')
         category = request.form.get('category')
         file = request.files['file']
+
 
         if not name or not price:
             flash("Все поля, кроме 'Новинка', обязательны для заполнения!", "error")
@@ -110,7 +111,7 @@ def AP_add_product():
             IsNew_product=new_product,
             id_master=master,
             id_category=category,
-            image_product = file.read()
+            image_product = file.read() if file else None
         )
         db.session.add(new_product_entry)
         db.session.commit()
@@ -193,6 +194,7 @@ def get_product_api(product_id):
 def edit_product():
     error_messages = ()
 
+
     if request.method == 'POST':
         edit_code = request.form.get('editCode')
         edit_name = request.form.get('editName')
@@ -228,7 +230,7 @@ def edit_product():
             product.id_master = edit_master
             product.id_category = edit_category
             product.Description_product = edit_description
-            product.image_product = edit_file.read()
+            product.image_product = edit_file.read() if edit_file else None;
         else:
             print (f'Внутренняя ошибка сервера. Продукт {product.ID_product} {product.Name_product} - не найден')
             error_messages = "Продукт не найден"
