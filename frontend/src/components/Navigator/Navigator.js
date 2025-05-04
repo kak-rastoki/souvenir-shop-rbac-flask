@@ -10,15 +10,9 @@ function Navigator({categoryChange}){
   const [products,setProducts] = useState ([]);
   const [loading,setLoading] = useState (true);
   const [error,setError] = useState (null);
-  // let wood = ["Сувениры","Бытовая продукция","Корпусная мебель","Картины"]
-  let metal = ["Мангалы","Печи"];
-  // if (loading) {
-  //   return <p>Загрузка каталога. Подождите...</p>;
-  // }
 
-  // if (error) {
-  //   return <p>Упс. Ошибка загрузки: {error.message}</p>;
-  // }
+  let metal = ["Мангалы","Печи"];
+
 
 
   const handleCategoryClick = (category) => {

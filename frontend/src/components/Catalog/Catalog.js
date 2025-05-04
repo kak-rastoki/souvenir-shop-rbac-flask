@@ -29,7 +29,18 @@ function Catalog(){
         <div className ="container">
           <Filters />
           <div className="product-grid">
-            {loading ? <p>Подождите, идет загрузка товаров...</p> : null}
+            {loading ?
+            <div className='load-block'>
+              <div className='loader'></div>
+              <div className='loader'></div>
+              <div className='loader'></div>
+              <div className='loader'></div>
+              <div className='loader-shadow'></div>
+
+
+              <p>Подождите, идет загрузка товаров...</p>
+              </div>
+             : null}
             {error ? <p>{error}</p> : null}
             {products.map(product => (
                 <ProductCard key={product.id} product={product} />
