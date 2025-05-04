@@ -7,44 +7,15 @@ import './Navigator.css'
 function Navigator({categoryChange}){
   const [selectedCategory,setSelectedCategory] = useState('Новинки');
   const [material,setMaterial] = useState ('Изделия из дерева');
-  const [products,setProducts] = useState ([]);
-  const [loading,setLoading] = useState (true);
-  const [error,setError] = useState (null);
 
-  let metal = ["Мангалы","Печи"];
-
-
-
+  // передача выбранной категории в каталог обратно через пропсовую функцию
   const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
-    setLoading(true);
-    setError(null);
-    fetch('http://localhost:5000/api/products_by_category', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({category: category})
+    setSelectedCategory (category);
+    categoryChange(category);
 
-    })
-    .then(response =>{
-      if (!response.ok) {
-        throw new Error ('Ошибка сети или сервера')
-      }
-      return response.json ();
-    })
-    .then(data =>{
-      categoryChange(data.products,false,null);
-      setLoading(false);
-
-    })
-    .catch (error => {
-      console.error('Ошибка при получении продуктов с сервера',error);
-      setError('Извините, произошла Непредвиденная ошибка, попробуйте зайти позже или написать в тех.поддержку');
-      categoryChange([],true,error.message);
-      setLoading(false);
-    });
   };
 
-
+  let metal = ["Мангалы","Печи"];
   useEffect(() => {
     if (metal.includes(selectedCategory)) {
       setMaterial("Изделия из металла");
@@ -81,11 +52,11 @@ function Navigator({categoryChange}){
 
       <div className='bread-crumbs'>
         <a href="#">Магазин студенческий</a>
-        <p>-></p>
+        <p>\</p>
         <a href="#">Каталог</a>
-        <p>-></p>
+        <p>\</p>
         <a href="#" className="breadcrumb-item" key={material}>{material}</a>
-        <p>-></p>
+        <p>\</p>
         <a href="#" className="breadcrumb-item" key={selectedCategory}>{selectedCategory ? selectedCategory : ""}</a>
       </div>
 

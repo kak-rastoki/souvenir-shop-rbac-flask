@@ -22,21 +22,45 @@ import base64
 @api_bp.route('/api/products_by_category', methods = ['POST']) # Получение товаров по категории, которая прилетит с фронта
 def product_by_category():
     data = request.get_json()
-    category = data.get('category')
-    products = Product.query.filter(Product.category.has(Name_category=category)).all()
-
+    category = data['category']
     if not category:
         return jsonify({'error': 'Category name is required'}), 400
 
-    product_list = [{
-        'id': product.ID_product,
-        'name': product.Name_product,
-        'price': product.Cost_product,
-        'image': base64.b64encode(product.image_product).decode('utf-8') if product.image_product else None
+    #распаковка текущей страницы и кол-ва элеменитов
+    page = request.args.get('page',1,type=int)
+    per_page =request.args.get('per_page',12,type=int)
 
-        } for product in products]
+    # Валидация
+    if page < 1:
+        page = 1
+    if per_page < 1:
+        per_page = 12
 
-    return jsonify ({'products' : product_list})
+    #Пагинация \ Запрос с пагинацией в бд через paginate()
+    pagination = Product.query.filter(Product.category.has(Name_category=category)).paginate(
+        page=page,
+        per_page=per_page,
+        error_out=False
+    )
+
+    products = pagination.items
+    total_pages = pagination.pages
+    current_page = pagination.page
+
+    product_list = []
+    for product in products:
+        product_dict = {
+            'id': product.ID_product,
+            'name': product.Name_product,
+            'price': product.Cost_product,
+            'image': base64.b64encode(product.image_product).decode('utf-8') if product.image_product else None
+        }
+        product_list.append(product_dict)
+    return jsonify ({
+        'products' : product_list,
+        'current_page':current_page,
+        'total_pages': total_pages
+    })
 
 @api_bp.route('/product/<int:product_id>') # Получение товара
 def productCard(product_id):
