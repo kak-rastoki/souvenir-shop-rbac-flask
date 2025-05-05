@@ -3,11 +3,11 @@ import './ProductCard.css';
 import BeerImage from './Beer1.png';
 
 
-function ProductCard({product}) {
+function ProductCard({product,animationDelay}) {
 
 
   return (
-    <div className="product-card">
+    <div className="product-card" style={{ animationDelay: `${animationDelay}s` }}>
       <div className='img-container'>
         <img src={`data:image/jpeg;base64,${product.image}`} alt={product.name} />
       </div>

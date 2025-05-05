@@ -4,6 +4,7 @@ import ProductCard from '../ProductCard/ProductCard';
 import Navigator from '../Navigator/Navigator';
 import Filters from '../Filters/Filters';
 
+
 function Catalog() {
   const perPage =12;
   const [products, setProducts] = useState([]);
@@ -92,46 +93,52 @@ function Catalog() {
       <Navigator categoryChange={handleCategoryChange} />
       <div className="container">
         <Filters />
-        <div className="product-grid">
-          {loading ? (
-            <div className="load-block">
-              <div className="loader"></div>
-              <div className="loader"></div>
-              <div className="loader"></div>
-              <div className="loader"></div>
-              <div className="loader-shadow"></div>
-              <p>Подождите, идет загрузка товаров...</p>
+        <div className='container-grid'>
+          <div className="product-grid">
+            {loading ? (
+              <div className="load-block">
+                <div className="loader"></div>
+                <div className="loader"></div>
+                <div className="loader"></div>
+                <div className="loader"></div>
+                <div className="loader-shadow"></div>
+                <p>Подождите, идет загрузка товаров...</p>
+              </div>
+            ) : error ? (
+              <p className="error-message">{error}</p>
+            ) : products.length === 0 ? (
+              <p>Товары не найдены</p>
+            ) : (
+              products.map((product,index) => (
+                <ProductCard key={product.id} product={product} animationDelay={index * 0.08}/>
+              ))
+            )}
+          </div>
+          {!loading && products.length >0 && (
+            <div className="pagination-controls">
+              <div className='buttons-wrapper'>
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                >
+                  ← Предыдущая страница
+                </button>
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                >
+                  Следующая страница →
+                </button>
+                <button
+                  onClick={() => setCurrentPage(totalPages)}
+                  disabled={currentPage === totalPages}
+                >
+                  Последняя📑
+                </button>
+              </div>
+              <span>Страница {currentPage} из {totalPages}</span>
             </div>
-          ) : error ? (
-            <p className="error-message">{error}</p>
-          ) : products.length === 0 ? (
-            <p>Товары не найдены</p>
-          ) : (
-            products.map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))
-          )}
-        </div>
-        <div className="pagination-controls">
-          <button
-            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-          >
-            Предыдущая
-          </button>
-          <button
-            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-            disabled={currentPage === totalPages}
-          >
-            Следующая
-          </button>
-          <button
-            onClick={() => setCurrentPage(totalPages)}
-            disabled={currentPage === totalPages}
-          >
-            Последняя
-          </button>
-          <span>Страница {currentPage} из {totalPages}</span>
+        )}
         </div>
       </div>
     </div>

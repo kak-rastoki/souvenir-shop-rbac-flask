@@ -1,4 +1,13 @@
 /* @import url("../../fonts.css"); */
+@keyframes fadeIn {
+
+  to {
+    opacity: 1;
+    /* transform: scale(1) rotate(0deg); */
+
+  }
+}
+
 button {
   cursor: pointer;
 }
@@ -15,6 +24,12 @@ button {
   transition: 0.5s;
   cursor: pointer;
   background-color: #E6E5E3;
+  animation: fadeIn 0.3s ease-in-out forwards;
+
+  opacity: 0.0;
+
+  /* transform: rotate(-5deg) scale(0.1); */
+  animation-delay: 0s;
 }
 
 .product-card:hover{
