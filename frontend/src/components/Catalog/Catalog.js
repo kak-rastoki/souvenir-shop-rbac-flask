@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './Catalog.css';
 import ProductCard from '../ProductCard/ProductCard';
 import Navigator from '../Navigator/Navigator';
@@ -14,7 +14,7 @@ function Catalog() {
   const [totalPages, setTotalPages] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState('Новинки');
 
-  const handleCategoryChange = (category) => {
+  const handleCategoryChange = useCallback((category) => {
     if (!category) {
       setError('Категория не выбрана');
       setLoading(false);
@@ -22,8 +22,9 @@ function Catalog() {
       return;
     }
 
-
-    setCurrentPage(1);
+    if (selectedCategory !== category) {
+      setCurrentPage(1);
+    }
     setSelectedCategory(category);
 
     setLoading(true);
@@ -54,38 +55,11 @@ function Catalog() {
         setProducts([]); // Очищаем продукты при ошибке
         console.error('Error:', err);
       });
-  };
+  });
 
   // Обновляем данные при изменении currentPage
   useEffect(() => {
-    if (selectedCategory) {
-      fetch(`http://localhost:5000/api/products_by_category?page=${currentPage}&per_page=${perPage}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ category: selectedCategory }),
-      })
-        .then(response => {
-          if (!response.ok) {
-            return response.json().then(err => {
-              throw new Error(err.error || 'Ошибка сети или сервера');
-            });
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('Received data:', data);
-          setProducts(data.products || []);
-          setTotalPages(data.total_pages || 1);
-          setCurrentPage(data.current_page || 1);
-          setLoading(false);
-        })
-        .catch(err => {
-          setError(err.message || 'Ошибка при загрузке данных');
-          setLoading(false);
-          setProducts([]);
-          console.error('Error:', err);
-        });
-    }
+    handleCategoryChange(selectedCategory);
   }, [currentPage, selectedCategory]);
 
   return (
