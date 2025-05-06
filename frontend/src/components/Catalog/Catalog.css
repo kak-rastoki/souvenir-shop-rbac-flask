@@ -3,6 +3,9 @@ body{
   font-family: Evolventa Regular;
 }
 
+button{
+  box-shadow:2px 2px 5px 0px #15151530;
+}
 .product-grid{
   width: 100%;
   display: grid;
@@ -10,7 +13,7 @@ body{
   position:relative;
   /* left:22%; */
   row-gap:20px;
-  margin: 10px 55px;
+  margin: 0px 55px;
 
 }
 

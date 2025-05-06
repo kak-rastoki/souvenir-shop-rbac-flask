@@ -13,14 +13,20 @@ function Catalog() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState('Новинки');
+  const [minPrice, setMinPrice] = useState ('');
+  const [maxPrice, setMaxPrice] = useState ('');
 
-  const handleCategoryChange = useCallback((category) => {
+
+
+  const handleCategoryChange = useCallback((category,minPrice='',maxPrice='') => {
     if (!category) {
       setError('Категория не выбрана');
       setLoading(false);
       setProducts([]);
       return;
     }
+
+    const url = new URL("http://localhost:5000/api/products_by_category");
 
     if (selectedCategory !== category) {
       setCurrentPage(1);
@@ -29,7 +35,13 @@ function Catalog() {
 
     setLoading(true);
     setError(null);
-    fetch(`http://localhost:5000/api/products_by_category?page=${currentPage}&per_page=${perPage}`, {
+
+    if (minPrice) url.searchParams.append('min_price', minPrice);
+    if (maxPrice) url.searchParams.append('max_price', maxPrice);
+    if (currentPage) url.searchParams.append ('page',currentPage);
+    if (perPage) url.searchParams.append ('per_page',perPage);
+
+    fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ category: category }),
