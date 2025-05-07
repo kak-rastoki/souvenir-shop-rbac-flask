@@ -13,8 +13,8 @@ function Catalog() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState('Новинки');
-  const [minPrice, setMinPrice] = useState ('');
-  const [maxPrice, setMaxPrice] = useState ('');
+  const [priceFilter,setPriceFilter] = useState ({minPrice:'',maxPrice:''});
+
 
 
 
@@ -36,15 +36,16 @@ function Catalog() {
     setLoading(true);
     setError(null);
 
-    if (minPrice) url.searchParams.append('min_price', minPrice);
-    if (maxPrice) url.searchParams.append('max_price', maxPrice);
     if (currentPage) url.searchParams.append ('page',currentPage);
     if (perPage) url.searchParams.append ('per_page',perPage);
 
     fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ category: category }),
+      body: JSON.stringify({
+        category: category,
+        priceFilter: {minPrice:priceFilter.minPrice, maxPrice:priceFilter.maxPrice},
+      }),
     })
       .then(response => {
         if (!response.ok) {
@@ -55,7 +56,7 @@ function Catalog() {
         return response.json();
       })
       .then(data => {
-        console.log('Received data:', data);
+        console.log('Полученные данные:', data);
         setProducts(data.products || []);
         setTotalPages(data.total_pages || 1);
         setCurrentPage(data.current_page || 1);
@@ -64,21 +65,30 @@ function Catalog() {
       .catch(err => {
         setError(err.message || 'Ошибка при загрузке данных');
         setLoading(false);
-        setProducts([]); // Очищаем продукты при ошибке
+        setProducts([]);
         console.error('Error:', err);
       });
-  });
+  },[selectedCategory,currentPage,perPage,priceFilter.maxPrice,priceFilter.minPrice]);
 
-  // Обновляем данные при изменении currentPage
+  // Обнволение товаров при изменении текущей старницы
   useEffect(() => {
     handleCategoryChange(selectedCategory);
-  }, [currentPage, selectedCategory]);
+  }, [currentPage, selectedCategory, priceFilter.minPrice, priceFilter.maxPrice]);
+
+
+  const handlePriceFilterChange = (minPrice,maxPrice) => {
+    setPriceFilter ({minPrice,maxPrice});
+    setCurrentPage (1);
+    handleCategoryChange(selectedCategory);
+  }
+
+
 
   return (
     <div className="catalog-page">
       <Navigator categoryChange={handleCategoryChange} />
       <div className="container">
-        <Filters />
+        <Filters priceFilterChange = {handlePriceFilterChange} />
         <div className='container-grid'>
           <div className="product-grid">
             {loading ? (

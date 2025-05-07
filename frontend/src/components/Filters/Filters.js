@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Filters.css'
 
-function Filters () {
 
+
+function Filters ({priceFilterChange}) {
+const [minPrice, setMinPrice] = useState('');
+const [maxPrice, setMaxPrice] = useState('');
+
+const handlePriceFilterChange = () => {
+  priceFilterChange(minPrice,maxPrice);
+}
 
 
 return (
@@ -21,8 +28,16 @@ return (
     <div className='block'>
       <label className='label-price'>Ценовой диапозон в руб.</label>
       <div className='group flex-group'>
-        <input id="price-from" placeholder= "от" type="number"/>
-        <input  id="price-to" placeholder= "до" type="number"/>
+        <input id="price-from" placeholder= "от" type="number"
+         onChange={(p)=>{
+          setMinPrice(p.target.value)
+          handlePriceFilterChange();
+         }}/>
+        <input  id="price-to" placeholder= "до" type="number"
+        onChange={(p)=>{
+          setMaxPrice(p.target.value)
+          handlePriceFilterChange();
+         }}/>
       </div>
       <div className='group'>
         <input type="radio" name="price-type" />
