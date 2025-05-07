@@ -7,8 +7,8 @@ function Filters ({priceFilterChange}) {
 const [minPrice, setMinPrice] = useState('');
 const [maxPrice, setMaxPrice] = useState('');
 
-const handlePriceFilterChange = () => {
-  priceFilterChange(minPrice,maxPrice);
+const handlePriceFilterChange = (newMinPrice,newMaxPrice) => {
+  priceFilterChange(newMinPrice,newMaxPrice);
 }
 
 
@@ -28,15 +28,17 @@ return (
     <div className='block'>
       <label className='label-price'>Ценовой диапозон в руб.</label>
       <div className='group flex-group'>
-        <input id="price-from" placeholder= "от" type="number"
-         onChange={(p)=>{
-          setMinPrice(p.target.value)
-          handlePriceFilterChange();
+        <input id="price-from" placeholder= "от" type="number" value={minPrice}
+        onChange={(e)=>{
+          const newMinPrice = e.target.value;
+          setMinPrice (e.target.value);
+          handlePriceFilterChange(newMinPrice, maxPrice);
          }}/>
-        <input  id="price-to" placeholder= "до" type="number"
-        onChange={(p)=>{
-          setMaxPrice(p.target.value)
-          handlePriceFilterChange();
+        <input  id="price-to" placeholder= "до" type="number" value={maxPrice}
+        onChange={(e)=>{
+          const newMaxPrice = e.target.value;
+          setMaxPrice (e.target.value);
+          handlePriceFilterChange(minPrice, newMaxPrice);
          }}/>
       </div>
       <div className='group'>

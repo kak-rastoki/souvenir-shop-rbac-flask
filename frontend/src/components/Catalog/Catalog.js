@@ -38,7 +38,8 @@ function Catalog() {
 
     if (currentPage) url.searchParams.append ('page',currentPage);
     if (perPage) url.searchParams.append ('per_page',perPage);
-
+    console.log('Состояние фильтра max: ' + priceFilter.maxPrice)
+    console.log('Состояние фильтра min: ' + priceFilter.minPrice)
     fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
