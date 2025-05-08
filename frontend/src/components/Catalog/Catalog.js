@@ -14,15 +14,14 @@ function Catalog() {
   const [totalPages, setTotalPages] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState('Новинки');
   const [priceFilter,setPriceFilter] = useState ({minPrice:'',maxPrice:''});
+  const [sortOrder,setSortOrder] = useState ('desc');
 
-
-
-
-  const handleCategoryChange = useCallback((category,minPrice='',maxPrice='') => {
+  const handleCategoryChange = useCallback((category) => {
     if (!category) {
       setError('Категория не выбрана');
       setLoading(false);
       setProducts([]);
+      setSortOrder('desc');
       return;
     }
 
@@ -38,6 +37,7 @@ function Catalog() {
 
     if (currentPage) url.searchParams.append ('page',currentPage);
     if (perPage) url.searchParams.append ('per_page',perPage);
+    if (sortOrder) url.searchParams.append ('sort',sortOrder);
     console.log('Состояние фильтра max: ' + priceFilter.maxPrice)
     console.log('Состояние фильтра min: ' + priceFilter.minPrice)
     fetch(url, {
@@ -69,19 +69,21 @@ function Catalog() {
         setProducts([]);
         console.error('Error:', err);
       });
-  },[selectedCategory,currentPage,perPage,priceFilter.maxPrice,priceFilter.minPrice]);
+  },[selectedCategory,currentPage,perPage,priceFilter.maxPrice,priceFilter.minPrice,sortOrder]);
 
   // Обнволение товаров при изменении текущей старницы
   useEffect(() => {
     handleCategoryChange(selectedCategory);
-  }, [currentPage, selectedCategory, priceFilter.minPrice, priceFilter.maxPrice, handleCategoryChange]);
+  }, [currentPage, selectedCategory, priceFilter.minPrice, priceFilter.maxPrice, handleCategoryChange,sortOrder]);
 
 
-  const handlePriceFilterChange = (minPrice,maxPrice) => {
+  const handlePriceFilterChange = (minPrice,maxPrice,sortOrder) => {
     setPriceFilter ({minPrice,maxPrice});
+    console.log ("В каталоге sort order: " + sortOrder)
+    setSortOrder(sortOrder);
     setCurrentPage (1);
-
   }
+
 
 
 

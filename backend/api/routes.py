@@ -3,7 +3,7 @@ from flask import send_file, render_template, redirect, url_for,jsonify, request
 from api import api_bp
 from models import Product, Users, Categories
 import base64
-
+from sqlalchemy import desc
 
 # @api_bp.route('/api/products') #для разработки фронта
 # def get_products():
@@ -29,9 +29,10 @@ def product_by_category():
     min_price = price_filter.get('minPrice',None)
     max_price = price_filter.get('maxPrice',None)
 
-    # Обработка параметров пагинации
+    # Обработка параметров URL
     page = request.args.get('page',1,type=int)
     per_page =request.args.get('per_page',12,type=int)
+    sort = request.args.get('sort','desc',type=str)
     #распаковка текущей страницы и кол-ва элеменитов
 
     if page < 1:
@@ -60,6 +61,11 @@ def product_by_category():
             'error': f'Category "{category}" not found'
         }), 404
 
+    if sort.lower() == 'desc':
+        query=query.order_by(desc(Product.Cost_product))
+    else:
+        query = query.order_by(Product.Cost_product)
+
     #Запрос с пагинацией в бд через paginate()
     pagination = query.paginate(
         page=page,
@@ -84,7 +90,10 @@ def product_by_category():
     return jsonify ({
         'products' : product_list,
         'current_page':current_page,
-        'total_pages': total_pages
+        'total_pages': total_pages,
+        'minPrice': min_price,
+        'maxPrice': max_price,
+        'sort': sort
     })
 
 @api_bp.route('/product/<int:product_id>') # Получение товара
