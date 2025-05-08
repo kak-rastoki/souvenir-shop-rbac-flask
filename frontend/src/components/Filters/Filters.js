@@ -7,8 +7,15 @@ function Filters ({priceFilterChange}) {
 const [minPrice, setMinPrice] = useState('');
 const [maxPrice, setMaxPrice] = useState('');
 
-const handlePriceFilterChange = (newMinPrice,newMaxPrice) => {
-  priceFilterChange(newMinPrice,newMaxPrice);
+const handlePriceFilterChange = () => {
+  console.log(minPrice,maxPrice)
+  priceFilterChange(minPrice,maxPrice);
+};
+
+function resetFilters() {
+  setMaxPrice('');
+  setMinPrice('');
+  priceFilterChange('','');
 }
 
 
@@ -18,7 +25,7 @@ return (
       <h3>Настройки поиска</h3>
 
       <input name="search" id='search' type="text"/>
-      <button>Сбросить фильтрацию</button>
+      <button onClick={resetFilters}>Сбросить фильтрацию</button>
       <div className='group'>
         <input name="checkbox1" type="checkbox" className='checkbox'/>
         <label htmlFor="checkbox1">Есть в наличии</label>
@@ -29,17 +36,11 @@ return (
       <label className='label-price'>Ценовой диапозон в руб.</label>
       <div className='group flex-group'>
         <input id="price-from" placeholder= "от" type="number" value={minPrice}
-        onChange={(e)=>{
-          const newMinPrice = e.target.value;
-          setMinPrice (e.target.value);
-          handlePriceFilterChange(newMinPrice, maxPrice);
+        onChange={(e)=>{setMinPrice(e.target.value);
          }}/>
         <input  id="price-to" placeholder= "до" type="number" value={maxPrice}
-        onChange={(e)=>{
-          const newMaxPrice = e.target.value;
-          setMaxPrice (e.target.value);
-          handlePriceFilterChange(minPrice, newMaxPrice);
-         }}/>
+        onChange={(e)=>{setMaxPrice(e.target.value);
+          }}/>
       </div>
       <div className='group'>
         <input type="radio" name="price-type" />
@@ -63,7 +64,7 @@ return (
       </div>
     </div>
 
-    <button>Применить</button>
+    <button onClick={handlePriceFilterChange}>Применить</button>
 
 
 

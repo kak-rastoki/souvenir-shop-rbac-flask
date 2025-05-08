@@ -74,13 +74,13 @@ function Catalog() {
   // Обнволение товаров при изменении текущей старницы
   useEffect(() => {
     handleCategoryChange(selectedCategory);
-  }, [currentPage, selectedCategory, priceFilter.minPrice, priceFilter.maxPrice]);
+  }, [currentPage, selectedCategory, priceFilter.minPrice, priceFilter.maxPrice, handleCategoryChange]);
 
 
   const handlePriceFilterChange = (minPrice,maxPrice) => {
     setPriceFilter ({minPrice,maxPrice});
     setCurrentPage (1);
-    handleCategoryChange(selectedCategory);
+
   }
 
 

@@ -24,7 +24,7 @@ function Navigator({categoryChange}){
       setMaterial("Изделия из дерева");
 
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, metal]);
 
 
   return(

@@ -1,6 +1,6 @@
 import React from 'react';
 import './ProductCard.css';
-import BeerImage from './Beer1.png';
+
 
 
 function ProductCard({product,animationDelay}) {
