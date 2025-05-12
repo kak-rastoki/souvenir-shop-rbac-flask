@@ -165,7 +165,7 @@ def delete_product(id):
 
 
 
-@admin_bp.route('/api/product/<int:product_id>', methods=['GET'])
+@admin_bp.route('/admin/product/<int:product_id>', methods=['GET'])
 @login_required
 @admin_required
 def get_product_api(product_id):

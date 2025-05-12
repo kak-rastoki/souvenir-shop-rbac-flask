@@ -18,6 +18,20 @@ from sqlalchemy import desc
 #     ]
 #     return jsonify(products)
 
+@api_bp.route('/api/product/<int:product_id>')
+def get_product_by_id(product_id):
+    product = Product.query.filter_by(ID_product=product_id).first_or_404()
+
+
+    return jsonify({
+        'id': product.ID_product,
+        'name': product.Name_product,
+        'cost': product.Cost_product,
+        'discription': product.Description_product,
+        'category':product.category.Name_category,
+        'master':product.master.Name_master,
+        'image':base64.b64encode(product.image_product).decode('utf-8') if product.image_product else None
+    })
 
 @api_bp.route('/api/products_by_category', methods = ['POST']) # Получение товаров по категории, которая прилетит с фронта
 def product_by_category():
@@ -96,7 +110,7 @@ def product_by_category():
         'sort': sort
     })
 
-@api_bp.route('/product/<int:product_id>') # Получение товара
+@api_bp.route('/api/product_page/<int:product_id>') # Получение товара
 def productCard(product_id):
     product = Product.query.get_or_404(product_id)
 

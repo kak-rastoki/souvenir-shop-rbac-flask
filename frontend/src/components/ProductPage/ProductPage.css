@@ -1,0 +1,25 @@
+body
+{
+  margin: 0;
+
+  box-sizing: border-box;
+  background-color: #edecec;
+  font-family: 'Evolventa Regular';
+}
+
+
+.productPage-card{
+  max-width: 1616px;
+  background-color: #CFCFCF;
+  border: 4px solid #07074e77;
+  border-radius: 20px;
+  display: flex;
+
+}
+
+
+.productPage-card .product-image{
+  background-color: #07074E;
+  flex:0.25;
+  max-width: 422px;
+}

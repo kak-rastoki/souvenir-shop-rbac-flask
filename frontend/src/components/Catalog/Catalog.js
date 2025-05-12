@@ -6,7 +6,7 @@ import Filters from '../Filters/Filters';
 
 
 function Catalog() {
-  const perPage =12;
+  const perPage = 12;
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -40,6 +40,7 @@ function Catalog() {
     if (sortOrder) url.searchParams.append ('sort',sortOrder);
     console.log('Состояние фильтра max: ' + priceFilter.maxPrice)
     console.log('Состояние фильтра min: ' + priceFilter.minPrice)
+
     fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
