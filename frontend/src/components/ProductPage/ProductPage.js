@@ -48,7 +48,7 @@ function ProductPage() {
     };
 
 
-        //ЗАГРУЗКА
+
 
 
 
@@ -57,6 +57,7 @@ function ProductPage() {
         fetchProduct()
     },[id]);
 
+     //ЗАГРУЗКА
     if (loading) {
         return <p>Подождите, идет загрузка товара...</p>
     };
@@ -69,7 +70,7 @@ function ProductPage() {
 
   return (
 
-    <>
+    <div className="productPage-wrapper">
         <div className="breadcrumbs">
             <span>Магазин Сувениров</span> &gt; <span>Категории</span> &gt; <span>Изделия из дерева</span> &gt; <span>Сувениры</span> &gt; <span>{product.name}</span>
         </div>
@@ -87,7 +88,7 @@ function ProductPage() {
 
             </div>
         </div>
-    </>
+    </div>
   )
 };
 
