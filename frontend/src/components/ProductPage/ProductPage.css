@@ -2,35 +2,184 @@ body
 {
   margin: 0;
 
+
   box-sizing: border-box;
   background-color: #edecec;
   font-family: 'Evolventa Regular';
+}
+
+.productPage-wrapper .breadcrumbs{
+  font-size:20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  margin-left: 10px;
+
+
+
 }
 
 .productPage-wrapper{
   display: flex;
   flex-direction: column;
   /* align-items: center; */
-  width: 100%;
+  width: 88%;
+  margin: 0% 6%;
+
 
 }
 
+.flex-group{
+  display: flex;
+}
+.productPage-wrapper .link{
+  margin: 12px;
+  margin-left: 100px;
+
+}
+
+.productPage-wrapper .link button{
+  border-radius: 5px;
+  border:0px solid black;
+  background-color: #f69c4d;
+  color: aliceblue;
+  height: 30px;
+
+}
 .productPage-card{
   /* max-width: 1616px;
   min-width: 1616px; */
+  height: 600px;
   min-width: 88%;
   background-color: #CFCFCF;
   border: 4px solid #07074e77;
   border-radius: 20px;
   display: flex;
+  /* margin: 0% 6%; */
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.245);
 
 }
 
 
 .productPage-card .product-image{
+  /* background-color: #07074E; */
+  background-image: linear-gradient(-39deg,#07074E,80%,#1d419ba2);
+  width: 700px;
+  border-radius:15px 0px 0px 15px;
+}
+
+.productPage-card .product-image img{
+  border-radius: 10px;
+  margin: 18px 0px 20px 22px;
+  width: 420px;
+  height: 420px;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.productPage-card .thumbnails{
+  border:1px solid rgba(128, 128, 128, 0.228);
+  border-radius: 10px;
+  margin: 0px 20px;
+  width:420px;
+  height:86px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.productPage-card .thumbnail {
+  background-color: #bbbbbb41;
+  height: 100%;
+  flex:0.3;
+  margin: 2px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.214);
+}
+.product-content{
+  padding: 30px 30px;
+  width: 100%;
+}
+.productPage-card .product-content h1 {
+  font-family: Evolventa Bold;
+  font-size: 32px;
+  margin:0;
+  line-height: 0.8em;
+}
+
+.product-discription{
+  width: 96%;
+  min-height: 260px;
+  max-height: 300px;
+  background-image: linear-gradient(20deg,rgba(182, 182, 182, 0.098),rgba(96, 96, 96, 0.391));
+  /* background-color: #bebebe; */
+  border-radius: 20px;
+  border: 1px solid rgba(128, 128, 128, 0.209);
+  padding: 0px 20px;
+  font-size: 20px;
+  overflow-y: auto;
+  margin: 25px 0px;
+}
+.cost-button-container{
+  margin-top: 20px;
+  width: 55%;
+  height: 55px;
+  border-radius:20px ;
+  background-image: linear-gradient(20deg,rgba(182, 182, 182, 0.098),rgba(96, 96, 96, 0.391));
+  border: 2px solid rgba(72, 72, 72, 0.148);
+  justify-content: space-between;
+}
+
+.productPage-card .cost {
+  font-size: 48px;
+  margin: 0px 15px;
+  /* line-height: 2px; */
+}
+
+.product-content p{
+  margin: 0px;
+}
+
+.productPage-card button {
+  color: #e8e8e8;
+  font-size: 20px;
+  font-family: Evolventa Regular;
+  width: 250px;
+  height: 50px;
+  border-radius: 20px;
+  border: 0px solid rgb(102, 102, 102);
+  background-image:linear-gradient(#ef862a,#b9651b ) ;
+  position: relative;
+  top:3px;
+  left: -3px;
+  transition: .5s;
+}
+
+.productPage-card button:hover{
+  transition: .5s;
+  width: 240px;
+  background-image:linear-gradient(#f69c4d,#b9651b ) ;
+
+}
+.option p {
+  margin: 0;
+}
+.productPage-card .tag{
+  color: #e8e8e8;
+  padding: 2px;
   background-color: #07074E;
-  flex:0.25;
-  max-width: 422px;
+  border-radius:5px;
+  margin: 0px 10px;
+}
+
+.productPage-card .option-block{
+ margin: 70px 0px;
+ width: 70%;
+ justify-content:space-between;
+
+}
+
+.option p{
+  position: relative;
+  top:3px;
 }
 
 
@@ -38,6 +187,8 @@ body
 
 
   .productPage-card{
+    margin: 0;
+
     width: 100%;
     min-height:700px;
     background-color: #CFCFCF;

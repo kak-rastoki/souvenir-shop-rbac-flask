@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import './ProductPage.css';
 import { useParams } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
 
 
 
@@ -71,8 +71,17 @@ function ProductPage() {
   return (
 
     <div className="productPage-wrapper">
-        <div className="breadcrumbs">
-            <span>Магазин Сувениров</span> &gt; <span>Категории</span> &gt; <span>Изделия из дерева</span> &gt; <span>Сувениры</span> &gt; <span>{product.name}</span>
+        <div className="flex-group">
+            <div className="breadcrumbs">
+                <span>Магазин "Студенческий" </span>
+                &gt; <span><Link to={`/`}>Категории</Link></span> &gt;
+
+                <span> Сувениры </span> &gt;
+                <span> {product.name} </span>
+            </div>
+
+            <Link to={`/`}  className="link"><button>Вернуться в каталог</button></Link>
+
         </div>
         <div className="productPage-card">
             <div className="product-image">
@@ -85,6 +94,24 @@ function ProductPage() {
                 </div>
             </div>
             <div className="product-content">
+                <h1>{product.name}</h1>
+
+                <div className="product-discription">
+                    <font color='#828282'>Описание товара ☟ </font>
+                    <p>{product.discription}</p>
+                </div>
+                <div className="flex-group cost-button-container">
+                    <p className="cost">{product.cost}₽</p>
+                    <button>В коризину</button>
+                </div>
+                <div className="flex-group option-block">
+                    <div className="flex-group option"><p>Артикул:</p><div className="tag"><p>12A34</p></div></div>
+                    <div className="flex-group option"><p>Категория:</p><div className="tag"><p>{product.category}</p></div></div>
+                    <div className="flex-group option"><p>Мастер:</p><div className="tag"><p>{product.master}</p></div></div>
+                </div>
+
+
+
 
             </div>
         </div>
