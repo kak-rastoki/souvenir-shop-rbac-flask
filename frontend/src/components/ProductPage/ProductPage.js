@@ -71,7 +71,7 @@ function ProductPage() {
   return (
 
     <div className="productPage-wrapper">
-        <div className="flex-group">
+        <div className="nav">
             <div className="breadcrumbs">
                 <span>Магазин "Студенческий" </span>
                 &gt; <span><Link to={`/`}>Категории</Link></span> &gt;
@@ -97,7 +97,7 @@ function ProductPage() {
                 <h1>{product.name}</h1>
 
                 <div className="product-discription">
-                    <font color='#828282'>Описание товара ☟ </font>
+                    <font color='#828282'>Описание товара</font>
                     <p>{product.discription}</p>
                 </div>
                 <div className="flex-group cost-button-container">
