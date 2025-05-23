@@ -1,11 +1,40 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import './ProductCard.css';
 import { Link } from 'react-router-dom';
 
 
 
-function ProductCard({product,animationDelay}) {
 
+
+function ProductCard({product,animationDelay}) {
+  const [addingToCart, setAddingToCart] = useState(false);
+
+  const addToCart = () => {
+    setAddingToCart(true);
+    fetch('http://localhost:5000/api/cart/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product_id: product.id, quantity: 1 }),
+        credentials:'include',
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.json()
+                    .then(err => { throw new Error(err.error || 'Ошибка добавления в корзину') });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Товар добавлен:', data);
+            alert('Товар успешно добавлен в корзину!');
+            setAddingToCart(false);
+        })
+        .catch(err => {
+            console.error('Ошибка:', err.message);
+            alert(`Ошибка: ${err.message}`);
+            setAddingToCart(false);
+        });
+    };
 
   return (
 
@@ -25,7 +54,7 @@ function ProductCard({product,animationDelay}) {
         </div>
         <div className='group-bt-price'>
           <p className="price">{product.price} ₽</p>
-          <button>В корзину</button>
+          <button onClick={addToCart} disabled={addingToCart}>{addingToCart ? 'Добавляем...' : 'В корзину'}</button>
         </div>
       </div>
     </div>

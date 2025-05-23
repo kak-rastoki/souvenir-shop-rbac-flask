@@ -46,6 +46,8 @@
 
 
 
+
+
 .category-ul button:hover{
   border-radius: 10px;
   background-color:rgb(255, 255, 255);
@@ -53,26 +55,59 @@
   border:none;
 
 }
-
+.navigator .bt-menu{
+  position: relative;
+  float:right;
+  align-items:center ;
+  width: 30%;
+}
 
 #new-products-bt{
   width: 120px;
-  height: 40px;
+  height: 37px;
   font-family: "Evolventa Bold";
   background-color:#F98723;
   color:rgb(255, 255, 255);
   border:none;
   border-radius: 10px;
-  margin: 11px;
+  align-self: center;
   position: relative;
-  left: 10%;
+  margin:11px 0px 11px 20px;
   transition: .4s;
+  padding: 0px;
+  top:-3px;
 }
 
 #new-products-bt:hover{
   background-color:#c66f23;
   color:rgb(255, 255, 255);
 }
+
+.navigator .bt-cart {
+  font-family: "Evolventa Bold";
+  background-color:#f1f1f1;
+  color:rgb(255, 255, 255);
+  font-size: 20px;
+  width: 60px;
+  height: 40px;
+  align-self: center;
+  border-radius: 10px;
+  margin: 11px 0px 11px 20px;
+  transition: 0.5s;
+}
+
+.navigator .bt-cart:hover {
+  font-family: "Evolventa Bold";
+  background-color:#bebebe;
+  color:rgb(255, 255, 255);
+  font-size: 20px;
+  width: 60px;
+  height: 40px;
+  align-self: center;
+  border-radius: 10px;
+  margin: 11px 0px 11px 20px;
+}
+
 
 .metal-products{
   position: relative;

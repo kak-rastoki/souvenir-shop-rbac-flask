@@ -1,5 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import './Navigator.css'
+import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 
@@ -47,7 +49,10 @@ function Navigator({categoryChange}){
           </ul>
 
         </div>
-        <button id="new-products-bt">НОВИНКИ</button>
+        <div className="bt-menu">
+          <Link to={'/cart'}><button className='bt-cart'>🛒</button></Link>
+          <button id="new-products-bt">НОВИНКИ</button>
+        </div>
       </div>
 
       <div className='bread-crumbs'>

@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 
 function ProductPage() {
-    const {id} = useParams(); // параметр id передастся через строку url
+    const {id} = useParams();
     const [product, setProduct] = useState (null);
     const [loading,setLoading] = useState (true);
     const [error,setError] = useState (false);
@@ -139,6 +139,7 @@ function ProductPage() {
         </div>
     </div>
   )
+
 };
 
 export default ProductPage;

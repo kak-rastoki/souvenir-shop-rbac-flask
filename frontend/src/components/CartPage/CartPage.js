@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './CartPage.css';
-
+import  Link,{ useNavigate } from 'react-router-dom';
 
 function CartPage () {
   const [cart, setCart] = useState({ items: [], total_price: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect (() => {
     fetchCart();
@@ -93,6 +94,10 @@ function CartPage () {
       });
   };
 
+  const handleImageClick = (productId) => {
+    navigate(`/product/${productId}`); // Редирект на страницу продукта
+  };
+
   if (loading) return <p>Загрузка...</p>;
   if (error) return <p>{error}</p>;
 
@@ -117,7 +122,7 @@ function CartPage () {
             {cart.items.map((item) => (
               <div key={item.id} className="cart-item">
                 <div className="item-image">
-                  <img src={item.image} alt={item.name} />
+                  <img  onClick={() => handleImageClick(item.product_id)} src={`data:image/jpeg;base64,${item.image}`}  alt={item.name} />
                 </div>
                 <div className="item-details">
                   <h3>{item.name}</h3>
@@ -129,7 +134,7 @@ function CartPage () {
                   >
                     -
                   </button>
-                  <span>{item.quantity}</span>
+                  <span>х {item.quantity}</span>
                   <button
                     onClick={() => updateQuantity(item.product_id, item.quantity + 1)}
                   >
