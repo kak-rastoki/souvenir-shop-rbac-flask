@@ -33,6 +33,7 @@ function CartPage () {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ quantity }),
+      credentials:'include',
     })
       .then((response) => {
         if (!response.ok) throw new Error('Ошибка при обновлении');
@@ -46,6 +47,7 @@ function CartPage () {
   const removeFromCart = (productId) => {
     fetch(`http://localhost:5000/api/cart/remove/${productId}`, {
       method: 'DELETE',
+      credentials:'include',
     })
       .then((response) => {
         if (!response.ok) throw new Error('Ошибка при удалении');
@@ -61,6 +63,7 @@ function CartPage () {
   const clearCart = () => {
     fetch('http://localhost:5000/api/cart/clear', {
       method: 'DELETE',
+      credentials:'include',
     })
       .then((response) => {
         if (!response.ok) throw new Error('Ошибка при очистке');
@@ -74,6 +77,7 @@ function CartPage () {
   const checkout = () => {
     fetch('http://localhost:5000/api/cart/checkout', {
       method: 'POST',
+      credentials:'include',
     })
       .then((response) => response.json())
       .then((data) => {

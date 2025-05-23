@@ -1,16 +1,17 @@
 import io
 from flask import send_file, render_template, redirect, url_for, jsonify, request
 from api import api_bp
-from models import Product, Users, Categories, Order, OrderProduct, Currency
+from models import Product, Users, Categories, Order, OrderProduct, Currency, db
 import base64
 from sqlalchemy import desc
 from flask_login import login_required, current_user
+from decorators import custom_login_required
 
 # Получить содержимое корзины
 @api_bp.route('/api/cart', methods=['GET'])
 @login_required
 def get_cart():
-    # Ищем корзину текущего пользователя (Status_order = False)
+
     cart = Order.query.filter_by(id_user=current_user.ID_user, Status_order=False).first()
     if not cart:
         cart = Order(id_user=current_user.ID_user, Status_order=False, Data_order=db.func.current_date())
@@ -34,9 +35,13 @@ def get_cart():
     return jsonify({'items': items, 'total_price': total_price})
 
 # Добавить товар в корзину
+@custom_login_required
 @api_bp.route('/api/cart/add', methods=['POST'])
-@login_required
 def add_to_cart():
+    print(f"Current user: {current_user.ID_user if current_user.is_authenticated else 'Not authenticated'}")
+    print(f"Cookies in request: {request.cookies.get('session')}")
+
+    print("текущий пользователь: ", current_user)
     data = request.get_json()
     product_id = data.get('product_id')
     quantity = data.get('quantity', 1)
@@ -57,7 +62,7 @@ def add_to_cart():
             id_order=cart.ID_order,
             id_product=product_id,
             quantity=quantity,
-            id_currency=1  # Предполагаем, что валюта с ID=1 (например, рубли)
+            id_currency=1
         )
         db.session.add(cart_item)
 
@@ -119,7 +124,7 @@ def checkout():
     db.session.commit()
     return jsonify({'message': 'Заказ оформлен'})
 
-# Ваши существующие эндпоинты (без изменений)
+
 @api_bp.route('/api/product/<int:product_id>')
 def get_product_by_id(product_id):
     product = Product.query.filter_by(ID_product=product_id).first_or_404()

@@ -49,7 +49,7 @@ app.register_blueprint(api_bp)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Users.query.get(user_id) # возможно нужно обвернуть в int
+    return Users.query.get(int(user_id))
 
 
 
@@ -77,27 +77,27 @@ def showBase():
 
 
 
-@app.route('/add_to_cart', methods=['POST'])
-def add_to_cart():
-    try:
-        data = request.get_json()
+# @app.route('/add_to_cart', methods=['POST'])
+# def add_to_cart():
+#     try:
+#         data = request.get_json()
 
-        product_id = data.get('id')
-        product_name = data.get('name')
-        product_price = data.get('price')
+#         product_id = data.get('id')
+#         product_name = data.get('name')
+#         product_price = data.get('price')
 
-        if 'cart' not in session:
-            session['cart'] = []
+#         if 'cart' not in session:
+#             session['cart'] = []
 
-        session['cart'].append({
-            'id': product_id,
-            'name': product_name,
-            'price': product_price
-        })
+#         session['cart'].append({
+#             'id': product_id,
+#             'name': product_name,
+#             'price': product_price
+#         })
 
-        return jsonify({'success': True})
-    except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}), 400
+#         return jsonify({'success': True})
+#     except Exception as e:
+#         return jsonify({'success': False, 'error': str(e)}), 400
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5000, debug=True)
+    app.run(host="localhost", port=5000, debug=True)

@@ -73,7 +73,7 @@ def login():
         print("проверка не прошла")
         return redirect(url_for('auth.signup'))
 
-    session.clear()
+
     login_user(user)
     print(f'Пользователь: {user.Name_user} - авторизован')
     return redirect(url_for('index'))

@@ -52,6 +52,7 @@ function ProductPage() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ product_id: id, quantity: 1 }),
+            credentials:'include',
         })
             .then(response => {
                 if (!response.ok) {
