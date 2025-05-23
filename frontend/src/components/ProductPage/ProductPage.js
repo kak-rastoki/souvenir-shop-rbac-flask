@@ -10,11 +10,10 @@ function ProductPage() {
     const [product, setProduct] = useState (null);
     const [loading,setLoading] = useState (true);
     const [error,setError] = useState (false);
+    const [addingToCart, setAddingToCart] = useState(false);
 
     const fetchProduct = () => {
-        // let hasFetched = false;
-        // if (hasFetched) return; // Если запрос уже выполнен, выходим
-        // hasFetched = true;
+
         if (!id) {
             setError('Ошибка передачи ID товара');
             setLoading(false);
@@ -47,10 +46,31 @@ function ProductPage() {
 
     };
 
-
-
-
-
+    const addToCart = () => {
+        setAddingToCart(true);
+        fetch('http://localhost:5000/api/cart/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ product_id: id, quantity: 1 }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json()
+                        .then(err => { throw new Error(err.error || 'Ошибка добавления в корзину') });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Товар добавлен:', data);
+                alert('Товар успешно добавлен в корзину!');
+                setAddingToCart(false);
+            })
+            .catch(err => {
+                console.error('Ошибка:', err.message);
+                alert(`Ошибка: ${err.message}`);
+                setAddingToCart(false);
+            });
+    };
 
 
     useEffect(()=> {
@@ -102,7 +122,8 @@ function ProductPage() {
                 </div>
                 <div className="flex-group cost-button-container">
                     <p className="cost">{product.cost}₽</p>
-                    <button>В коризину</button>
+                    <button onClick={addToCart} disabled={addingToCart}>{addingToCart ? 'Добавляем...' : 'В корзину'}</button>
+
                 </div>
                 <div className="flex-group option-block">
                     <div className="flex-group option"><p>Артикул:</p><div className="tag"><p>12A34</p></div></div>
