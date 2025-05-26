@@ -3,6 +3,8 @@ import './ProductPage.css';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
+import AddToCartModal from "../AddToCartModal/AddToCartModal";
+
 
 
 function ProductPage() {
@@ -11,6 +13,8 @@ function ProductPage() {
     const [loading,setLoading] = useState (true);
     const [error,setError] = useState (false);
     const [addingToCart, setAddingToCart] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
 
     const fetchProduct = () => {
 
@@ -63,8 +67,13 @@ function ProductPage() {
             })
             .then(data => {
                 console.log('Товар добавлен:', data);
-                alert('Товар успешно добавлен в корзину!');
+
+                setIsModalOpen(true);
                 setAddingToCart(false);
+                setTimeout(() =>
+                {setIsModalOpen(false);
+                },3000);
+
             })
             .catch(err => {
                 console.error('Ошибка:', err.message);
@@ -137,6 +146,7 @@ function ProductPage() {
 
             </div>
         </div>
+        <AddToCartModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   )
 

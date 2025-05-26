@@ -113,21 +113,25 @@ def clear_cart():
 
 # Оформить заказ
 @api_bp.route('/api/cart/checkout', methods=['POST'])
-@login_required
+@custom_login_required
 def checkout():
     cart = Order.query.filter_by(id_user=current_user.ID_user, Status_order=False).first_or_404()
     if not cart.order_products:
         return jsonify({'error': 'Корзина пуста'}), 400
-
+    print (cart.ID_order);
     cart.Status_order = True
     cart.Data_order = db.func.current_date()
     db.session.commit()
-    return jsonify({'message': 'Заказ оформлен'})
+    return jsonify({
+        'message': 'Заказ оформлен',
+        'order_id': cart.ID_order
+        })
 
 
 @api_bp.route('/api/product/<int:product_id>')
 def get_product_by_id(product_id):
     product = Product.query.filter_by(ID_product=product_id).first_or_404()
+
     return jsonify({
         'id': product.ID_product,
         'name': product.Name_product,

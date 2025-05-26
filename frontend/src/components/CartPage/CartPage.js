@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './CartPage.css';
 import  Link,{ useNavigate } from 'react-router-dom';
+import CheckoutModal from '../CheckoutModal/СheckoutModal';
 
 function CartPage () {
   const [cart, setCart] = useState({ items: [], total_price: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [showCheckoutModal,setShowCheckoutModal] = useState (false);
+  const [orderId,setOrderId] = useState (null);
 
   useEffect (() => {
     fetchCart();
@@ -44,7 +47,7 @@ function CartPage () {
         setError('Ошибка при обновлении количества');
       });
   };
-
+  // Удаление из корзины
   const removeFromCart = (productId) => {
     fetch(`http://localhost:5000/api/cart/remove/${productId}`, {
       method: 'DELETE',
@@ -74,7 +77,7 @@ function CartPage () {
         setError('Ошибка при очистке корзины');
       });
   };
-
+  // Оформление заказа
   const checkout = () => {
     fetch('http://localhost:5000/api/cart/checkout', {
       method: 'POST',
@@ -83,8 +86,14 @@ function CartPage () {
       .then((response) => response.json())
       .then((data) => {
         if (data.message === 'Заказ оформлен') {
+          setOrderId(Number(data.order_id));
+          setShowCheckoutModal(true);
+          console.log (orderId);
           fetchCart();
-          alert('Заказ успешно оформлен!');
+
+          // alert('Заказ успешно оформлен!');
+          // setTimeout(()=> {setShowCheckoutModal(false)});
+
         } else {
           throw new Error(data.error || 'Ошибка при оформлении');
         }
@@ -92,6 +101,10 @@ function CartPage () {
       .catch((err) => {
         setError('Ошибка при оформлении заказа');
       });
+  };
+  const closeCheckoutModal = () => {
+    setShowCheckoutModal(false);
+    setOrderId(null);
   };
 
   const handleImageClick = (productId) => {
@@ -114,8 +127,10 @@ function CartPage () {
           </div>
         )}
       </div>
+
       {cart.items.length === 0 ? (
         <p className="empty-cart">Ваша корзина пуста</p>
+
       ) : (
         <>
           <div className="cart-items">
@@ -161,6 +176,11 @@ function CartPage () {
           </div>
         </>
       )}
+    <CheckoutModal
+        showCheckoutModal={showCheckoutModal}
+        closeCheckoutModal={closeCheckoutModal}
+        orderId={orderId}
+      />
     </div>
   );
 };
