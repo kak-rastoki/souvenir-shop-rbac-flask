@@ -1,0 +1,564 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+
+html{
+    height: 100%;
+}
+body {
+    font-family: "Roboto", serif;
+    margin: 0;
+    padding: 0;
+    background-image: linear-gradient(to left, #1e1e1e, #050541);
+       /* overflow-x: hidden;  убираем это свойство */
+    width:100%;
+      height: 100%; /* добавили эту строку */
+}
+
+
+.burger-img-a img {
+  display: none;
+}
+    /* Стили для экранов шириной 1080px и более (планшеты и десктопы) - по умолчанию */
+.container {
+    max-width: 1400px;
+    margin: 0px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+    .header {
+        color: #ebebeb;
+        padding: 10px 0;
+        text-align: center;
+        height: 100px;
+          display: flex;
+       justify-content: center;
+        align-items: center;
+      flex-direction: column;
+          padding-right: 400px;
+    }
+.AP-titile {
+    position: relative;
+    left:-140px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+.nav-wrapper {
+    display: block;
+     position: static; /* убрали */
+
+}
+
+.burger-btn {
+    display: none;
+}
+
+.nav {
+    padding: 10px;
+    text-align: center;
+
+    display: flex;
+    justify-content: center;
+     align-items: center;
+    background-color: transparent;
+    width: auto;
+     position: relative;
+      top: 0;
+    left: 0;
+}
+
+.nav a {
+    color: #a8bad4;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 1.2em;
+    padding: 0px;
+    display: inline;
+}
+
+.nav a:hover {
+    text-decoration: underline;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: row;
+    margin: 20px 0;
+
+}
+
+.form-section {
+    flex-basis: 35%;
+    padding-right: 20px;
+    border-right: 1px solid #ddd;
+    border-bottom: none;
+}
+
+.table-section {
+    flex-basis: 70%;
+    padding-left: 20px;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+    width: calc(100% - 12px);
+    max-width: 100%;
+    padding: 8px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    width: calc(100% - 12px);
+     max-width: 100%;
+    padding: 8px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-group .checkbox-container {
+    display: inline-flex;
+    margin-top: 5px;
+    align-items: center;
+}
+
+.form-group .checkbox-container input {
+    width: auto;
+    margin-right: 5px;
+}
+
+.form-group button {
+    background-color: #2a398a;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 35px;
+}
+
+.form-group button:hover {
+    background-color: #1d2a68;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    max-width: 100%;
+}
+
+.table th,
+.table td {
+    border: 1px solid #dddddd;
+    padding: 4px;
+    text-align: left;
+    background-color: #eaeaea2f;
+}
+
+
+
+.table th {
+    background-color: #f2f2f2;
+}
+
+.section-title {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin: 0px 5px;
+}
+
+.section-title-form {
+    padding-top: 10px;
+    position: relative;
+    top: -5px;
+}
+
+.title-line {
+    background-image: linear-gradient(to right, #a9a9a965, #eceaea28);
+    width: 100%;
+    position: relative;
+     left: -15px;
+    padding-left: 15px;
+}
+
+.flash-messages {
+    margin: 2px 20px;
+    color: rgb(204, 2, 2);
+    font-size: 13px;
+}
+
+.form-group:has(.flash-messages) {
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+}
+
+.form-cart {
+    border: 1px solid rgba(0, 0, 0, 0.19);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.06);
+    transition: 1s;
+    margin: 0px 0px 20px 0px;
+    background-color: #ffffff;
+    color: #262626;
+}
+
+.form-cart:hover {
+    box-shadow: 5px 10px 15px rgba(0, 0, 0, 0.381);
+    transition: 1s;
+}
+
+.func-button {
+    background-color: #dbd8d8;
+    border-radius: 10px;
+    color: white;
+    border: #ffffff00;
+    font-size: 12px;
+    margin: 3px;
+}
+
+.func-button:hover {
+    background-color: #f8656c8d;
+    border-radius: 10px;
+}
+
+.form-cart.highlight {
+    box-shadow: 0 0 10px 2px rgba(0, 123, 255, 0.799);
+    transition: box-shadow 0.5s ease;
+}
+
+#td-name-master {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    white-space: nowrap;
+}
+
+.title-table-icon {
+    display: flex;
+    margin: 10px;
+}
+
+/*  менее 1080px (мобильные устройства) */
+@media (max-width: 1080px) {
+
+    .header {
+        color: #ebebeb;
+        padding: 10px 0;
+        text-align: center;
+        height: 30px;
+    }
+
+
+    .burger-img-a{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    }
+
+    .burger-img-a img {
+        display: block;
+        margin: 0px 5px;
+    }
+
+  body {
+    background-image: none;
+    background-color: #050541;
+    width:100%;
+  }
+
+
+
+   .container {
+        margin: 0;
+        padding: 0;
+        border-radius: 0;
+      }
+    .header h1 {
+        font-size: 1.3em;
+        top: 0.6em;
+    }
+
+    .AP-titile {
+        position: relative;
+        left: 0;
+        top: 0;
+    }
+
+    .nav-wrapper {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .burger-btn {
+        position: fixed;
+        top: 16px;
+        left: 20px;
+        font-size: 1.3em;
+        background-color: rgb(185, 185, 185);
+        border-radius: 5px;
+        border: 1px solid rgb(187, 187, 187);
+        cursor: pointer;
+        z-index: 101;
+        display: block;
+    }
+
+    .nav-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 99;
+        display: none;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .nav-overlay.active {
+        display: block;
+        opacity: 1;
+    }
+
+    .nav {
+        overflow-y: auto;
+        width: 250px;
+        height: 100%;
+        padding: 10px;
+        padding-top: 20%;
+        text-align: left;
+        box-shadow: 2px 2px 30px rgba(30, 30, 30, 0.397);
+        position: fixed;
+        top: 0px;
+        font-size: 24px;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        background-color: #eeeeee;
+        z-index: 100;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        opacity: 0;
+        color: #000;
+        justify-content: flex-start;
+       align-items: start;
+       font-family: 'Roboto';
+    }
+
+    .nav.active {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    .content-wrapper {
+         position: relative;
+         z-index: 1;
+    }
+
+    .nav a {
+
+        margin: 5px;
+        font-size: 1.1em;
+        padding: 8px;
+        display: block;
+        text-align: left;
+        color: #000;
+           /* font-family: "Roboto", serif; */
+    }
+
+    .main-content {
+         flex-direction: column-reverse;
+
+        padding: 0px;
+    }
+
+    .form-section {
+        width: 100%;
+        padding: 0px;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+        flex-basis: auto;
+
+    }
+
+    .table-section {
+        width: 100%;
+        padding: 0px;
+        padding-left: 0;
+        flex-basis: auto;
+        overflow-x: auto;
+    }
+
+    .section-title {
+         font-size: 1.2em;
+         margin: 0 5px;
+    }
+
+    .section-title-form {
+        padding-top: 8px;
+        position: relative;
+        top: -5px;
+         margin: 0 5px;
+    }
+
+    .title-line {
+       width: 100%;
+        position: relative;
+         left: 0;
+          padding-left: 10px;
+          margin: 0;
+    }
+
+    .flash-messages {
+        margin: 2px 10px;
+        font-size: 12px;
+    }
+
+    .form-group:has(.flash-messages) {
+        height: 40px;
+    }
+
+    .form-cart {
+        margin: 0px 0px 10px 0px;
+         padding: 10px;
+         border: none;
+         box-shadow: none;
+    }
+
+      .form-cart:hover{
+         box-shadow: none;
+    }
+
+   .title-table-icon{
+          margin: 10px;
+    }
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  max-width: 100%;
+ }
+
+
+ @media (min-width: 2200px) {
+  .container {
+    max-width: 80%; /* Увеличение max-width */
+
+  }
+
+  .header {
+      height: 150px;  /* Увеличение высоты */
+
+      padding-right: 600px;
+    }
+
+  .AP-titile {
+    left: -250px;
+  }
+  .header h1 {
+    font-size: 3em; /* Увеличение размера шрифта заголовка */
+  }
+
+  h1 {
+    font-size: 1.6em; /* Увеличение размера шрифта заголовка */
+  }
+
+  .nav {
+    font-size: 1.5em; /* Увеличение размера шрифта навигации */
+    padding: 20px;
+  }
+
+  .nav a {
+    margin: 0 25px; /* Увеличение отступов */
+    font-size: 1.4em;
+  }
+
+  .main-content {
+    margin: 40px 0; /* Увеличение отступа контента */
+  }
+
+
+  .form-section {
+    padding-right: 40px;
+    font-size: 1.2em;
+  }
+
+
+
+  .table-section {
+    padding-left: 40px; /* Увеличение паддинга */
+    font-size: 25px;
+  }
+  .form-group {
+    margin-bottom: 20px; /* Увеличение отступов */
+  }
+
+ .form-group input,
+    .form-group select,
+  .form-group textarea{
+      padding: 12px;  /* Увеличение паддинга */
+      font-size: 1.2em;
+  }
+
+  .form-group label{
+        margin-bottom: 10px; /* Увеличение отступа для label */
+    font-size: 1.2em; /* Увеличение размера шрифта для label */
+  }
+
+   .form-group button {
+    padding: 10px 20px;  /* Увеличение паддинга */
+      font-size: 1.2em;  /* Увеличение размера шрифта */
+  }
+
+   .section-title {
+        font-size: 2em;  /* Увеличение размера шрифта */
+     margin-bottom: 20px;   /* Увеличение отступов */
+    }
+   .flash-messages {
+
+        font-size: 1.2em;  /* Увеличение размера шрифта */
+    }
+    .title-table-icon{
+         margin: 20px;  /* Увеличение отступов */
+    }
+}
+
+
+.form-group-image{
+    display: flex;
+    justify-content: center;
+    width: 400px;
+    overflow:hidden;
+}
+
+.form-group-image img{
+
+    object-fit: cover;
+    object-position: center;
+    width:300px;
+    height:300px;
+    border:5px solid rgba(0, 0, 0, 0.284);
+    border-radius:10px;
+    box-shadow: 2px 4px 20px 2px rgba(0, 0, 0, 0.41);
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель администратора</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='image/Icons/site-icon.ico') }}" type="image/x-icon">
+</head>
+
+<body>
+   <div class="container1">  <!-- Обёртываем header и nav-wrapper в container -->
+    <header class="header">
+        <h1 class="AP-titile">Панель администратора</h1>
+        <div class="nav-wrapper">
+            <button class="burger-btn" onclick="toggleMenu()">☰</button>
+            <div class="nav-overlay" onclick="toggleMenu()"></div>
+            <nav class="nav" id="mainNav">
+                <div class="burger-img-a">
+                    <img src="{{url_for('static',filename='image/Icons/tags.svg')}}" width=30px>
+                    <a href="{{url_for('admin.Admin_products')}}">Товары</a>
+                </div>
+                <div class="burger-img-a">
+                    <img src="{{url_for('static',filename='image/Icons/user.svg')}}" width=30px>
+                    <a href="{{url_for('admin.Admin_users')}}">Пользователи</a>
+                </div>
+                <div class="burger-img-a">
+                    <img src="{{url_for('static',filename='image/Icons/hammer.svg')}}" width=30px>
+                    <a href="{{url_for('admin.Admin_masters')}}">Мастера</a>
+                </div>
+
+                <div class="burger-img-a">
+                    <img src="{{url_for('static',filename='image/Icons/box-archive.svg')}}" width=30px>
+                    <a href="#">Заказы</a>
+                </div>
+
+                <div class="burger-img-a">
+                    <img src="{{url_for('static',filename='image/Icons/rectangle-list.svg')}}" width=30px>
+                    <a href="{{url_for('admin.Admin_categories')}}">Категории</a>
+                </div>
+
+                <div class="burger-img-a">
+                    <img src="{{url_for('static',filename='image/Icons/comment-dots.svg')}}" width=30px>
+                    <a href="#">Отзывы</a>
+                </div>
+
+
+            </nav>
+        </div>
+    </header>
+
+    <div class="content-wrapper">
+        {% block content %}
+        {% endblock %}
+        <div class="absolute-background"></div>
+    </div>
+   </div> <!-- Закрываем обертку container -->
+
+    <script>
+        function toggleMenu() {
+            const nav = document.getElementById('mainNav');
+            nav.classList.toggle('active');
+              document.body.classList.toggle('menu-open');
+            const navOverlay = document.querySelector('.nav-overlay');
+              navOverlay.classList.toggle('active');
+        }
+    </script>
+</body>
+
+</html>
