@@ -4,6 +4,7 @@ import io
 from flask_login import LoginManager, current_user
 from models import Users, Product, db
 from flask_cors import CORS
+from flask_migrate import Migrate
 
 import logging
 
@@ -13,8 +14,9 @@ logging.basicConfig(level=logging.DEBUG)
 CORS(app, origins="http://localhost:3000", supports_credentials=True, methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///woodyDB.db'
 app.secret_key = '1111'
-# db = SQLAlchemy(app)
 db.init_app(app)
+
+migrate = Migrate(app, db)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -39,11 +41,13 @@ from auth import auth_bp
 from admin import admin_bp
 from handler import handler_bp
 from api import api_bp
+from seller import seller_bp
 
 app.register_blueprint(handler_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(admin_bp)
 app.register_blueprint(api_bp)
+app.register_blueprint(seller_bp)
 
 
 

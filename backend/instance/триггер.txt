@@ -1,0 +1,19 @@
+CREATE TRIGGER set_default_avatar
+AFTER INSERT ON Users
+FOR EACH ROW
+WHEN NEW.avatar IS NULL
+BEGIN
+    UPDATE Users
+    SET avatar = (SELECT image_data FROM default_images WHERE image_type = 'avatar')
+    WHERE ID_user = NEW.ID_user;
+END
+
+CREATE TRIGGER set_default_product_image
+AFTER INSERT ON Product
+FOR EACH ROW
+WHEN NEW.image_product IS NULL
+BEGIN
+    UPDATE Product
+    SET image_product = (SELECT image_data FROM default_images WHERE image_type = 'product')
+    WHERE id_product = NEW.id_product;
+END

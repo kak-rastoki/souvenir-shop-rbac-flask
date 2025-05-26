@@ -7,7 +7,7 @@
 
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
-
+from sqlalchemy import func
 
 db = SQLAlchemy()
 
@@ -93,12 +93,18 @@ class Currency(db.Model):
     currency_name = db.Column(db.String, nullable=False)
     symbol = db.Column(db.String, nullable=False)
 
+class OrderStatus:
+    CART = 'неактивен'
+    PENDING = 'активен'
+    COMPLETED = 'завершен'
+    CANCELLED = 'отменен'
+
 class Order(db.Model):
     __tablename__ = 'Order'
     ID_order = db.Column(db.Integer, primary_key=True)
     id_user = db.Column(db.Integer, db.ForeignKey('Users.ID_user'))
-    Data_order = db.Column(db.Date)
-    Status_order = db.Column(db.Boolean, default=False)
+    Data_order = db.Column(db.DateTime, default=func.now())
+    Status_order = db.Column(db.String(50), default=OrderStatus.CART, nullable=False)
 
     user = db.relationship('Users', backref='orders')
 

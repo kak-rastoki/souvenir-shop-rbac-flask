@@ -49,9 +49,9 @@ def registration():
 
     )
 
-    # добавление дефолтного аватара
-    with open('static/img/default_avatar.png', 'rb') as f:
-       new_user.avatar = f.read()
+    # # добавление дефолтного аватара
+    # with open('static/img/default_avatar.png', 'rb') as f:
+    #    new_user.avatar = f.read()
 
     db.session.add(new_user)
     db.session.commit()
