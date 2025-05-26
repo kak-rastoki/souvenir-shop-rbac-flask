@@ -13,7 +13,7 @@ function CheckoutModal ({showCheckoutModal, closeCheckoutModal,orderId }) {
     <div className="modal-overlay" onClick={closeCheckoutModal}>
       <div className="modal-checkout" onClick={(e) => e.stopPropagation()}>
         <div className="content modal-enter">
-          <h2>✅ Ваш заказ оформлен</h2>
+          <h2>Ваш заказ оформлен</h2>
           <div className="number-group">
             <p>Номер заказа:</p>
             <div className="checkoutIdfield">
@@ -21,7 +21,7 @@ function CheckoutModal ({showCheckoutModal, closeCheckoutModal,orderId }) {
             </div>
           </div>
           <button className="close-button" onClick={closeCheckoutModal}>
-            ✕
+            ✖
           </button>
         </div>
       </div>
