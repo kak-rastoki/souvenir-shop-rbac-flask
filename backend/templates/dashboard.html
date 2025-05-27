@@ -1,0 +1,71 @@
+{% extends 'sellerbase.html' %}
+
+{% block title %}Дашборд Продавца{% endblock %}
+
+
+
+{% block content %}
+    <div class="container">
+        <div class="main-content">
+            <div class="table-section" style="flex-basis: 100%;">
+                <div class="title-table-icon">
+
+                    <h2 class="section-title">📋 Сводка по Панели Продавца</h2>
+                </div>
+                <p>Добро пожаловать в панель продавца, {{ current_user.Name_user }}!</p>
+                <p>Здесь вы сможете управлять товарами, отслеживать заказы, а также редактировать категории и данные мастеров.</p>
+
+
+                <div class="dashboard-widgets-grid">
+                    <div class="form-cart dashboard-widget">
+                        <h3>Последние Заказы <img src="{{ url_for('static', filename='image/Icons/box-archive.svg') }}" class="widget-icon" width="25px" alt="Orders"></h3>
+                        {% if latest_orders %}
+                            <ul>
+                                {% for order in latest_orders %}
+                                    <li>Заказ {{ order.ID_order }} от {{ order.Data_order.strftime('%Y-%m-%d %H:%M') }} (Статус: {{ order.Status_order }})</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>Пока нет новых заказов.</p>
+                        {% endif %}
+                        <p><a href="{{ url_for('seller.show_orders') }}">Посмотреть все заказы</a></p>
+                    </div>
+
+                    <div class="form-cart dashboard-widget">
+                        <h3>Общая Статистика 📊 </h3>
+                        <p>Всего товаров: {{ total_products }}</p>
+                        <p>Всего заказов: {{ total_orders }}</p>
+                        <p>Завершенных заказов: {{ completed_orders_count }}</p>
+                        <p>Заказов в обработке (активных): {{ pending_orders_count }}</p>
+                        <p>Заказов в корзине (неактивных): {{ cart_orders_count }}</p>
+
+                    </div>
+
+                    <div class="form-cart dashboard-widget">
+                        <h3>Управление Товарами <img src="{{ url_for('static', filename='image/Icons/tags.svg') }}" class="widget-icon" width="25px" alt="Products"></h3>
+                        <p>Добавляйте, редактируйте и удаляйте товары.</p>
+                        {# <p><a href="{{ url_for('seller.products') }}">Перейти к товарам</a></p>#}
+                    </div>
+
+                    <div class="form-cart dashboard-widget">
+                        <h3>Управление Категориями <img src="{{ url_for('static', filename='image/Icons/rectangle-list.svg') }}" class="widget-icon" width="10px" alt="Categories"></h3>
+                        <p>Добавляйте, редактируйте и удаляйте категории товаров.</p>
+                       {# <p><a href="{{ url_for('seller.categories') }}">Перейти к категориям</a></p>#}
+                    </div>
+
+                    <div class="form-cart dashboard-widget">
+                        <h3>Управление Мастерами <img src="{{ url_for('static', filename='image/Icons/hammer.svg') }}" class="widget-icon" width="25px" alt="Masters"></h3>
+                        <p>Добавляйте и редактируйте информацию о мастерах.</p>
+                        {# <p><a href="{{ url_for('seller.masters') }}">Перейти к мастерам</a></p> #}
+                    </div>
+
+                     <div class="form-cart dashboard-widget">
+                        <h3>Отзывы <img src="{{ url_for('static', filename='image/Icons/comment-dots.svg') }}" class="widget-icon" width="25px" alt="Reviews"></h3>
+                        <p>Просматривайте и управляйте отзывами пользователей.</p>
+                        {# <p><a href="{{ url_for('seller.reviews_dummy') }}">Перейти к отзывам</a></p> #}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
