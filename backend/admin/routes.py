@@ -203,9 +203,14 @@ def edit_product():
         edit_master = request.form.get('editMaster')
         edit_category = request.form.get('editCategory')
         edit_description = request.form.get('editDescription')
-        edit_file = request.files['editFile']
+        edit_file = request.files.get('editFile')
+
 
         product = Product.query.get(edit_code)
+        current_image_data = product.image_product
+        if not product:
+            flash("Ошибка: Продукт для редактирования не найден.", "error2")
+            return redirect(url_for('admin.Admin_products'))
 
         print (str(edit_name))
         # Валидация
@@ -221,6 +226,12 @@ def edit_product():
         #     error_messages["priceisint"] = "Цена должна быть числом!"
         #     return redirect(url_for('AP_add_product')) # Передаем ошибки
 
+        if edit_file and edit_file.filename != '':
+            if allowed_file(edit_file.filename):
+                product.image_product = edit_file.read() if edit_file else None
+            else:
+                flash("Недопустимый тип файла изображения. Разрешены: png, jpg, jpeg, gif.", "error2")
+                return redirect(url_for('admin.Admin_products'))
 
         if product:
             #Сохраняем данные
@@ -230,11 +241,10 @@ def edit_product():
             product.id_master = edit_master
             product.id_category = edit_category
             product.Description_product = edit_description
-            product.image_product = edit_file.read() if edit_file else None;
+
         else:
             print (f'Внутренняя ошибка сервера. Продукт {product.ID_product} {product.Name_product} - не найден')
             error_messages = "Продукт не найден"
-
 
         if  error_messages:
            flash(error_messages, 'error2')
