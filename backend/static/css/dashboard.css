@@ -8,6 +8,14 @@
   margin-top: 20px;
   justify-content: space-around; /* Распределение виджетов */
 }
+a:hover{
+  color: #939393;
+  transition: 0.4s;
+}
+a{
+  transition: 0.3s;
+}
+
 
 /* Стили для каждого виджета (используем уже существующий form-cart) */
 .dashboard-widget {

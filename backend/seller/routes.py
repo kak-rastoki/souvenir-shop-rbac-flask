@@ -4,7 +4,7 @@ from datetime import datetime
 import base64
 from flask import render_template,url_for, redirect, request, jsonify, get_flashed_messages,flash,current_app
 from decorators import admin_required,seller_required
-from models import db, Users, Masters, Categories, Product, Genders, Order, OrderProduct, Review, OrderStatus
+from models import db, Users, Masters, Categories, Product, Genders, Order, OrderProduct, Review, OrderStatus, Currency
 from sqlalchemy import func
 import base64
 from PIL import Image
@@ -15,7 +15,7 @@ THUMBNAIL_SIZE = 50
 @seller_bp.route('/seller')
 @login_required
 @seller_required
-def show_orders():
+def show_dashboard():
   return redirect(url_for('seller.dashboard'))
 
 
@@ -41,7 +41,7 @@ def dashboard():
     latest_orders = Order.query.order_by(Order.Data_order.desc()).limit(5).all()
 
 
-    return render_template('/dashboard.html',
+    return render_template('dashboard.html',
                             total_products=total_products,
                             total_orders=total_orders,
                             completed_orders_count=completed_orders_count,
@@ -115,7 +115,7 @@ def products():
             'image_thumbnail_b64': image_thumbnail_b64 # Миниатюра в Base64
         })
 
-    # Используем категории flash-сообщений 'error' и 'success'
+
     errors = get_flashed_messages(category_filter=['error'])
     success_messages = get_flashed_messages(category_filter=['success'])
 
@@ -283,3 +283,431 @@ def add_product():
 
         flash("Товар успешно добавлен!", "success")
         return redirect(url_for('seller.products'))
+
+# детали
+@seller_bp.route('/seller/products/<int:product_id>')
+@login_required
+@seller_required
+def view_product_details(product_id):
+    product = Product.query.options(
+        db.joinedload(Product.category),
+        db.joinedload(Product.master).joinedload(Masters.gender) # Загружаем и пол мастера
+    ).get_or_404(product_id)
+
+    # Преобразуем изображение в base64 для отображения
+    image_b64 = None
+    if product.image_product:
+        try:
+            # Для детальной страницы можно отправить оригинальное изображение
+            # или сгенерировать более крупную версию, если THUMBNAIL_SIZE слишком мал
+            # Для простоты, пока отправляем оригинальное (или триггерное дефолтное)
+            image_b64 = base64.b64encode(product.image_product).decode('utf-8')
+        except Exception as e:
+            current_app.logger.error(f"Ошибка кодирования изображения для деталей товара {product.ID_product}: {e}")
+            image_b64 = None
+
+    return render_template('seller/product_details.html',
+                           product=product,
+                           image_b64=image_b64)
+
+
+# --- ЗАКАЗЫ ---
+# --- МАРШРУТЫ ДЛЯ ЗАКАЗОВ ПРОДАВЦА ---
+
+@seller_bp.route('/seller/orders') # ИСПРАВЛЕНО: маршрут теперь /seller/orders
+@login_required
+@seller_required
+def show_orders():
+    # Используем db.contains_eager для более эффективной загрузки связанных данных
+    # Если Order.user, OrderProduct.product, OrderProduct.currency имеют обратные ссылки (backref)
+    # то db.joinedload или db.subqueryload могут быть более подходящими.
+    # Для joinedload, добавь его к запросу:
+    orders = Order.query.options(
+        db.joinedload(Order.user),
+        db.joinedload(Order.order_products).joinedload(OrderProduct.product),
+        db.joinedload(Order.order_products).joinedload(OrderProduct.currency)
+    ).order_by(Order.Data_order.desc()).all()
+
+
+    orders_data = []
+    for order in orders:
+        # User:
+        user_name = order.user.Name_user if order.user else 'Удаленный пользователь'
+        user_mail = order.user.mail_user if order.user else 'N/A'
+        phone_number = order.user.phone_number if order.user else 'N/A'
+
+        total_sum = 0
+        products_in_order = []
+        for op in order.order_products: # Теперь `order.order_products` уже загружен
+            # Проверки на None нужны, если связанные объекты могут быть None
+            product = op.product
+            currency = op.currency
+
+            if product and currency:
+                item_price = product.Cost_product * op.quantity
+                total_sum += item_price
+                products_in_order.append({
+                    'ID_product': product.ID_product,
+                    'Name_product': product.Name_product,
+                    'quantity': op.quantity,
+                    'Cost_product': product.Cost_product,
+                    'currency_symbol': currency.symbol
+                })
+            elif product: # Если нет валюты, но есть продукт
+                item_price = product.Cost_product * op.quantity
+                total_sum += item_price
+                products_in_order.append({
+                    'ID_product': product.ID_product,
+                    'Name_product': product.Name_product,
+                    'quantity': op.quantity,
+                    'Cost_product': product.Cost_product,
+                    'currency_symbol': 'руб.' # Дефолтная валюта
+                })
+
+        orders_data.append({
+            'ID_order': order.ID_order,
+            'user_name': user_name,
+            'user_mail': user_mail,
+            'phone_number': phone_number,
+            'Data_order': order.Data_order.strftime('%Y-%m-%d %H:%M:%S'),
+            'Status_order': order.Status_order, # Это уже строковое значение
+            'total_sum': total_sum, # ИСПРАВЛЕНО: добавлено total_sum
+            'products_in_order': products_in_order,
+        })
+
+    available_statuses = ['неактивен', 'активен', 'завершен']
+
+    errors = get_flashed_messages(category_filter=['error'])
+    success_messages = get_flashed_messages(category_filter=['success'])
+
+    return render_template('seller/orders.html',
+                           orders=orders_data,
+                           available_statuses=available_statuses,
+                           errors=errors,
+                           success_messages=success_messages)
+
+# Маршрут для просмотра деталей заказа (отдельная страница)
+@seller_bp.route('/seller/orders/<int:order_id>')
+@login_required
+@seller_required
+def view_order_details(order_id):
+    order = Order.query.options(
+        db.joinedload(Order.user),
+        db.joinedload(Order.order_products).joinedload(OrderProduct.product),
+        db.joinedload(Order.order_products).joinedload(OrderProduct.currency)
+    ).get_or_404(order_id)
+
+    user = order.user
+
+    total_sum = 0
+    products_in_order = []
+    for op in order.order_products:
+        product = op.product
+        currency = op.currency
+
+        if product and currency:
+            item_price = product.Cost_product * op.quantity
+            total_sum += item_price
+            products_in_order.append({
+                'ID_product': product.ID_product,
+                'Name_product': product.Name_product,
+                'quantity': op.quantity,
+                'Cost_product': product.Cost_product,
+                'currency_symbol': currency.symbol
+            })
+        elif product: # Если нет валюты, но есть продукт
+            item_price = product.Cost_product * op.quantity
+            total_sum += item_price
+            products_in_order.append({
+                'ID_product': product.ID_product,
+                'Name_product': product.Name_product,
+                'quantity': op.quantity,
+                'Cost_product': product.Cost_product,
+                'currency_symbol': 'руб.' # Дефолтная валюта
+            })
+
+
+    return render_template('seller/order_details.html',
+                           order=order,
+                           user=user,
+                           products_in_order=products_in_order,
+                           total_sum=total_sum)
+
+# Маршрут для изменения статуса заказа
+@seller_bp.route('/seller/orders/update_status', methods=['POST'])
+@login_required
+@seller_required
+def update_order_status():
+    order_id = request.form.get('order_id')
+    new_status = request.form.get('new_status')
+
+    order = Order.query.get(order_id)
+    if not order:
+        flash("Ошибка: Заказ не найден.", "error")
+        return redirect(url_for('seller.show_orders'))
+
+    # Проверка на допустимость статуса
+    if new_status not in ['неактивен', 'активен', 'завершен']:
+        flash(f"Ошибка: Недопустимый статус '{new_status}'.", "error")
+        return redirect(url_for('seller.show_orders'))
+
+    order.Status_order = new_status
+    db.session.commit()
+    flash(f"Статус заказа #{order_id} успешно изменен на '{new_status}'.", "success")
+    return redirect(url_for('seller.show_orders'))
+
+# Маршрут для удаления заказа
+@seller_bp.route('/seller/orders/delete/<int:order_id>', methods=['POST'])
+@login_required
+@admin_required
+def delete_order(order_id):
+    order = Order.query.get(order_id)
+    if not order:
+        flash(f'Ошибка: Заказ с ID {order_id} не найден.', 'error')
+        return redirect(url_for('seller.show_orders'))
+
+    try:
+        # Сначала удаляем связанные OrderProduct
+        OrderProduct.query.filter_by(id_order=order.ID_order).delete()
+
+        db.session.delete(order)
+        db.session.commit()
+        flash(f'Заказ #{order_id} успешно удален.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Ошибка при удалении заказа #{order_id}: {str(e)}', 'error')
+
+    return redirect(url_for('seller.show_orders'))
+
+# ---КАТЕГОРИИ ---
+
+# Маршрут для отображения списка категорий
+@seller_bp.route('/seller/categories')
+@login_required
+@seller_required
+def categories():
+    categories = Categories.query.all()
+
+    errors = get_flashed_messages(category_filter=['error'])
+    success_messages = get_flashed_messages(category_filter=['success'])
+
+    return render_template('seller/categories.html',
+                           categories=categories,
+                           errors=errors,
+                           success_messages=success_messages)
+
+# Маршрут для добавления категории
+@seller_bp.route('/seller/categories/add', methods=['POST'])
+@login_required
+@seller_required
+def add_category():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        description = request.form.get('description')
+
+        if not name:
+            flash("Наименование категории обязательно для заполнения!", 'error')
+            return redirect(url_for('seller.categories'))
+
+        new_category = Categories(
+            Name_category=name,
+            Discription_category=description
+        )
+        db.session.add(new_category)
+        db.session.commit()
+
+        flash("Категория успешно добавлена!", 'success')
+        return redirect(url_for('seller.categories'))
+
+# Маршрут для получения данных категории по ID (для формы редактирования)
+@seller_bp.route('/seller/category_data/<int:category_id>', methods=['GET'])
+@login_required
+@seller_required
+def get_category_data_for_edit(category_id):
+    category = Categories.query.get_or_404(category_id)
+
+    category_data = {
+        'ID_categories': category.ID_categories,
+        'Name_category': category.Name_category,
+        'Discription_category': category.Discription_category
+    }
+    return jsonify(category_data)
+
+# Маршрут для редактирования категории
+@seller_bp.route('/seller/categories/edit', methods=['POST'])
+@login_required
+@seller_required
+def edit_category():
+    if request.method == 'POST':
+        edit_code = request.form.get('editCode')
+        edit_name = request.form.get('editName')
+        edit_description = request.form.get('editDescription')
+
+        category = Categories.query.get(edit_code)
+
+        if not category:
+            flash("Ошибка: Категория для редактирования не найдена.", "error")
+            return redirect(url_for('seller.categories'))
+
+        if not edit_name:
+            flash("Наименование категории обязательно для заполнения!", 'error')
+            return redirect(url_for('seller.categories'))
+
+        category.Name_category = edit_name
+        category.Discription_category = edit_description
+
+        db.session.commit()
+        flash("Изменения категории выполнены успешно!", "success")
+        return redirect(url_for('seller.categories'))
+
+# Маршрут для удаления категории
+@seller_bp.route('/seller/categories/delete/<int:category_id>', methods=['POST'])
+@login_required
+@seller_required
+def delete_category(category_id):
+    category = Categories.query.get(category_id)
+    if not category:
+        flash(f'Ошибка: Категория с ID {category_id} не найдена.', 'error')
+        return redirect(url_for('seller.categories'))
+
+    try:
+        # Проверка наличия связанных товаров (если ON DELETE CASCADE не настроен в БД)
+        # Если есть связанные товары, сначала нужно их обнулить или удалить,
+        # иначе возникнет IntegrityError.
+        db.session.delete(category)
+        db.session.commit()
+        flash(f'Категория "{category.Name_category}" успешно удалена.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        # Если произошла ошибка из-за связанных данных (например, IntegrityError),
+        # то можно добавить более конкретное сообщение
+        if "FOREIGN KEY constraint failed" in str(e):
+             flash(f'Невозможно удалить категорию "{category.Name_category}", так как существуют связанные товары.', 'error')
+        else:
+            flash(f'Ошибка при удалении категории "{category.Name_category}": {str(e)}', 'error')
+
+    return redirect(url_for('seller.categories'))
+
+
+# --- МАСТЕРА ---
+# Маршрут для отображения списка мастеров
+@seller_bp.route('/seller/masters')
+@login_required
+@seller_required
+def masters():
+    masters = Masters.query.options(db.joinedload(Masters.gender)).all()
+
+    masters_data = []
+    for master in masters:
+        masters_data.append({
+            'ID_master': master.ID_master,
+            'Name_master': master.Name_master,
+            'id_gender': master.id_gender,
+            'gender_name': master.gender.gender_name if master.gender else 'Неизвестно'
+        })
+
+    errors = get_flashed_messages(category_filter=['error'])
+    success_messages = get_flashed_messages(category_filter=['success'])
+    genders = Genders.query.all() # Для формы добавления/редактирования
+
+    return render_template('seller/masters.html',
+                           masters=masters_data,
+                           genders=genders,
+                           errors=errors,
+                           success_messages=success_messages)
+
+# Маршрут для добавления мастера
+@seller_bp.route('/seller/masters/add', methods=['POST'])
+@login_required
+@seller_required
+def add_master():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        gender_id = request.form.get('gender')
+
+        if not name:
+            flash("Наименование мастера обязательно для заполнения!", 'error')
+            return redirect(url_for('seller.masters'))
+
+        if not gender_id or gender_id == "": # Проверка, что пол выбран
+            flash("Выберите пол мастера!", 'error')
+            return redirect(url_for('seller.masters'))
+
+        new_master = Masters(
+            Name_master=name,
+            id_gender=gender_id,
+        )
+        db.session.add(new_master)
+        db.session.commit()
+
+        flash("Мастер успешно добавлен!", 'success')
+        return redirect(url_for('seller.masters'))
+
+# Маршрут для получения данных мастера по ID (для формы редактирования)
+@seller_bp.route('/seller/master_data/<int:master_id>', methods=['GET'])
+@login_required
+@seller_required
+def get_master_data_for_edit(master_id):
+    master = Masters.query.get_or_404(master_id)
+
+    master_data = {
+        'ID_master': master.ID_master,
+        'Name_master': master.Name_master,
+        'id_gender': master.id_gender
+    }
+    return jsonify(master_data)
+
+# Маршрут для редактирования мастера
+@seller_bp.route('/seller/masters/edit', methods=['POST'])
+@login_required
+@seller_required
+def edit_master():
+    if request.method == 'POST':
+        edit_code = request.form.get('editCode')
+        edit_name = request.form.get('editName')
+        edit_gender_id = request.form.get('editGender')
+
+        master = Masters.query.get(edit_code)
+
+        if not master:
+            flash("Ошибка: Мастер для редактирования не найден.", "error")
+            return redirect(url_for('seller.masters'))
+
+        if not edit_name:
+            flash("Наименование мастера обязательно для заполнения!", 'error')
+            return redirect(url_for('seller.masters'))
+
+        if not edit_gender_id or edit_gender_id == "": # Проверка, что пол выбран
+            flash("Выберите пол мастера!", 'error')
+            return redirect(url_for('seller.masters'))
+
+        master.Name_master = edit_name
+        master.id_gender = edit_gender_id
+
+        db.session.commit()
+        flash("Изменения мастера выполнены успешно!", "success")
+        return redirect(url_for('seller.masters'))
+
+# Маршрут для удаления мастера
+@seller_bp.route('/seller/masters/delete/<int:master_id>', methods=['POST'])
+@login_required
+@seller_required
+def delete_master(master_id):
+    master = Masters.query.get(master_id)
+    if not master:
+        flash(f'Ошибка: Мастер с ID {master_id} не найден.', 'error')
+        return redirect(url_for('seller.masters'))
+    try:
+        products_by_master = Product.query.filter_by(id_master=master.ID_master).all()
+        if products_by_master:
+            flash(f'Невозможно удалить мастера "{master.Name_master}", так как существуют связанные товары. Сначала переназначьте или удалите эти товары.', 'error')
+            return redirect(url_for('seller.masters'))
+
+        db.session.delete(master)
+        db.session.commit()
+        flash(f'Мастер "{master.Name_master}" успешно удален.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Ошибка при удалении мастера "{master.Name_master}": {str(e)}', 'error')
+
+    return redirect(url_for('seller.masters'))

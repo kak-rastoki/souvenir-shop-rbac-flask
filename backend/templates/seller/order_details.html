@@ -1,0 +1,56 @@
+{# backend/seller/templates/order_details.html #}
+{% extends 'sellerbase.html' %}
+
+{% block title %}Продавец - Детали Заказа #{{ order.ID_order }}{% endblock %}
+
+{% block header_title %}🗂️ Детали Заказа #{{ order.ID_order }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="main-content">
+            <div class="table-section" style="flex-basis: 100%;">
+                <div class="title-table-icon">
+
+                    <h2 class="section-title">🗂️ Информация о Заказе</h2>
+                </div>
+
+                <section class="form-cart" style="margin-bottom: 20px;">
+                    <h3>Общая информация</h3>
+                    <p><strong>Код заказа:</strong> {{ order.ID_order }}</p>
+                    <p><strong>Пользователь:</strong> {{ user.Name_user if user else 'Неизвестный пользователь' }}</p>
+                    <p><strong>Email пользователя:</strong> {{ user.mail_user if user else 'Неизвестно' }}</p>
+                    <p><strong>Дата заказа:</strong> {{ order.Data_order.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                    <p><strong>Статус заказа:</strong> {{ order.Status_order }}</p>
+                    <p><strong>Общая сумма:</strong> {{ "%.2f"|format(total_sum) }}</p>
+                    <p><a href="{{ url_for('seller.show_orders') }}">← Назад к списку заказов</a></p>
+                </section>
+
+                <section class="form-cart">
+                    <h3>Товары в Заказе</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Код товара</th>
+                                <th>Наименование</th>
+                                <th>Количество</th>
+                                <th>Цена за ед.</th>
+                                <th>Сумма</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in products_in_order %}
+                                <tr>
+                                    <td>{{ item.ID_product }}</td>
+                                    <td>{{ item.Name_product }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>{{ "%.2f"|format(item.Cost_product) }} {{ item.currency_symbol }}</td>
+                                    <td>{{ "%.2f"|format(item.Cost_product * item.quantity) }} {{ item.currency_symbol }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}

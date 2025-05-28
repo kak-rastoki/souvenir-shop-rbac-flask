@@ -1,8 +1,8 @@
 {# backend/seller/templates/products.html #}
 {% extends 'sellerbase.html' %}
 
-{% block title %}Продавец - Управление товарами{% endblock %}
-
+{% block title %}Продавец - Товары{% endblock %}
+{% block header_title %}🏷️Товары{% endblock %}
 
 
 {% block content %}
@@ -157,6 +157,7 @@
                         <th>Категория</th>
                         <th>Мастер</th>
                         <th>Новинка</th>
+                        <th>Детали</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -182,6 +183,7 @@
                         <td>{{ product.Category_name }}</td>
                         <td>{{ product.Master_name }}</td>
                         <td>{{ 'Да' if product.IsNew_product else 'Нет' }}</td>
+                        <td><a href="{{ url_for('seller.view_product_details', product_id=product.ID_product) }}">Посмотреть</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>

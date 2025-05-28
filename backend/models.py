@@ -104,7 +104,7 @@ class Order(db.Model):
     ID_order = db.Column(db.Integer, primary_key=True)
     id_user = db.Column(db.Integer, db.ForeignKey('Users.ID_user'))
     Data_order = db.Column(db.DateTime, default=func.now())
-    Status_order = db.Column(db.String(50), default=OrderStatus.CART, nullable=False)
+    Status_order = db.Column(db.String(50), default='неактивен', nullable=False)
 
     user = db.relationship('Users', backref='orders')
 

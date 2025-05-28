@@ -7,6 +7,7 @@
     <title>{% block title %}Панель Продавца{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='image/Icons/site-icon.ico') }}" type="image/x-icon">
 </head>
 <body>
     <div class="header">
@@ -18,33 +19,35 @@
         <div class="nav-overlay" id="nav-overlay"></div>
         <div class="nav-wrapper">
             <nav class="nav" id="main-nav">
-                <a href="#">Дашборд</a>
                 <div class="burger-img-a">
-                    <img src="{{url_for('static',filename='image/Icons/box-archive.svg')}}" width=30px>
-                    <a href="{{url_for('seller.dashboard')}}">Заказы</a>
+
+                    <a href="{{ url_for('index') }}">
+                        🏠︎
+                        На главную</a>
+                </div>
+                <hr>
+                <a href="{{url_for('seller.show_dashboard')}}">📋 Дашборд</a>
+                <div class="burger-img-a">
+                    <a href="{{ url_for('seller.show_orders') }}">📦 Заказы</a>
                 </div>
                 <div class="burger-img-a">
-                    <img src="{{url_for('static',filename='image/Icons/tags.svg')}}" width=30px>
-                    <a href="{{url_for('seller.products')}}">Товары</a>
+                    <a href="{{url_for('seller.products')}}">🏷️ Товары</a>
                 </div>
                 <div class="burger-img-a">
-                    <img src="{{url_for('static',filename='image/Icons/rectangle-list.svg')}}" width=30px>
-                    <a href="{{url_for('admin.Admin_categories')}}">Категории</a>
+                    <a href="{{ url_for('seller.categories') }}">📚 Категории</a>
                 </div>
                 <div class="burger-img-a">
-                    <img src="{{url_for('static',filename='image/Icons/hammer.svg')}}" width=30px>
-                    <a href="{{url_for('admin.Admin_masters')}}">Мастера</a>
+                    <a href="{{url_for('seller.masters')}}">👨‍🔧 Мастера</a>
                 </div>
                 <div class="burger-img-a">
-                    <img src="{{url_for('static',filename='image/Icons/comment-dots.svg')}}" width=30px>
-                    <a href="#">Отзывы</a>
+                    <a href="#">💬 Отзывы</a>
                 </div>
 
 
 
                 {% if current_user.is_authenticated and current_user.role == 'admin' %}
                     <hr>
-                    <a href="{{ url_for('admin.Admin_products') }}">Админ Панель</a>
+                    <a href="{{ url_for('admin.Admin_products') }}">⚙️ Админ Панель</a>
                 {% endif %}
 
 
@@ -75,6 +78,7 @@
     <script>
 
         document.addEventListener('DOMContentLoaded', () => {
+            // JS для бургер-меню (если не в main.js, можешь удалить отсюда)
             const burgerButton = document.getElementById('burger-button');
             const mainNav = document.getElementById('main-nav');
             const navOverlay = document.getElementById('nav-overlay');
@@ -90,6 +94,24 @@
                     navOverlay.classList.remove('active');
                 });
             }
+
+            // --- FLASH-СООБЩЕНИЯ ---
+            const flashMessages = document.querySelectorAll('ul.flashes li');
+
+            flashMessages.forEach(message => {
+
+                if (message.classList.contains('success')) {
+
+                    setTimeout(() => {
+                        message.classList.add('fade-out');
+                        message.addEventListener('animationend', function handler() {
+                            message.remove();
+                            message.removeEventListener('animationend', handler);
+                        });
+                    }, 4000);
+                }
+            });
+
         });
     </script>
 </body>
