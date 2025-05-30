@@ -24,10 +24,8 @@ def custom_login_required(f):
 def seller_required(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
-
         if not current_user.is_authenticated or current_user.role not in ['seller', 'admin']:
-            flash('У вас нет прав доступа к панели продавца.', 'danger') # Добавлено сообщение
-
+            flash('У вас нет прав доступа к панели продавца.', 'danger')
             abort(403)
         return fn(*args, **kwargs)
     return wrapper

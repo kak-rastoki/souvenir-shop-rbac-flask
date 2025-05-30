@@ -30,17 +30,13 @@ def show_base():
 @login_required
 @seller_required
 def dashboard():
-    print("сработал дашборд маршрут")
+
     total_products = Product.query.count()
     total_orders = Order.query.count()
     completed_orders_count = Order.query.filter_by(Status_order="завершен").count()
     pending_orders_count = Order.query.filter_by(Status_order="активен").count()
     cart_orders_count = Order.query.filter_by(Status_order="неактивен").count()
-
-
     latest_orders = Order.query.order_by(Order.Data_order.desc()).limit(5).all()
-
-
     return render_template('dashboard.html',
                             total_products=total_products,
                             total_orders=total_orders,
