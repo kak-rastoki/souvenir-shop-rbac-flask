@@ -8,3 +8,7 @@ def catalog():
 @catalog_bp.route('/<path:path>')
 def catalog_path(path):
     return render_template('catalog.html', title='Каталог')
+
+@catalog_bp.route('/catalog/cart')
+def cart_react():
+    return render_template('catalog.html')

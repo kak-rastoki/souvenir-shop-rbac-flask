@@ -1,7 +1,5 @@
 {%extends 'base.html'%}
-{%block titile%}
-Главная. Магазин студентический ТКХиС
-{%endblock%}
+{% block title %}Магазин "Студенческий" - Главная{% endblock %}
 
 {%block content%}
     <main>
@@ -9,26 +7,29 @@
 
             <section class="c-info">
 
-                <div id="c-info-title"><h1 id="c-info-title-h">Сувенирный магазин «Студенческий»</h1>
+                <div id="c-info-title"><h1 id="c-info-title-h">Магазин «Студенческий»</h1>
 
                 </div>
-
-                <div id="mn-c-info-divider"></div>
-
                 <p id="c-info-text">
+                    ⚙️ Добро пожаловать в интернет-магазин «Мастерская ТКХиС» – уникальное пространство, где талант и опыт наших мастеров
+                     производственного обучения воплощаются в эксклюзивных сувенирах и качественных бытовых изделиях!
+                     Каждая вещь, представленная здесь, создана с душой в производственных мастерских
+                     Техникума коммунального хозяйства и сервиса Республики Хакасия.
+                     Мы гордимся тем, что можем поделиться с вами результатами кропотливого труда и творческого поиска,
+                     демонстрируя высокий уровень мастерства и качество местной продукции.
 
-                    Добро пожаловать в уникальный магазин сувениров "Студенческий"! Мы рады предложить вам широкий ассортимент оригинальных поделок,
-                    созданных талантливыми студентами нашего техникума. Здесь вы найдете удивительные изделия из различных материалов, от мягкой древесины до блестящего металла,
-                    каждое из которых выделяется своим неповторимым стилем и качеством исполнения. <br>
+
+                 <br>
                 </p>
 
                 <p id="c-info-text">
-                    В "Студенческом" магазине вы также можете заказать изготовление индивидуальных изделий по вашему желанию. Наши студенты готовы воплотить ваши идеи в реальность,
-                    создавая уникальные предметы из металла и дерева, которые полностью отвечают вашим требованиям и ожиданиям.
-                    Мы гарантируем высокое качество и внимательное отношение к каждому заказу, чтобы ваш опыт покупки в нашем магазине был незабываемым и приятным.
+                    <br>
+                    ⚙️ Приобретая наши изделия, вы не просто покупаете красивую и полезную вещь, но и
+                    вносите свой вклад в развитие профессионального образования и поддержку наших мастерских. Все вырученные средства направляются на модернизацию учебной базы, закупку современных материалов и оборудования. Ознакомьтесь с нашим каталогом, найдите что-то особенное для себя или в подарок,
+                    и станьте частью нашего сообщества, ценящего ручной труд и настоящее мастерство!
                 </p>
 
-                <div id="mainShopPic"><img id="mainShopPic" src = "{{ url_for('static', filename="image/mainShop.png") }}" width="360px"></div>
+
             </section>
             <section class="c-new">
                 <div class="c-new-top">
@@ -43,23 +44,26 @@
 
                 <div class="c-new-down">
                     {%for product in productNew %}
-                    <div class="cnd-items" >
-                        <img class ="cnd-it-img" onclick="window.location.href='{{ url_for('api.productCard', product_id=product.ID_product) }}'"
-                        src = "{{url_for('api.product_image', product_id=product.ID_product) }}"
-                        width="88%" height = "73%">
-                        <div class="cnd-it-content">
-                            <div class="cnd-it-wr1">
-                                <h1 class="cnd-titile">{{product.Name_product}}</h1>
-                                <p class = "cnd-it-cat">категория "{{product.Id_category}}"</p>
-                                <div class="items-cost-ButDiv">
-                                    <p>{{product.Cost_product}} ₽</p>
+                    <div class="cnd-product-card">
+                        <div class="img-container">
+                            <img class ="cnd-it-img" onclick="window.location.href='{{ url_for('api.productCard', product_id=product.ID_product) }}'"
+                            src = "{{url_for('api.product_image', product_id=product.ID_product) }}"
+                            width="88%" height = "73%">
+                        </div>
+                        <div class="product-title">
+                          <h3>{{product.Name_product}}</h3>
+                        </div>
+                        <div class="card-group">
+                          <div class="group-category-more">
+                            <p class="category"></p>
 
-                                </div>
-                            </div>
-                            <div class= "cnd-it-wr2">
-                                <button class="add-to-cart dabutton" data-id="{{ product.ID_product }}" data-name="{{ product.Name_product }}" data-price="{{ product.Cost_product }}">
-                                    <i class="fa fa-cart-plus" aria-hidden="true"></i></button>
-                            </div>
+                          </div>
+                          <div class="group-bt-price">
+                            <p class="price">{{product.Cost_product}} ₽</p>
+                            <button
+                            class="add-to-cart-button"> В корзину
+                          </button>
+                          </div>
                         </div>
                     </div>
                     {%endfor%}
