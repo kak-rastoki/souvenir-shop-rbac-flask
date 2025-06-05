@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import './Filters.css'
 
-
-
 function Filters ({priceFilterChange}) {
 const [minPrice, setMinPrice] = useState('');
 const [maxPrice, setMaxPrice] = useState('');
@@ -19,8 +17,6 @@ function resetFilters() {
   priceFilterChange('','','desc');
   setSortOrder('desc');
 };
-
-
 
 return (
   <div className="filters">
@@ -80,13 +76,7 @@ return (
     </div>
 
     <button onClick={handlePriceFiltersChange}> Применить ✔</button>
-
-
-
   </div>
 
-);
-};
-
-
+);};
 export  default Filters

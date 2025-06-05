@@ -128,10 +128,10 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg', 'gif'}
 
 # Получение товара
-@seller_bp.route('/seller/product_data/<int:product_id>', methods=['GET']) # <--- ИЗМЕНЕНО ЗДЕСЬ
+@seller_bp.route('/seller/product_data/<int:product_id>', methods=['GET'])
 @login_required
 @seller_required
-def get_product_data_for_edit(product_id): # <--- ИЗМЕНЕНО ИМЯ ФУНКЦИИ ДЛЯ ЯСНОСТИ
+def get_product_data_for_edit(product_id):
     product = Product.query.get_or_404(product_id)
 
     product_data = {
@@ -192,7 +192,7 @@ def edit_product():
         product.id_master = edit_master_id
         product.id_category = edit_category_id
 
-        # --- КОРРЕКЦИЯ ЛОГИКИ ОБРАБОТКИ ИЗОБРАЖЕНИЯ ---
+        # --- КОРРЕКЦИЯ ЛОГИК ОБАБОТКИ ИЗОБРАЖЕНИЯ ---
         if edit_file and edit_file.filename != '':
             # Если файл загружен, проверю его тип и сохраняем
             if allowed_file(edit_file.filename):
@@ -200,11 +200,6 @@ def edit_product():
             else:
                 flash("Недопустимый тип файла изображения. Разрешены: png, jpg, jpeg, gif.", "error")
                 return redirect(url_for('seller.products'))
-        # else:
-            # Если файл не загружен (edit_file пуст), то product.image_product остается без изменений.
-            # Благодаря триггеру, если до этого изображение было null, оно уже было заполнено дефолтом.
-            # Если оно было пользовательски,то конеч оно сохранится.
-        # --- КОНЕЦ КОРРЕКЦИИ ---
 
         db.session.commit()
         flash("Изменения товара выполнены успешно!", "success")
@@ -223,7 +218,6 @@ def delete_product(product_id):
     else:
         flash(f'Ошибка: Продукт с ID {product_id} не найден.', 'error')
     return redirect(url_for('seller.products'))
-
 
 # Маршрут для добавления товара
 @seller_bp.route('/seller/products/add', methods=['POST'])
@@ -287,16 +281,13 @@ def add_product():
 def view_product_details(product_id):
     product = Product.query.options(
         db.joinedload(Product.category),
-        db.joinedload(Product.master).joinedload(Masters.gender) # Загружаем и пол мастера
+        db.joinedload(Product.master).joinedload(Masters.gender)
     ).get_or_404(product_id)
 
     # Преобразуем изображение в base64 для отображения
     image_b64 = None
     if product.image_product:
         try:
-            # Для детальной страницы можно отправить оригинальное изображение
-            # или сгенерировать более крупную версию, если THUMBNAIL_SIZE слишком мал
-            # Для простоты, пока отправляем оригинальное (или триггерное дефолтное)
             image_b64 = base64.b64encode(product.image_product).decode('utf-8')
         except Exception as e:
             current_app.logger.error(f"Ошибка кодирования изображения для деталей товара {product.ID_product}: {e}")
@@ -308,16 +299,12 @@ def view_product_details(product_id):
 
 
 # --- ЗАКАЗЫ ---
-# --- МАРШРУТЫ ДЛЯ ЗАКАЗОВ ПРОДАВЦА ---
 
-@seller_bp.route('/seller/orders') # ИСПРАВЛЕНО: маршрут теперь /seller/orders
+@seller_bp.route('/seller/orders')
 @login_required
 @seller_required
 def show_orders():
-    # Используем db.contains_eager для более эффективной загрузки связанных данных
-    # Если Order.user, OrderProduct.product, OrderProduct.currency имеют обратные ссылки (backref)
-    # то db.joinedload или db.subqueryload могут быть более подходящими.
-    # Для joinedload, добавь его к запросу:
+
     orders = Order.query.options(
         db.joinedload(Order.user),
         db.joinedload(Order.order_products).joinedload(OrderProduct.product),
@@ -334,11 +321,9 @@ def show_orders():
 
         total_sum = 0
         products_in_order = []
-        for op in order.order_products: # Теперь `order.order_products` уже загружен
-            # Проверки на None нужны, если связанные объекты могут быть None
+        for op in order.order_products:
             product = op.product
             currency = op.currency
-
             if product and currency:
                 item_price = product.Cost_product * op.quantity
                 total_sum += item_price
@@ -359,7 +344,6 @@ def show_orders():
                     'Cost_product': product.Cost_product,
                     'currency_symbol': 'руб.' # Дефолтная валюта
                 })
-
         orders_data.append({
             'ID_order': order.ID_order,
             'user_name': user_name,
@@ -476,8 +460,6 @@ def delete_order(order_id):
     return redirect(url_for('seller.show_orders'))
 
 # ---КАТЕГОРИИ ---
-
-# Маршрут для отображения списка категорий
 @seller_bp.route('/seller/categories')
 @login_required
 @seller_required
@@ -575,8 +557,7 @@ def delete_category(category_id):
         flash(f'Категория "{category.Name_category}" успешно удалена.', 'success')
     except Exception as e:
         db.session.rollback()
-        # Если произошла ошибка из-за связанных данных (например, IntegrityError),
-        # то можно добавить более конкретное сообщение
+
         if "FOREIGN KEY constraint failed" in str(e):
              flash(f'Невозможно удалить категорию "{category.Name_category}", так как существуют связанные товары.', 'error')
         else:

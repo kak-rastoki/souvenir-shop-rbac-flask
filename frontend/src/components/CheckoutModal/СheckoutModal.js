@@ -5,10 +5,6 @@ function CheckoutModal ({showCheckoutModal, closeCheckoutModal,orderId }) {
 
   if (!showCheckoutModal) return null;
 
-  // fetch()
-  // .then()
-  // .error();
-
   return (
     <div className="modal-overlay" onClick={closeCheckoutModal}>
       <div className="modal-checkout" onClick={(e) => e.stopPropagation()}>
