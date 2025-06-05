@@ -8,10 +8,10 @@ import reportWebVitals from './reportWebVitals';
 
 
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('react-root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename='/catalog'>
       <App />
     </BrowserRouter>
   </React.StrictMode>

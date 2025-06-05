@@ -3,11 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{%block titile%} {% endblock%} </title>
+    <title>{%block title%} {% endblock%} </title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/all.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/errors/errors.css') }}">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- React подключаем елки палки -->
+    {% if request.path.startswith('/catalog') %}
+        {% for entrypoint in get_entrypoints() %}
+            {% if entrypoint.endswith('.css') %}
+                <link rel="stylesheet" href="{{ entrypoint }}">
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 </head>
 <body>
   <header id="mnhd">
@@ -33,8 +41,13 @@
         </div>
         <div class="mnhd-inline"><a href="{{ url_for('index') }}" class="icon-link"><i class = "fa fa-home fa-2x"> </i>
             <p class="mnhd-bt-link" id="hd-home">Главная</p></a></div>
-        <div class="mnhd-inline"> <a href="#" class="icon-link"><i class="fa fa-th-list fa-2x"></i>
-            <p class="mnhd-bt-link" id="hd-cat">Категории</p></a> </div>
+
+        <div class="mnhd-inline">
+            <a href="{{ url_for('catalog.catalog') }}" class="icon-link">
+                <i class="fa fa-th-list fa-2x"></i>
+                <p class="mnhd-bt-link" id="hd-cat">Каталог</p>
+            </a>
+        </div>
 
     </div>
 
@@ -95,7 +108,9 @@
 </header>
 
 
-{%block content%} {%endblock%}
+<main>
+    {% block content %}{% endblock %}
+</main>
 
 
 
@@ -110,5 +125,14 @@
     </div>
   </footer>
   <script src="{{ url_for('static', filename = "js/script.js") }}"></script>
+
+  <!-- React js подключаем скрипты -->
+    {% if request.path.startswith('/catalog') %}
+        {% for entrypoint in get_entrypoints() %}
+            {% if entrypoint.endswith('.js') %}
+                <script src="{{ entrypoint }}"></script>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 </body>
 </html>

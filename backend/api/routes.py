@@ -18,13 +18,12 @@ def get_cart():
         db.session.add(cart)
         db.session.commit()
 
-    # Формируем список товаров в корзине
     items = [
         {
             'id': item.ID_OP,
             'product_id': item.id_product,
             'name': item.product.Name_product,
-            'price': item.product.Cost_product,  # Цена берётся из Product (можно добавить фиксированную цену в OrderProduct)
+            'price': item.product.Cost_product,
             'quantity': item.quantity,
             'image': base64.b64encode(item.product.image_product).decode('utf-8') if item.product.image_product else None,
             'total': item.product.Cost_product * item.quantity

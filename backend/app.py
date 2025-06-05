@@ -5,9 +5,9 @@ from flask_login import LoginManager, current_user
 from models import Users, Product, db
 from flask_cors import CORS
 from flask_migrate import Migrate
-
+import os
 import logging
-
+import json
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -22,6 +22,24 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth.signup'
 
+
+# Чтение asset-manifest.json для React
+def load_manifest():
+    manifest_path = os.path.join(app.static_folder, 'catalog/asset-manifest.json')
+    if os.path.exists(manifest_path):
+        with open(manifest_path, 'r') as f:
+            manifest = json.load(f)
+        return manifest
+    return {}
+
+manifest = load_manifest()
+
+# Контекстный процессор для доступа к entrypoints React
+@app.context_processor
+def utility_processor():
+    def get_entrypoints():
+        return manifest.get('entrypoints', [])
+    return dict(get_entrypoints=get_entrypoints)
 
 # Функция для установки заголовков кэширования
 def set_cache_headers(response):
@@ -42,12 +60,14 @@ from admin import admin_bp
 from handler import handler_bp
 from api import api_bp
 from seller import seller_bp
+from catalog import catalog_bp
 
 app.register_blueprint(handler_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(admin_bp)
 app.register_blueprint(api_bp)
 app.register_blueprint(seller_bp)
+app.register_blueprint(catalog_bp)
 
 
 
