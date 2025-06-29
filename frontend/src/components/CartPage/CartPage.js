@@ -147,7 +147,7 @@ function CartPage () {
                   <button
                     onClick={() => updateQuantity(item.product_id, item.quantity - 1)}
                   >
-
+                    -
                   </button>
                   <span>х {item.quantity}</span>
                   <button

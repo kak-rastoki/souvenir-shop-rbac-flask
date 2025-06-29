@@ -1,0 +1,229 @@
+{# backend/seller/templates/products.html #}
+{% extends 'sellerbase.html' %}
+
+{% block title %}Продавец - Товары{% endblock %}
+{% block header_title %}🏷️Товары{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="main-content">
+        <div class="form-section">
+            <section class = "form-cart">
+            <div class="title-line">
+                <h2 class="section-title section-title-form">Добавление товара</h2>
+            </div>
+            <p>Для добавления нового товара заполните данные и нажмите кнопку добавить товар. Товар должен отобразиться в таблице.</p>
+            <form  method="POST" action="{{ url_for('seller.add_product') }}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">Наименование</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="price">Цена</label>
+                    <input type="number" step="0.01" id="price" name="price" required> {# step="0.01" для десятичных цен #}
+                </div>
+                <div class="form-group">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="newProduct" name="newProduct">
+                        <label for="newProduct">Новинка</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="master">Мастер</label>
+                    <select name="master" id="master" required>
+                        <option value="">Выберите мастера из списка</option>
+                        {% for master in masters %}
+                        <option value="{{ master.ID_master }}">{{ master.Name_master }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="category">Категория</label>
+                    <select name="category" id="category" required>
+                        <option value="">Выберите категорию</option>
+                        {% for category in categories %}
+                        <option value="{{ category.ID_categories }}">{{ category.Name_category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="description">Описание товара</label>
+                   <textarea id="description" name="description" maxlength="250" style="resize: both; max-height: 200px; max-width:400px;"></textarea>
+               </div>
+               <div class="form-group">
+                <label for="file">Загрузите изображениие (jpeg, png, gif)</label>
+                <input type="file" id ="file" name="file" accept="image/jpeg, image/png, image/gif">
+                </div>
+                <div class="form-group">
+                    <button type="submit">Добавить товар</button>
+                    <div class="flash-messages">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    {% if category == 'error' %}
+                                        <span class="reg-error flash">{{ message }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                </div>
+            </form>
+            </section>
+
+            <section class="form-cart">
+            <div class="title-line">
+                <h2 class="section-title">Изменение товара</h2>
+            </div>
+            <p>Для изменения данных товара выберите товар из таблицы, нажав на иконку карандаша ✏️</p>
+            <form method="POST" action="{{ url_for('seller.edit_product') }}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="editCode">Код изменяемого товара:</label>
+                    <input type="text" name="editCode" id="editCode" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="editName">Наименование</label>
+                    <input type="text" id="editName" name="editName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPrice">Цена</label>
+                    <input type="number" step="0.01" id="editPrice" name="editPrice" required>
+                </div>
+                <div class="form-group">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="editNewProduct" name="editNewProduct">
+                        <label for="editNewProduct">Новинка</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editMaster">Мастер</label>
+                    <select name="editMaster" id="editMaster" required>
+                         <option value="">Выберите мастера из списка</option>
+                        {% for master in masters %}
+                        <option value="{{ master.ID_master }}">{{ master.Name_master }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editCategory">Категория</label>
+                    <select name="editCategory" id="editCategory" required>
+                        <option value="">Выберите категорию</option>
+                        {% for category in categories %}
+                        <option value="{{ category.ID_categories }}">{{ category.Name_category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editDescription">Описание товара</label>
+                   <textarea id="editDescription" name="editDescription" maxlength="250" style="resize: both; max-height: 200px; max-width:400px;"></textarea>
+               </div>
+               <div class="form-group">
+                <label for="editFile">Сменить изображение товара (jpg, png, gif)</label>
+                <input type="file" id="editFile" name="editFile" accept="image/jpeg, image/png, image/gif">
+                 </div>
+                <div class="form-group">
+                    <button type="submit">Изменить данные товара</button>
+                    <div class="flash-messages">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                               {% for category, message in messages %}
+                                   {% if category == 'error' %}
+                                       <span class="reg-error flash">{{ message }}</span>
+                                   {% endif %}
+                               {% endfor %}
+                           {% endif %}
+                       {% endwith %}
+                   </div>
+                </div>
+            </form>
+            </section>
+        </div>
+
+        <div class="table-section">
+            <div class="title-table-icon">
+                <img src="{{ url_for('static', filename='image/Icons/tags.svg') }}" width="40px" alt="Products">
+                <h2 class="section-title">Товары</h2>
+              </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Действие</th>
+                        <th>Изображение</th> {# Новый столбец #}
+                        <th>Код</th>
+                        <th>Наименование</th>
+                        <th>Цена</th>
+                        <th>Описание</th>
+                        <th>Категория</th>
+                        <th>Мастер</th>
+                        <th>Новинка</th>
+                        <th>Детали</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td class="funcbt-td-hidden">
+                            <form action="{{ url_for('seller.delete_product', product_id=product.ID_product) }}" method="POST" style="display:inline;">
+                                <button class="func-button" type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот продукт?')">❌</button>
+                            </form>
+                            <button class="func-button" onclick="loadProductEditForm({{ product.ID_product }})">✏️</button>
+                        </td>
+                        <td>
+                            {% if product.image_thumbnail_b64 %}
+                                <img src="data:image/png;base64,{{ product.image_thumbnail_b64 }}" alt="Миниатюра товара" style="max-width: 50px; max-height: 50px; border-radius: 5px; object-fit: cover;">
+                            {% else %}
+                                <img src="{{ url_for('static', filename='image/no_image.png') }}" alt="Нет изображения" style="max-width: 50px; max-height: 50px; border-radius: 5px; object-fit: cover;">
+                            {% endif %}
+                        </td>
+                        <td>{{ product.ID_product }}</td>
+                        <td>{{ product.Name_product }}</td>
+                        <td>{{ "%.2f"|format(product.Cost_product) }}</td> {# Форматирование цены #}
+                        <td>{{ product.Description_product if product.Description_product else 'Нет описания' }}</td>
+                        <td>{{ product.Category_name }}</td>
+                        <td>{{ product.Master_name }}</td>
+                        <td>{{ 'Да' if product.IsNew_product else 'Нет' }}</td>
+                        <td><a href="{{ url_for('seller.view_product_details', product_id=product.ID_product) }}">Посмотреть</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function loadProductEditForm(productId) {
+
+        fetch(`/seller/product_data/${productId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка загрузки данных товара');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('editCode').value = data.ID_product;
+                document.getElementById('editName').value = data.Name_product;
+                document.getElementById('editPrice').value = data.Cost_product;
+                document.getElementById('editNewProduct').checked = data.IsNew_product;
+                document.getElementById('editMaster').value = data.id_master;
+                document.getElementById('editCategory').value = data.id_category;
+                document.getElementById('editDescription').value = data.Description_product;
+
+                const editForm = document.querySelector('section.form-cart:nth-of-type(2)');
+                if (editForm) {
+                    editForm.classList.add('highlight');
+                    setTimeout(() => {
+                        editForm.classList.remove('highlight');
+                    }, 2000);
+                    editForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при загрузке данных товара:', error);
+                alert('Не удалось загрузить данные товара.');
+            });
+    }
+</script>
+{% endblock %}

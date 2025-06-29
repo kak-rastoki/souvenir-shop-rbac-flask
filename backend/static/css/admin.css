@@ -1,26 +1,61 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
+@font-face {
+    font-family: "Evolventa Regular";
+    src: url("./fonts/Evolventa-Regular.otf") format("woff");
+  }
+
+  @font-face {
+    font-family: "Evolventa Bold";
+    src: local("Evolventa-Bold"), url("./fonts/Evolventa-Bold.woff") format("woff");
+  }
+
+  @font-face {
+    font-family: "Evolventa Oblique";
+    src: local("Evolventa-Oblique"), url("./fonts/Evolventa-Oblique.woff") format("woff");
+  }
+
+
+@keyframes fadeInMes {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+@keyframes fadeOutMes {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-10px); }
+}
 
 html{
     height: 100%;
 }
 body {
-    font-family: "Roboto", serif;
+
     margin: 0;
     padding: 0;
     background-image: linear-gradient(to left, #1e1e1e, #050541);
-       /* overflow-x: hidden;  убираем это свойство */
+    font-family: Evolventa Regular;
     width:100%;
-      height: 100%; /* добавили эту строку */
+      height: 100%;
 }
-
+a:hover{
+    color: #939393;
+    transition: 0.4s;
+  }
+a{
+    transition: 0.3s;
+}
 
 .burger-img-a img {
   display: none;
 }
-    /* Стили для экранов шириной 1080px и более (планшеты и десктопы) - по умолчанию */
+
+
+
+
 .container {
-    max-width: 1400px;
+    max-width: 1700px;
     margin: 0px auto;
     padding: 20px;
     background-color: #fff;
@@ -32,11 +67,11 @@ body {
         padding: 10px 0;
         text-align: center;
         height: 100px;
-          display: flex;
-       justify-content: center;
+        display: flex;
+        justify-content: center;
         align-items: center;
-      flex-direction: column;
-          padding-right: 400px;
+        flex-direction: column;
+        padding-right: 400px;
     }
 .AP-titile {
     position: relative;
@@ -50,7 +85,7 @@ body {
 
 .nav-wrapper {
     display: block;
-     position: static; /* убрали */
+    position: static; /* убрали */
 
 }
 
@@ -61,14 +96,13 @@ body {
 .nav {
     padding: 10px;
     text-align: center;
-
     display: flex;
     justify-content: center;
-     align-items: center;
+    align-items: center;
     background-color: transparent;
     width: auto;
-     position: relative;
-      top: 0;
+    position: relative;
+    top: 0;
     left: 0;
 }
 
@@ -93,7 +127,7 @@ body {
 }
 
 .form-section {
-    flex-basis: 35%;
+    flex-basis: 30%;
     padding-right: 20px;
     border-right: 1px solid #ddd;
     border-bottom: none;
@@ -171,7 +205,15 @@ body {
     background-color: #eaeaea2f;
 }
 
+.burger-seller-fix{
 
+    background-color: whitesmoke;
+    width: 30px;
+    height: 25px;
+    z-index: 1000;
+    border-radius: 5px;
+    text-align: center;
+}
 
 .table th {
     background-color: #f2f2f2;
@@ -204,6 +246,62 @@ body {
     font-size: 13px;
 }
 
+ul.flashes {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px auto;
+    max-width: 800px;
+    position: relative;
+}
+
+ul.flashes li {
+    padding: 5px 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.95em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    border: 1px solid transparent;
+    text-align: center;
+
+    animation: fadeInMes 0.5s ease-out forwards;
+    opacity: 0;
+}
+
+ul.flashes li.fade-out {
+    animation: fadeOutMes 0.5s ease-out forwards;
+
+}
+
+ul.flashes li.success {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+
+
+ul.flashes li.error,
+ul.flashes li.danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
+}
+
+
+ul.flashes li.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border-color: #bee5eb;
+}
+
+
+.reg-error.flash {
+    color: #721c24;
+    font-size: 13px;
+
+}
+
 .form-group:has(.flash-messages) {
     display: flex;
     flex-direction: row;
@@ -219,6 +317,11 @@ body {
     margin: 0px 0px 20px 0px;
     background-color: #ffffff;
     color: #262626;
+}
+
+
+ul.flashes li.hidden-completely {
+    display: none;
 }
 
 .form-cart:hover {
@@ -257,7 +360,7 @@ body {
 }
 
 /*  менее 1080px (мобильные устройства) */
-@media (max-width: 1080px) {
+@media (max-width: 1260px) {
 
     .header {
         color: #ebebeb;
@@ -322,6 +425,8 @@ body {
         display: block;
     }
 
+
+
     .nav-overlay {
         position: fixed;
         top: 0;
@@ -361,7 +466,7 @@ body {
         color: #000;
         justify-content: flex-start;
        align-items: start;
-       font-family: 'Roboto';
+       font-family: Evolventa Regular;
     }
 
     .nav.active {
@@ -375,14 +480,13 @@ body {
     }
 
     .nav a {
-
         margin: 5px;
         font-size: 1.1em;
         padding: 8px;
         display: block;
         text-align: left;
         color: #000;
-           /* font-family: "Roboto", serif; */
+        font-family: Evolventa Regular;
     }
 
     .main-content {

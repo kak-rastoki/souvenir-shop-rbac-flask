@@ -1,0 +1,54 @@
+{# backend/seller/templates/product_details.html #}
+{% extends 'sellerbase.html' %}
+
+{% block title %}Детали Товара: {{ product.Name_product }}{% endblock %}
+
+{% block header_title %}Детали Товара{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="main-content">
+            <div class="table-section" style="flex-basis: 100%;">
+                <div class="title-table-icon">
+
+                    <h2 class="section-title">Информация о Товаре</h2>
+                </div>
+                <section class="form-cart">
+                    <h3>Изображение Товара</h3>
+                    <div style="text-align: center; margin-top: 20px;">
+                        {% if image_b64 %}
+                            {# Отображаем полноразмерное изображение, или изображение большего размера,
+                               если ты решишь его генерировать отдельно. #}
+                            <img src="data:image/jpeg;base64,{{ image_b64 }}" alt="Изображение товара"
+                                 style="max-width: 400px; max-height: 400px; border-radius: 10px; object-fit: contain; border: 1px solid #ddd; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='image/no_image.png') }}" alt="Нет изображения"
+                                 style="max-width: 400px; max-height: 400px; border-radius: 10px; object-fit: contain; border: 1px solid #ddd; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                        {% endif %}
+                    </div>
+                </section>
+
+                <section class="form-cart" style="margin-bottom: 20px;">
+                    <h3>Общая информация о товаре</h3>
+                    <p><strong>Код товара:</strong> {{ product.ID_product }}</p>
+                    <p><strong>Наименование:</strong> {{ product.Name_product }}</p>
+                    <p><strong>Цена:</strong> {{ "%.2f"|format(product.Cost_product) }}</p>
+                    <p><strong>Описание:</strong> {{ product.Description_product if product.Description_product else 'Нет описания' }}</p>
+                    <p><strong>Новинка:</strong> {{ 'Да' if product.IsNew_product else 'Нет' }}</p>
+
+                    {# Информация о категории #}
+                    <p><strong>Категория:</strong> {{ product.category.Name_category if product.category else 'Неизвестно' }}</p>
+                    <p><strong>Описание категории:</strong> {{ product.category.Discription_category if product.category and product.category.Discription_category else 'Нет описания' }}</p>
+
+                    {# Информация о мастере #}
+                    <p><strong>Мастер:</strong> {{ product.master.Name_master if product.master else 'Неизвестно' }}</p>
+                    <p><strong>Пол мастера:</strong> {{ product.master.gender.gender_name if product.master and product.master.gender else 'Неизвестно' }}</p>
+
+                    <p><a href="{{ url_for('seller.products') }}">← Назад к списку товаров</a></p>
+                </section>
+
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

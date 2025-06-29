@@ -1,0 +1,91 @@
+/* backend/static/css/dashboard.css */
+
+/* Стили для контейнера виджетов на дашборде */
+.dashboard-widgets-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Отступы между виджетами */
+  margin-top: 20px;
+  justify-content: space-around; /* Распределение виджетов */
+}
+a:hover{
+  color: #939393;
+  transition: 0.4s;
+}
+a{
+  transition: 0.3s;
+}
+
+
+/* Стили для каждого виджета (используем уже существующий form-cart) */
+.dashboard-widget {
+  flex: 1; /* Чтобы виджеты занимали доступное пространство */
+  min-width: 280px; /* Минимальная ширина для адаптивности */
+  max-width: 45%; /* Максимальная ширина, чтобы уместиться по 2 в ряд на широких экранах */
+  box-sizing: border-box; /* Учитываем padding и border в ширине */
+  padding: 15px 20px; /* Увеличиваем внутренние отступы для читаемости */
+  text-align: left; /* Выравнивание текста */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.dashboard-widget:hover {
+  transform: translateY(-5px); /* Небольшой эффект при наведении */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Более выраженная тень */
+}
+
+.dashboard-widget h3 {
+  font-size: 1.4em;
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #2a398a; /* Цвет заголовка, схожий с кнопками */
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+
+.dashboard-widget p {
+  margin-bottom: 10px;
+  line-height: 1.5;
+  font-size: 1.1em;
+}
+
+.dashboard-widget ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.dashboard-widget ul li {
+  background-color: #f8f8f8;
+  margin-bottom: 5px;
+  padding: 8px 12px;
+  border-radius: 5px;
+  border-left: 3px solid #2a398a;
+}
+
+.dashboard-widget a {
+  color: #1d2a68;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.dashboard-widget a:hover {
+  text-decoration: underline;
+}
+
+/* Адаптивность для виджетов */
+@media (max-width: 768px) {
+  .dashboard-widget {
+      max-width: 100%; /* На мобильных устройствах каждый виджет занимает всю ширину */
+  }
+  .dashboard-widgets-grid {
+      flex-direction: column; /* Виджеты располагаются по вертикали */
+      gap: 15px;
+  }
+}
+
+/* Стили для иконок в виджетах (если захочешь добавить) */
+.widget-icon {
+  float: right; /* Размещение иконки справа от заголовка */
+  margin-left: 10px;
+  opacity: 0.7;
+}

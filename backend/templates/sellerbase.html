@@ -1,0 +1,118 @@
+{# backend/templates/seller_base.html #}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Панель Продавца{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='image/Icons/site-icon.ico') }}" type="image/x-icon">
+</head>
+<body>
+    <div class="header">
+        <h1 class="AP-titile">{% block header_title %}Панель продавца{% endblock %}</h1>
+        <div class="burger-btn burger-seller-fix">
+             <img src="{{ url_for('static', filename='image/Icons/rectangle-list.svg') }}" width="25px" id="burger-button" alt="Menu">
+
+        </div>
+        <div class="nav-overlay" id="nav-overlay"></div>
+        <div class="nav-wrapper">
+            <nav class="nav" id="main-nav">
+                <div class="burger-img-a">
+
+                    <a href="{{ url_for('index') }}">
+                        🏠︎
+                        На главную</a>
+                </div>
+                <hr>
+                <a href="{{url_for('seller.show_dashboard')}}">📋 Дашборд</a>
+                <div class="burger-img-a">
+                    <a href="{{ url_for('seller.show_orders') }}">📦 Заказы</a>
+                </div>
+                <div class="burger-img-a">
+                    <a href="{{url_for('seller.products')}}">🏷️ Товары</a>
+                </div>
+                <div class="burger-img-a">
+                    <a href="{{ url_for('seller.categories') }}">📚 Категории</a>
+                </div>
+                <div class="burger-img-a">
+                    <a href="{{url_for('seller.masters')}}">👨‍🔧 Мастера</a>
+                </div>
+                <div class="burger-img-a">
+                    <a href="#">💬 Отзывы</a>
+                </div>
+
+
+
+                {% if current_user.is_authenticated and current_user.role == 'admin' %}
+                    <hr>
+                    <a href="{{ url_for('admin.Admin_products') }}">⚙️ Админ Панель</a>
+                {% endif %}
+
+
+            </nav>
+        </div>
+    </div>
+
+    <main class="main-content-wrapper">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+
+    {# <footer>
+        <p>© 2023 Интернет-магазин сувениров. Панель Продавца.</p>
+    </footer> #}
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // JS для бургер-меню (если не в main.js, можешь удалить отсюда)
+            const burgerButton = document.getElementById('burger-button');
+            const mainNav = document.getElementById('main-nav');
+            const navOverlay = document.getElementById('nav-overlay');
+
+            if (burgerButton && mainNav && navOverlay) {
+                burgerButton.addEventListener('click', () => {
+                    mainNav.classList.toggle('active');
+                    navOverlay.classList.toggle('active');
+                });
+
+                navOverlay.addEventListener('click', () => {
+                    mainNav.classList.remove('active');
+                    navOverlay.classList.remove('active');
+                });
+            }
+
+            // --- FLASH-СООБЩЕНИЯ ---
+            const flashMessages = document.querySelectorAll('ul.flashes li');
+
+            flashMessages.forEach(message => {
+
+                if (message.classList.contains('success')) {
+
+                    setTimeout(() => {
+                        message.classList.add('fade-out');
+                        message.addEventListener('animationend', function handler() {
+                            message.remove();
+                            message.removeEventListener('animationend', handler);
+                        });
+                    }, 4000);
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

@@ -1,1 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="B:\Code\Woody\backend\instance\woodyDB.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="125"/><column_width id="3" width="3038"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,10:mainCategories"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Categories" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="131"/><column index="2" value="160"/><column index="3" value="189"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1"></sql><current_tab id="0"/></tab_sql></sqlb_project>
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="woodyDB.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2277"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="Categories" custom_title="0" dock_id="1" table="4,10:mainCategories"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000012e00ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">-- 1. Добавляем новый временный столбец для Status_order (тип TEXT)
+ALTER TABLE &quot;Order&quot; ADD COLUMN Status_order_new TEXT;
+
+-- 2. Добавляем новый временный столбец для Data_order (тип DATETIME)
+-- Если Data_order уже был DateTime, и ты не менял его обратно на Date в models.py, этот шаг не нужен
+ALTER TABLE &quot;Order&quot; ADD COLUMN Data_order_new DATETIME;
+
+-- 3. Копируем данные из старых столбцов в новые
+-- Преобразуем старые булевы значения (0/1) в новые строковые статусы
+-- Это нужно только если у тебя уже есть данные в таблице Order, созданные до этого изменения
+UPDATE &quot;Order&quot;
+SET
+    Status_order_new = CASE Status_order
+                         WHEN 0 THEN 'активен'    -- Если старый Status_order был 0 (False)
+                         WHEN 1 THEN 'завершен'   -- Если старый Status_order был 1 (True)
+                         ELSE 'неактивен'         -- Дефолт для других случаев, или NULL
+                       END,
+    Data_order_new = Data_order; -- Копируем старую дату/время
+
+-- 4. Удаляем старые столбцы
+ALTER TABLE &quot;Order&quot; DROP COLUMN Status_order;
+ALTER TABLE &quot;Order&quot; DROP COLUMN Data_order;
+
+-- 5. Переименовываем новые столбцы
+ALTER TABLE &quot;Order&quot; RENAME COLUMN Status_order_new TO Status_order;
+ALTER TABLE &quot;Order&quot; RENAME COLUMN Data_order_new TO Data_order;</sql><current_tab id="0"/></tab_sql></sqlb_project>

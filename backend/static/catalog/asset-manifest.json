@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/static/catalog/css/main.49e96234.css",
+    "main.js": "/static/catalog/js/main.5761ebe1.js",
+    "static/js/453.8ab44547.chunk.js": "/static/catalog/js/453.8ab44547.chunk.js",
+    "static/media/Evolventa-Regular.otf": "/static/catalog/media/Evolventa-Regular.5ff33576bc071c2ec443.otf",
+    "static/media/Evolventa-Oblique.woff": "/static/catalog/media/Evolventa-Oblique.fe5c8961d245de7dd5d0.woff",
+    "static/media/Evolventa-Bold.woff": "/static/catalog/media/Evolventa-Bold.9795ae2197f071545507.woff",
+    "static/media/logo.svg": "/static/catalog/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/index.html",
+    "main.49e96234.css.map": "/static/catalog/css/main.49e96234.css.map",
+    "main.5761ebe1.js.map": "/static/catalog/js/main.5761ebe1.js.map",
+    "453.8ab44547.chunk.js.map": "/static/catalog/js/453.8ab44547.chunk.js.map"
+  },
+  "entrypoints": [
+    "/static/catalog/css/main.49e96234.css",
+    "/static/catalog/js/main.5761ebe1.js"
+  ]
+}
