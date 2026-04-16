@@ -70,14 +70,9 @@ app.register_blueprint(seller_bp)
 app.register_blueprint(catalog_bp)
 
 
-
 @login_manager.user_loader
 def load_user(user_id):
     return Users.query.get(int(user_id))
-
-
-
-
 
 @app.route('/', methods = ['GET'])
 def index():

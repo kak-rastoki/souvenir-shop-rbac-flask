@@ -1,9 +1,3 @@
-"""
-Модели таблиц из Базы данных
---------------------------------------------------
-Описание:
-
-"""
 
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
