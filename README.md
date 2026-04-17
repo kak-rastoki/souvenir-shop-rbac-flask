@@ -11,7 +11,7 @@
 Панели управления -> Полноценный Dashboard для продавца со статистикой заказов и CRUD-интерфейсы для администратора.
 Адаптивный дизайн -> поддержка мобильных устройств 
 
-**Cтек 🛠 **
+**Cтек 🛠**
 Backend: Python, Flask, Flask-SQLAlchemy (ORM), Flask-Login, Flask-Migrate.
 Frontend: React, JavaScript (ES6+), CSS3 (Flexbox, Media Queries).
 База данных: SQLite (с возможностью легкой миграции на PostgreSQL через SQLAlchemy).
