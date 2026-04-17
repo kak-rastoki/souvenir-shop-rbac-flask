@@ -8,12 +8,16 @@ from flask_migrate import Migrate
 import os
 import logging
 import json
+from dotenv import load_dotenv
 
+
+load_dotenv()
+APP_PORT = os.getenv('APP_PORT')
 app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 CORS(app, origins="http://localhost:3000", supports_credentials=True, methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///woodyDB.db'
-app.secret_key = '1111'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///woodyDB.db')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'default-dev-key')
 db.init_app(app)
 
 migrate = Migrate(app, db)
@@ -70,14 +74,9 @@ app.register_blueprint(seller_bp)
 app.register_blueprint(catalog_bp)
 
 
-
 @login_manager.user_loader
 def load_user(user_id):
     return Users.query.get(int(user_id))
-
-
-
-
 
 @app.route('/', methods = ['GET'])
 def index():
@@ -99,29 +98,5 @@ def showBase():
     return render_template('base.html', username=session.get('user_name'))
 
 
-
-
-# @app.route('/add_to_cart', methods=['POST'])
-# def add_to_cart():
-#     try:
-#         data = request.get_json()
-
-#         product_id = data.get('id')
-#         product_name = data.get('name')
-#         product_price = data.get('price')
-
-#         if 'cart' not in session:
-#             session['cart'] = []
-
-#         session['cart'].append({
-#             'id': product_id,
-#             'name': product_name,
-#             'price': product_price
-#         })
-
-#         return jsonify({'success': True})
-#     except Exception as e:
-#         return jsonify({'success': False, 'error': str(e)}), 400
-
 if __name__ == "__main__":
-    app.run(host="localhost", port=5000, debug=True)
+    app.run(host="localhost", port=APP_PORT, debug=True)

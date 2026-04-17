@@ -5,3 +5,5 @@ product1.html
 venv
 WoodyVenv
 desktop.ini
+.env
+/backend/.env
